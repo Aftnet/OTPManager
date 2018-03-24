@@ -1,0 +1,42 @@
+﻿<mvx:MvxWindowsPage
+    x:Class="OTPManager.UWP.Pages.AddGeneratorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvx="using:MvvmCross.Uwp.Views"
+    xmlns:vt="using:WindowsStateTriggers"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <CommandBar x:Name="Commands" Grid.Row="0">
+            <AppBarButton x:Uid="Save" Icon="Save" Command="{x:Bind VM.AddGenerator}"/>
+        </CommandBar>
+        <ScrollViewer Grid.Row="1" Style="{StaticResource DefaultScrollViewerStyle}">
+            <StackPanel Orientation="Vertical" Margin="{StaticResource ContentMargin}">
+                <TextBox x:Uid="LabelTB" Text="{x:Bind VM.Label, Mode=TwoWay}" Style="{StaticResource TBStyle}"/>
+                <TextBox x:Uid="SecretTB" Text="{x:Bind VM.SecretBase32, Mode=TwoWay}" Style="{StaticResource SecretTBStyle}"/>
+                <TextBox x:Uid="IssuerTB" Text="{x:Bind VM.Issuer, Mode=TwoWay}" Style="{StaticResource TBStyle}"/>
+                <ToggleSwitch x:Uid="ExportingAllowedSwitch" IsOn="{x:Bind VM.AllowExporting, Mode=TwoWay}" Header="Allow exporting design"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <vt:DeviceFamilyStateTrigger DeviceFamily="Mobile"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Commands.(Grid.Row)" Value="2"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</mvx:MvxWindowsPage>

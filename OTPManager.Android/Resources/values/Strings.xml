@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="AppName">OTP Manager</string>
+  <string name="AddQR">Add QR</string>
+  <string name="Add">Add</string>
+  <string name="AddManually">Add manually</string>
+  <string name="AddViaQR">Add via QR</string>
+  <string name="Details">Details</string>
+  <string name="Delete">Delete</string>
+  <string name="Save">Save</string>
+  <string name="Label">Label</string>
+  <string name="Secret">Secret</string>
+  <string name="Issuer">Issuer</string>
+  <string name="AllowExporting">Allow exporting</string>
+  <string name="Yes">yes</string>
+  <string name="No">no</string>
+  <string name="NoAccounts">No accounts</string>
+  <string name="CopyToClipboard">Copy to clipboard</string>
+</resources>

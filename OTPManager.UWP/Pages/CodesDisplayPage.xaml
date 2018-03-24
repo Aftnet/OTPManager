@@ -1,0 +1,131 @@
+﻿<mvx:MvxWindowsPage
+    x:Class="OTPManager.UWP.Pages.CodesDisplayPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvx="using:MvvmCross.Uwp.Views"
+    xmlns:vm="using:OTPManager.Shared.ViewModels"
+    xmlns:vt="using:WindowsStateTriggers"
+    mc:Ignorable="d">
+
+    <mvx:MvxWindowsPage.Resources>
+        <Style x:Key="NavigationListStyle" TargetType="ListViewBase">
+            <Setter Property="IsItemClickEnabled" Value="True"/>
+            <Setter Property="SelectionMode" Value="None"/>
+        </Style>
+        <Style x:Key="NoAccountsHeadingStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextBlockStyle}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="LinkButtonStyle" TargetType="Button" BasedOn="{StaticResource TextBlockButtonStyle}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="OTPTextStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextBlockStyle}">
+            <Setter Property="Foreground" Value="{StaticResource SystemControlForegroundAccentBrush}"/>
+        </Style>
+        <Style x:Key="ItemLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+        </Style>
+        
+        <DataTemplate x:Key="ListItemDT" x:DataType="vm:OTPDisplayViewModel">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Style="{StaticResource ItemLabelStyle}">
+                    <Run Text="{x:Bind Label}"/><Run Text=" - "/><Run Text="{x:Bind Issuer}"/>
+                </TextBlock>
+                <TextBlock Text="{x:Bind OTP, Mode=OneWay}" Style="{StaticResource OTPTextStyle}"/>
+                <StackPanel.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Command="{x:Bind CopyToClipboard}" x:Uid="CopyMenuItem" Icon="Copy"/>
+                    </MenuFlyout>
+                </StackPanel.ContextFlyout>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="OTPViewerNarrow" x:DataType="vm:CodesDisplayViewModel">
+            <ListView ItemsSource="{x:Bind Items, Mode=OneWay}" ItemClick="ItemClicked" ItemTemplate="{StaticResource ListItemDT}" Style="{StaticResource NavigationListStyle}"/>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="GridItemDT" x:DataType="vm:OTPDisplayViewModel">
+            <StackPanel Orientation="Vertical" Margin="12,0" MinWidth="200">
+                <TextBlock Text="{x:Bind Label}" Style="{StaticResource ItemLabelStyle}"/>
+                <TextBlock Text="{x:Bind OTP, Mode=OneWay}" Style="{StaticResource OTPTextStyle}"/>
+                <TextBlock Text="{x:Bind Issuer}" Style="{StaticResource ItemLabelStyle}"/>
+                <StackPanel.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Command="{x:Bind CopyToClipboard}" x:Uid="CopyMenuItem" Icon="Copy"/>
+                    </MenuFlyout>
+                </StackPanel.ContextFlyout>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="OTPViewerWide" x:DataType="vm:CodesDisplayViewModel">
+            <GridView ItemsSource="{x:Bind Items, Mode=OneWay}" ItemClick="ItemClicked" ItemTemplate="{StaticResource GridItemDT}" Style="{StaticResource NavigationListStyle}"/>
+        </DataTemplate>
+    </mvx:MvxWindowsPage.Resources>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <CommandBar x:Name="Commands" Grid.Row="0">
+            <AppBarButton x:Uid="AddByQrCode" Icon="Camera" Command="{x:Bind VM.CreateEntryQR}"/>
+            <AppBarButton x:Uid="AddManually" Icon="Edit" Command="{x:Bind VM.CreateEntryManual}"/>
+        </CommandBar>
+        <ProgressBar x:Name="Progress" Grid.Row="1" Maximum="{x:Bind VM.ProgressScale, Mode=OneWay}" Value="{x:Bind VM.Progress, Mode=OneWay}" Visibility="{x:Bind VM.GeneratorsAvailable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <StackPanel x:Name="NoOTPBanner" Orientation="Vertical" VerticalAlignment="Center" Grid.Row="2" Visibility="Collapsed">
+            <TextBlock x:Uid="NoAccountsHeading" Text="No Accounts Design" Style="{StaticResource NoAccountsHeadingStyle}"/>
+            <Button Command="{x:Bind VM.CreateEntryQR}" Style="{StaticResource LinkButtonStyle}">
+                <TextBlock>
+                        <Run Text="&#xE722;" FontFamily="{ThemeResource SymbolThemeFontFamily}"/>
+                        <Run x:Uid="AddByQrButton" Text="Add by QR design"/>
+                </TextBlock>
+            </Button>
+            <Button Command="{x:Bind VM.CreateEntryManual}" Style="{StaticResource LinkButtonStyle}">
+                <TextBlock>
+                        <Run Text="&#xE70F;" FontFamily="{ThemeResource SymbolThemeFontFamily}"/>
+                        <Run x:Uid="AddManuallyButton" Text="Add manually design"/>
+                </TextBlock>
+            </Button>
+        </StackPanel>
+        <ContentPresenter x:Name="OTPViewer" Grid.Row="2" Content="{x:Bind VM}" ContentTemplate="{StaticResource OTPViewerNarrow}"
+        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <vt:DeviceFamilyStateTrigger DeviceFamily="Mobile"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Progress.(Grid.Row)" Value="3"/>
+                        <Setter Target="Commands.(Grid.Row)" Value="4"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <vt:IsFalseStateTrigger Value="{x:Bind VM.GeneratorsAvailable, Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="OTPViewer.Visibility" Value="Collapsed"/>
+                        <Setter Target="NoOTPBanner.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideWindowMinWidth}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="OTPViewer.ContentTemplate" Value="{StaticResource OTPViewerWide}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</mvx:MvxWindowsPage>
