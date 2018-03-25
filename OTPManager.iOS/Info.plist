@@ -43,5 +43,11 @@
 	<string>OTPManager.iOS</string>
 	<key>NSCameraUsageDescription</key>
 	<string>To scan QR codes camer access is needed</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+	</array>
 </dict>
 </plist>
