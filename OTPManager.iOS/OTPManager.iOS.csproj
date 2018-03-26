@@ -69,14 +69,14 @@
     <Compile Include="ValueConverters\CodesDisplayProgressConverter.cs" />
     <InterfaceDefinition Include="Resources\Base.lproj\LaunchScreen.xib" />
     <InterfaceDefinition Include="Resources\Base.lproj\CodesDisplay.storyboard" />
-    <Compile Include="CodesDisplayView.cs" />
-    <Compile Include="CodesDisplayView.designer.cs">
-      <DependentUpon>CodesDisplayView.cs</DependentUpon>
-    </Compile>
     <InterfaceDefinition Include="Resources\Base.lproj\AddGenerator.storyboard" />
-    <Compile Include="AddGeneratorView.cs" />
-    <Compile Include="AddGeneratorView.designer.cs">
+    <Compile Include="Views\AddGeneratorView.cs" />
+    <Compile Include="Views\AddGeneratorView.designer.cs">
       <DependentUpon>AddGeneratorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CodesDisplayView.cs" />
+    <Compile Include="Views\CodesDisplayView.designer.cs">
+      <DependentUpon>CodesDisplayView.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +102,7 @@
   <ItemGroup>
     <Folder Include="ValueConverters\" />
     <Folder Include="Resources\Base.lproj\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
