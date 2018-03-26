@@ -8,7 +8,7 @@ using UIKit;
 namespace OTPManager.iOS
 {
     [MvxFromStoryboard("AddGenerator")]
-    public partial class AddGeneratorView : MvxViewController<AddGeneratorViewModel>
+    public partial class AddGeneratorView : MvxTableViewController<AddGeneratorViewModel>
     {
         public AddGeneratorView (IntPtr handle) : base (handle)
         {
