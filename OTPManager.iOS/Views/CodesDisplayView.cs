@@ -9,7 +9,7 @@ namespace OTPManager.iOS
 {
     [MvxFromStoryboard("CodesDisplay")]
     [MvxRootPresentation(WrapInNavigationController = true)]
-    public partial class CodesDisplayView : MvxViewController<CodesDisplayViewModel>
+    public partial class CodesDisplayView : MvxTableViewController<CodesDisplayViewModel>
     {
         public CodesDisplayView(IntPtr handle) : base(handle)
         {
