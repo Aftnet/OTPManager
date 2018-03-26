@@ -11,11 +11,8 @@ using UIKit;
 
 namespace OTPManager.iOS
 {
-    [Register ("CodesDisplayView")]
-    partial class CodesDisplayView
+    [Register ("AddGeneratorView")]
+    partial class AddGeneratorView
     {
-        void ReleaseDesignerOutlets ()
-        {
-        }
     }
 }
