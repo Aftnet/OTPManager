@@ -14,5 +14,8 @@ namespace OTPManager.iOS
     [Register ("AddGeneratorView")]
     partial class AddGeneratorView
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

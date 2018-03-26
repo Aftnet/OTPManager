@@ -14,8 +14,16 @@ namespace OTPManager.iOS
     [Register ("CodesDisplayView")]
     partial class CodesDisplayView
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIProgressView ProgressBar { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
+            if (ProgressBar != null) {
+                ProgressBar.Dispose ();
+                ProgressBar = null;
+            }
         }
     }
 }
