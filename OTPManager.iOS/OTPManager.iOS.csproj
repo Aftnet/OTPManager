@@ -69,7 +69,10 @@
     <Compile Include="ValueConverters\CodesDisplayProgressConverter.cs" />
     <InterfaceDefinition Include="Resources\Base.lproj\LaunchScreen.xib" />
     <InterfaceDefinition Include="Resources\Base.lproj\CodesDisplay.storyboard" />
-    <Compile Include="Views\CodesDisplayView.cs" />
+    <Compile Include="CodesDisplayView.cs" />
+    <Compile Include="CodesDisplayView.designer.cs">
+      <DependentUpon>CodesDisplayView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -92,7 +95,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\" />
     <Folder Include="ValueConverters\" />
     <Folder Include="Resources\Base.lproj\" />
   </ItemGroup>

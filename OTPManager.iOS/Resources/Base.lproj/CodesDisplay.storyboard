@@ -7,7 +7,7 @@
     <scenes>
         <scene sceneID="204">
             <objects>
-                <viewController id="205" sceneMemberID="viewController">
+                <viewController id="205" sceneMemberID="viewController" customClass="CodesDisplayView" storyboardIdentifier="CodesDisplayView">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="202"/>
                         <viewControllerLayoutGuide type="bottom" id="203"/>
