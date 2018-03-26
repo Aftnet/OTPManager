@@ -17,11 +17,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <subviews>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="411" fixedFrame="YES">
-                                <rect key="frame" x="132" y="326" width="150" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="411">
+                                <rect key="frame" x="20" y="20" width="374" height="2"/>
                             </progressView>
                         </subviews>
+                        <constraints>
+                            <constraint id="617" firstItem="411" firstAttribute="top" secondItem="202" secondAttribute="bottom"/>
+                            <constraint id="618" firstItem="411" firstAttribute="leading" secondItem="206" secondAttribute="leadingMargin"/>
+                            <constraint id="619" firstItem="206" firstAttribute="trailingMargin" secondItem="411" secondAttribute="trailing"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="ProgressBar" destination="411" id="name-outlet-411"/>
