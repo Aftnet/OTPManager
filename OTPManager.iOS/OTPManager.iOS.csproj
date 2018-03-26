@@ -103,6 +103,10 @@
     <Folder Include="ValueConverters\" />
     <Folder Include="Resources\Base.lproj\" />
     <Folder Include="Views\" />
+    <Folder Include="Resources\en.lproj\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\en.lproj\AddGenerator.strings" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
