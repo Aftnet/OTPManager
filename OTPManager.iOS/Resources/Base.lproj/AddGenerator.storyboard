@@ -90,9 +90,9 @@
                         </sections>
                     </tableView>
                     <connections>
-                        <outlet property="LabelTextField" destination="1204" id="name-outlet-1204"/>
+                        <outlet property="IssuerTextField" destination="1204" id="name-outlet-1204"/>
                         <outlet property="SecretTextField" destination="1200" id="name-outlet-1200"/>
-                        <outlet property="IssuerTextField" destination="1139" id="name-outlet-1139"/>
+                        <outlet property="LabelTextField" destination="1139" id="name-outlet-1139"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="633" userLabel="First Responder" sceneMemberID="firstResponder"/>

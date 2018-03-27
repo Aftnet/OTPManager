@@ -15,6 +15,7 @@ namespace OTPManager.Shared.ViewModels
         private readonly IStorageService DataStore;
 
         public MvxCommand AddGenerator { get; private set; }
+        public MvxCommand Cancel { get; private set; }
 
         private bool dataIsValid;
         public bool DataIsValid
@@ -66,6 +67,8 @@ namespace OTPManager.Shared.ViewModels
             DataStore = dataStore;
 
             AddGenerator = new MvxCommand(CreateEntryHandler, () => DataIsValid);
+            Cancel = new MvxCommand(() => Navigator.Close(this));
+
             ResetDefaults();
         }
 

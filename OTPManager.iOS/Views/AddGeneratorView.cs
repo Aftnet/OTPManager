@@ -19,13 +19,17 @@ namespace OTPManager.iOS
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
 
-            var addManualButton = new UIBarButtonItem(UIBarButtonSystemItem.Add);
-            var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
-            NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
+            var saveButton = new UIBarButtonItem(UIBarButtonSystemItem.Save);
+            var cancelButton = new UIBarButtonItem(UIBarButtonSystemItem.Cancel);
+            NavigationItem.RightBarButtonItem = saveButton;
+            NavigationItem.BackBarButtonItem = cancelButton;
 
             this.CreateBinding(IssuerTextField).To<AddGeneratorViewModel>(d => d.Issuer).Apply();
             this.CreateBinding(SecretTextField).To<AddGeneratorViewModel>(d => d.SecretBase32).Apply();
             this.CreateBinding(LabelTextField).To<AddGeneratorViewModel>(d => d.Label).Apply();
+
+            this.CreateBinding(saveButton).To<AddGeneratorViewModel>(d => d.AddGenerator).Apply();
+            this.CreateBinding(cancelButton).To<AddGeneratorViewModel>(d => d.Cancel).Apply();
         }
 
         public override void DidReceiveMemoryWarning()
