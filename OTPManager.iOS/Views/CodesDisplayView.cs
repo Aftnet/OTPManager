@@ -26,7 +26,7 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            var source = new MvxSimpleTableViewSource(CodesDisplayTable, typeof(CodesDisplayItemView), CodesDisplayItemView.Key);
+            var source = new MvxSimpleTableViewSource(CodesDisplayTable, typeof(CodesDisplayItemView), nameof(CodesDisplayItemView));
 
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)

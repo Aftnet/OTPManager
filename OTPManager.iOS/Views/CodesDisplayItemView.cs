@@ -9,9 +9,6 @@ namespace OTPManager.iOS.Views
 {
     public partial class CodesDisplayItemView : MvxTableViewCell
     {
-        public static readonly NSString Key = new NSString("CodesDisplayItemView");
-        public static readonly UINib Nib = UINib.FromName("CodesDisplayItemView", NSBundle.MainBundle);
-
         protected CodesDisplayItemView(IntPtr handle) : base(handle)
         {
             // Note: this .ctor should not contain any initialization logic.
