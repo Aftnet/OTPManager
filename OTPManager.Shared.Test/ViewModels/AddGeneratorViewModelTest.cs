@@ -63,5 +63,13 @@ namespace OTPManager.Shared.Test.ViewModels
             Assert.Equal(generator.SecretBase32, Target.SecretBase32);
             Assert.Equal(AddGeneratorViewModel.AllowExportingDefault, Target.AllowExporting);
         }
+
+        [Fact]
+        public void CancelingWorks()
+        {
+            Target.Cancel.Execute(null);
+            DataStoreMock.Verify(d => d.InsertOrReplaceAsync(It.IsAny<OTPGenerator>()), Times.Never());
+            NavigatorMock.Verify(d => d.Close(Target));
+        }
     }
 }
