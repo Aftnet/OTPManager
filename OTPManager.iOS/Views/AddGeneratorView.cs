@@ -24,12 +24,13 @@ namespace OTPManager.iOS
             NavigationItem.RightBarButtonItem = saveButton;
             NavigationItem.BackBarButtonItem = cancelButton;
 
-            this.CreateBinding(IssuerTextField).To<AddGeneratorViewModel>(d => d.Issuer).Apply();
-            this.CreateBinding(SecretTextField).To<AddGeneratorViewModel>(d => d.SecretBase32).Apply();
-            this.CreateBinding(LabelTextField).To<AddGeneratorViewModel>(d => d.Label).Apply();
-
-            this.CreateBinding(saveButton).To<AddGeneratorViewModel>(d => d.AddGenerator).Apply();
-            this.CreateBinding(cancelButton).To<AddGeneratorViewModel>(d => d.Cancel).Apply();
+            var set = this.CreateBindingSet<AddGeneratorView, AddGeneratorViewModel>();
+            set.Bind(IssuerTextField).To(m => m.Issuer);
+            set.Bind(SecretTextField).To(m => m.SecretBase32);
+            set.Bind(LabelTextField).To(m => m.Label);
+            set.Bind(saveButton).To(d => d.AddGenerator);
+            set.Bind(cancelButton).To(d => d.Cancel);
+            set.Apply();
         }
 
         public override void DidReceiveMemoryWarning()

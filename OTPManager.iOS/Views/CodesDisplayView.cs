@@ -24,10 +24,12 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            this.CreateBinding(ProgressBar).To<CodesDisplayViewModel>(d => d.Progress)
-                .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale).Apply();
-            this.CreateBinding(addManualButton).To<CodesDisplayViewModel>(d => d.CreateEntryManual).Apply();
-            this.CreateBinding(addQRImage).To<CodesDisplayViewModel>(d => d.CreateEntryQR).Apply();
+            var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
+            set.Bind(ProgressBar).To(m => m.Progress)
+               .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale);
+            set.Bind(addManualButton).To(m => m.CreateEntryManual);
+            set.Bind(addQRImage).To(m => m.CreateEntryQR);
+            set.Apply();
         }
 
         public override void DidReceiveMemoryWarning()
