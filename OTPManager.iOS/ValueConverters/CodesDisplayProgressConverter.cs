@@ -5,11 +5,12 @@ using OTPManager.Shared.ViewModels;
 
 namespace OTPManager.iOS.ValueConverters
 {
-    public class CodesDisplayProgressConverter : MvxValueConverter<CodesDisplayViewModel, float>
+    public class CodesDisplayProgressConverter : MvxValueConverter<int, float>
     {
-        protected override float Convert(CodesDisplayViewModel value, Type targetType, object parameter, CultureInfo culture)
+        protected override float Convert(int value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (float)value.Progress / (float)value.ProgressScale;
+            var output = (float)value / (float)parameter;
+            return output;
         } 
     }
 }

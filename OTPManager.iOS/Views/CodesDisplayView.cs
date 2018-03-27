@@ -24,7 +24,8 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            this.CreateBinding(ProgressBar).To<CodesDisplayViewModel>(d => d).WithConversion("CodesDisplayProgress").Apply();
+            this.CreateBinding(ProgressBar).For(d => d.Progress).To<CodesDisplayViewModel>(d => d.Progress)
+                .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale).Apply();
             this.CreateBinding(addManualButton).To<CodesDisplayViewModel>(d => d.CreateEntryManual).Apply();
             this.CreateBinding(addQRImage).To<CodesDisplayViewModel>(d => d.CreateEntryQR).Apply();
         }
