@@ -26,7 +26,7 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            var source = new MvxSimpleTableViewSource(CodesDisplayTable, typeof(CodesDisplayItemView), nameof(CodesDisplayItemView));
+            var source = new MvxSimpleTableViewSource(TableView, typeof(CodesDisplayItemView));
 
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
@@ -35,9 +35,6 @@ namespace OTPManager.iOS
             set.Bind(addManualButton).To(m => m.CreateEntryManual);
             set.Bind(addQRImage).To(m => m.CreateEntryQR);
             set.Apply();
-
-            CodesDisplayTable.Source = source;
-            CodesDisplayTable.ReloadData();
         }
 
         public override void DidReceiveMemoryWarning()
