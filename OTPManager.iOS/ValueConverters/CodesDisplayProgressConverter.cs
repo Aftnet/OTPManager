@@ -7,9 +7,15 @@ namespace OTPManager.iOS.ValueConverters
 {
     public class CodesDisplayProgressConverter : MvxValueConverter<int, float>
     {
+        public CodesDisplayProgressConverter()
+        {
+
+        
+        }
         protected override float Convert(int value, Type targetType, object parameter, CultureInfo culture)
         {
-            var output = (float)value / (float)parameter;
+            var maxProgress = (int)parameter;
+            var output = (float)value / (float)maxProgress;
             return output;
         } 
     }
