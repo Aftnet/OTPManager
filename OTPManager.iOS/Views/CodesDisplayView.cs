@@ -1,9 +1,11 @@
 using System;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Binding.iOS.Views;
 using MvvmCross.iOS.Views;
 using MvvmCross.iOS.Views.Presenters.Attributes;
 using OTPManager.Shared.ViewModels;
 using UIKit;
+using OTPManager.iOS.Views;
 
 namespace OTPManager.iOS
 {
@@ -24,12 +26,18 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
+            var source = new MvxSimpleTableViewSource(CodesDisplayTable, typeof(CodesDisplayItemView), CodesDisplayItemView.Key);
+
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
                .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale);
+            set.Bind(source).To(m => m.Items);
             set.Bind(addManualButton).To(m => m.CreateEntryManual);
             set.Bind(addQRImage).To(m => m.CreateEntryQR);
             set.Apply();
+
+            CodesDisplayTable.Source = source;
+            CodesDisplayTable.ReloadData();
         }
 
         public override void DidReceiveMemoryWarning()

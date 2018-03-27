@@ -16,10 +16,19 @@ namespace OTPManager.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITableView CodesDisplayTable { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIProgressView ProgressBar { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
+            if (CodesDisplayTable != null) {
+                CodesDisplayTable.Dispose ();
+                CodesDisplayTable = null;
+            }
+
             if (ProgressBar != null) {
                 ProgressBar.Dispose ();
                 ProgressBar = null;

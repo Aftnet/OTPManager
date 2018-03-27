@@ -28,8 +28,8 @@ namespace OTPManager.iOS
             set.Bind(IssuerTextField).To(m => m.Issuer);
             set.Bind(SecretTextField).To(m => m.SecretBase32);
             set.Bind(LabelTextField).To(m => m.Label);
-            set.Bind(saveButton).To(d => d.AddGenerator);
-            set.Bind(cancelButton).To(d => d.Cancel);
+            set.Bind(saveButton).To(m => m.AddGenerator);
+            set.Bind(cancelButton).To(m => m.Cancel);
             set.Apply();
         }
 
