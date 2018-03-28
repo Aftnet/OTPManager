@@ -82,6 +82,11 @@
     <Compile Include="Views\CodesDisplayItemView.designer.cs">
       <DependentUpon>CodesDisplayItemView.cs</DependentUpon>
     </Compile>
+    <InterfaceDefinition Include="Resources\Base.lproj\DisplayGenerator.storyboard" />
+    <Compile Include="Views\DisplayGeneratorView.cs" />
+    <Compile Include="Views\DisplayGeneratorView.designer.cs">
+      <DependentUpon>DisplayGeneratorView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

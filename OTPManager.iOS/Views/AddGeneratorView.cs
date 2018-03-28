@@ -32,11 +32,5 @@ namespace OTPManager.iOS
             set.Bind(cancelButton).To(m => m.Cancel);
             set.Apply();
         }
-
-        public override void DidReceiveMemoryWarning()
-        {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
-        }
     }
 }

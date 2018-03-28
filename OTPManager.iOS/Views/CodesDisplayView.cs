@@ -54,11 +54,5 @@ namespace OTPManager.iOS
             TableView.Source = source;
             TableView.ReloadData();
         }
-
-        public override void DidReceiveMemoryWarning()
-        {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
-        }
     }
 }
