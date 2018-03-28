@@ -13,10 +13,10 @@ namespace OTPManager.iOS
             this.DelayBind(() =>
             {
                 var set = this.CreateBindingSet<CodesDisplayItemView, OTPDisplayViewModel>();
-                //set.Bind(Label).To(m => m.Label);
-                //set.Bind(OTP).To(m => m.OTP);
-                //set.Bind(Issuer).To(m => m.Issuer);
-                //set.Apply();
+                set.Bind(LabelDisplay).To(m => m.Label);
+                set.Bind(OTPDisplay).To(m => m.OTP);
+                set.Bind(IssuerDisplay).To(m => m.Issuer);
+                set.Apply();
             });
         }
     }

@@ -25,7 +25,8 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            var source = new MvxSimpleTableViewSource(TableView, typeof(CodesDisplayItemView));
+            //var source = new MvxSimpleTableViewSource(TableView, typeof(CodesDisplayItemView), nameof(CodesDisplayItemView));
+            var source = new MvxStandardTableViewSource(TableView, "TitleText OTP");
 
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
