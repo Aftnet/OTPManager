@@ -5,7 +5,6 @@ using MvvmCross.iOS.Views;
 using MvvmCross.iOS.Views.Presenters.Attributes;
 using OTPManager.Shared.ViewModels;
 using UIKit;
-using OTPManager.iOS.Views;
 
 namespace OTPManager.iOS
 {
@@ -35,6 +34,9 @@ namespace OTPManager.iOS
             set.Bind(addManualButton).To(m => m.CreateEntryManual);
             set.Bind(addQRImage).To(m => m.CreateEntryQR);
             set.Apply();
+
+            TableView.Source = source;
+            TableView.ReloadData();
         }
 
         public override void DidReceiveMemoryWarning()

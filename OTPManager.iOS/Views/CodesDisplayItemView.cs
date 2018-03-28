@@ -1,11 +1,9 @@
-﻿using System;
-using Foundation;
+using System;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
-using UIKit;
 using OTPManager.Shared.ViewModels;
 
-namespace OTPManager.iOS.Views
+namespace OTPManager.iOS
 {
     public partial class CodesDisplayItemView : MvxTableViewCell
     {
@@ -15,10 +13,10 @@ namespace OTPManager.iOS.Views
             this.DelayBind(() =>
             {
                 var set = this.CreateBindingSet<CodesDisplayItemView, OTPDisplayViewModel>();
-                set.Bind(Label).To(m => m.Label);
-                set.Bind(OTP).To(m => m.OTP);
-                set.Bind(Issuer).To(m => m.Issuer);
-                set.Apply();
+                //set.Bind(Label).To(m => m.Label);
+                //set.Bind(OTP).To(m => m.OTP);
+                //set.Bind(Issuer).To(m => m.Issuer);
+                //set.Apply();
             });
         }
     }

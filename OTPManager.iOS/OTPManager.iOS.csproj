@@ -82,7 +82,6 @@
     <Compile Include="Views\CodesDisplayItemView.designer.cs">
       <DependentUpon>CodesDisplayItemView.cs</DependentUpon>
     </Compile>
-    <InterfaceDefinition Include="Resources\Base.lproj\CodesDisplayItemView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
