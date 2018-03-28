@@ -16,22 +16,22 @@ namespace OTPManager.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITableView CodesDisplayTable { get; set; }
+        UIKit.UIProgressView ProgressBar { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIProgressView ProgressBar { get; set; }
+        UIKit.UITableView TableView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (CodesDisplayTable != null) {
-                CodesDisplayTable.Dispose ();
-                CodesDisplayTable = null;
-            }
-
             if (ProgressBar != null) {
                 ProgressBar.Dispose ();
                 ProgressBar = null;
+            }
+
+            if (TableView != null) {
+                TableView.Dispose ();
+                TableView = null;
             }
         }
     }
