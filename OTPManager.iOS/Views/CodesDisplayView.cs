@@ -1,4 +1,5 @@
 using System;
+using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using MvvmCross.iOS.Views;
@@ -12,6 +13,20 @@ namespace OTPManager.iOS
     [MvxRootPresentation(WrapInNavigationController = true)]
     public partial class CodesDisplayView : MvxViewController<CodesDisplayViewModel>
     {
+        public class TableViewSource : MvxTableViewSource
+        {
+            private NSString _cellIdentifier = new NSString(nameof(CodesDisplayItemView));
+
+            public TableViewSource(UITableView tableView) : base(tableView)
+            {
+            }
+
+            protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
+            {
+                return (CodesDisplayItemView)tableView.DequeueReusableCell(_cellIdentifier);
+            }
+        }
+
         public CodesDisplayView(IntPtr handle) : base(handle)
         {
         }
@@ -25,8 +40,8 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            //var source = new MvxSimpleTableViewSource(TableView, typeof(CodesDisplayItemView), nameof(CodesDisplayItemView));
-            var source = new MvxStandardTableViewSource(TableView, "TitleText OTP");
+            var source = new TableViewSource(TableView);
+            //var source = new MvxStandardTableViewSource(TableView, "TitleText OTP");
 
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
