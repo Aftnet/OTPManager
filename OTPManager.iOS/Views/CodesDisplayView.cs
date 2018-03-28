@@ -41,12 +41,12 @@ namespace OTPManager.iOS
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
             var source = new TableViewSource(TableView);
-            //var source = new MvxStandardTableViewSource(TableView, "TitleText OTP");
 
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
                .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale);
             set.Bind(source).To(m => m.Items);
+            set.Bind(source).For(m => m.SelectionChangedCommand).To(m => m.ItemClicked);
             set.Bind(addManualButton).To(m => m.CreateEntryManual);
             set.Bind(addQRImage).To(m => m.CreateEntryQR);
             set.Apply();
