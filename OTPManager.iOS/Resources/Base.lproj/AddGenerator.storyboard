@@ -107,7 +107,7 @@
                                                 <constraint firstItem="kFc-Xb-1vi" firstAttribute="leading" secondItem="nJj-Iy-7kf" secondAttribute="leadingMargin" id="Anb-0t-mj7"/>
                                                 <constraint firstItem="UCV-Kj-QWn" firstAttribute="centerY" secondItem="kFc-Xb-1vi" secondAttribute="centerY" id="F6F-DN-Xwy"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="UCV-Kj-QWn" secondAttribute="trailing" id="P6R-uI-V5Z"/>
-                                                <constraint firstItem="kFc-Xb-1vi" firstAttribute="top" secondItem="nJj-Iy-7kf" secondAttribute="topMargin" id="RgA-4N-Tet"/>
+                                                <constraint firstItem="kFc-Xb-1vi" firstAttribute="centerY" secondItem="nJj-Iy-7kf" secondAttribute="centerY" id="VeZ-td-eHJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
