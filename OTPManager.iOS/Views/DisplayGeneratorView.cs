@@ -41,10 +41,5 @@ namespace OTPManager.iOS
                     return string.Empty;
             }
         }
-
-        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
-        {
-            return UITableView.AutomaticDimension;
-        }
     }
 }
