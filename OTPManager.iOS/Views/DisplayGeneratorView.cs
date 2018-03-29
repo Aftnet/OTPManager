@@ -24,7 +24,7 @@ namespace OTPManager.iOS
 
             var set = this.CreateBindingSet<DisplayGeneratorView, DisplayGeneratorViewModel>();
             set.Bind(LabelTextField).To(m => m.Label);
-            set.Bind(SecretTextField).To(m => m.SecretBase32);
+            set.Bind(SecretTextField).To(m => m).WithConversion("SecretHidden");
             set.Bind(IssuerTextField).To(m => m.Issuer);
             set.Bind(deleteButton).To(m => m.DeleteGenerator);
             set.Apply();

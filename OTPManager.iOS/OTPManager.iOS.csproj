@@ -87,6 +87,7 @@
     <Compile Include="Views\DisplayGeneratorView.designer.cs">
       <DependentUpon>DisplayGeneratorView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\SecretHiddenConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
