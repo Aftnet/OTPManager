@@ -4,6 +4,7 @@ using MvvmCross.iOS.Views;
 using MvvmCross.iOS.Views.Presenters.Attributes;
 using OTPManager.Shared.ViewModels;
 using UIKit;
+using Foundation;
 
 namespace OTPManager.iOS
 {
@@ -31,6 +32,11 @@ namespace OTPManager.iOS
             set.Bind(saveButton).To(m => m.AddGenerator);
             set.Bind(cancelButton).To(m => m.Cancel);
             set.Apply();
+        }
+
+        public override string TitleForHeader(UITableView tableView, nint section)
+        {
+            return NSBundle.MainBundle.LocalizedString("AddAccount", string.Empty);
         }
     }
 }
