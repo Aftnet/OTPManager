@@ -16,6 +16,10 @@ namespace OTPManager.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UISwitch AllowExportingToggle { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField IssuerTextField { get; set; }
 
         [Outlet]
@@ -28,6 +32,11 @@ namespace OTPManager.iOS
 
         void ReleaseDesignerOutlets ()
         {
+            if (AllowExportingToggle != null) {
+                AllowExportingToggle.Dispose ();
+                AllowExportingToggle = null;
+            }
+
             if (IssuerTextField != null) {
                 IssuerTextField.Dispose ();
                 IssuerTextField = null;

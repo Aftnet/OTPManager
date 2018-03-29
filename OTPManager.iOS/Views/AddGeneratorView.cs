@@ -29,7 +29,7 @@ namespace OTPManager.iOS
             set.Bind(LabelTextField).To(m => m.Label);
             set.Bind(SecretTextField).To(m => m.SecretBase32);
             set.Bind(IssuerTextField).To(m => m.Issuer);
-            //set.Bind(allowe)
+            set.Bind(AllowExportingToggle).To(m => m.AllowExporting);
             set.Bind(saveButton).To(m => m.AddGenerator);
             set.Bind(cancelButton).To(m => m.Cancel);
             set.Apply();
