@@ -24,6 +24,10 @@ namespace OTPManager.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIImageView QRDisplay { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField SecretTextField { get; set; }
 
         void ReleaseDesignerOutlets ()
@@ -36,6 +40,11 @@ namespace OTPManager.iOS
             if (LabelTextField != null) {
                 LabelTextField.Dispose ();
                 LabelTextField = null;
+            }
+
+            if (QRDisplay != null) {
+                QRDisplay.Dispose ();
+                QRDisplay = null;
             }
 
             if (SecretTextField != null) {

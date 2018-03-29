@@ -26,6 +26,7 @@ namespace OTPManager.iOS
             set.Bind(LabelTextField).To(m => m.Label);
             set.Bind(SecretTextField).To(m => m).WithConversion("SecretHidden");
             set.Bind(IssuerTextField).To(m => m.Issuer);
+            set.Bind(QRDisplay).For(m => m.Image).To(m => m.QRData).WithConversion("BitMatrixToQR");
             set.Bind(deleteButton).To(m => m.DeleteGenerator);
             set.Apply();
         }
