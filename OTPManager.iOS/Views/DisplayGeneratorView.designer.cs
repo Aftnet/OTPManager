@@ -14,8 +14,34 @@ namespace OTPManager.iOS
     [Register ("DisplayGeneratorView")]
     partial class DisplayGeneratorView
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField IssuerTextField { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField LabelTextField { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField SecretTextField { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
+            if (IssuerTextField != null) {
+                IssuerTextField.Dispose ();
+                IssuerTextField = null;
+            }
+
+            if (LabelTextField != null) {
+                LabelTextField.Dispose ();
+                LabelTextField = null;
+            }
+
+            if (SecretTextField != null) {
+                SecretTextField.Dispose ();
+                SecretTextField = null;
+            }
         }
     }
 }

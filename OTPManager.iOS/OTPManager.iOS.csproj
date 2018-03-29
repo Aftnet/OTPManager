@@ -117,6 +117,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\en.lproj\AddGenerator.strings" />
     <BundleResource Include="Resources\en.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\en.lproj\DisplayGenerator.strings" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

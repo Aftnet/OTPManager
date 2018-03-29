@@ -22,9 +22,9 @@ namespace OTPManager.iOS
             NavigationItem.RightBarButtonItem = deleteButton;
 
             var set = this.CreateBindingSet<DisplayGeneratorView, DisplayGeneratorViewModel>();
-            //set.Bind(IssuerTextField).To(m => m.Issuer);
-            //set.Bind(SecretTextField).To(m => m.SecretBase32);
-            //set.Bind(LabelTextField).To(m => m.Label);
+            set.Bind(LabelTextField).To(m => m.Label);
+            set.Bind(SecretTextField).To(m => m.SecretBase32);
+            set.Bind(IssuerTextField).To(m => m.Issuer);
             set.Bind(deleteButton).To(m => m.DeleteGenerator);
             set.Apply();
         }
