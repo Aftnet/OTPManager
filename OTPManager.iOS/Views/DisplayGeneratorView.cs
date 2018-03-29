@@ -1,4 +1,5 @@
 using System;
+using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.iOS.Views;
 using OTPManager.Shared.ViewModels;
@@ -27,6 +28,17 @@ namespace OTPManager.iOS
             set.Bind(IssuerTextField).To(m => m.Issuer);
             set.Bind(deleteButton).To(m => m.DeleteGenerator);
             set.Apply();
+        }
+
+        public override string TitleForHeader(UITableView tableView, nint section)
+        {
+            switch(section)
+            {
+                case 0:
+                    return NSBundle.MainBundle.LocalizedString("AccountDetails", string.Empty);
+                default:
+                    return string.Empty;
+            }
         }
     }
 }

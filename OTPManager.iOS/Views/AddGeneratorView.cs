@@ -36,7 +36,13 @@ namespace OTPManager.iOS
 
         public override string TitleForHeader(UITableView tableView, nint section)
         {
-            return NSBundle.MainBundle.LocalizedString("AddAccount", string.Empty);
+            switch (section)
+            {
+                case 0:
+                    return NSBundle.MainBundle.LocalizedString("AddAccount", string.Empty);
+                default:
+                    return string.Empty;
+            }
         }
     }
 }
