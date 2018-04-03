@@ -159,7 +159,13 @@
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_87.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\LaunchImages.launchimage\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo.pdf">
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
