@@ -33,13 +33,26 @@ namespace OTPManager.iOS
 
         public override string TitleForHeader(UITableView tableView, nint section)
         {
-            switch(section)
+            switch (section)
             {
                 case 0:
                     return NSBundle.MainBundle.LocalizedString("AccountDetails", string.Empty);
-                default:
-                    return string.Empty;
+                case 1:
+                    return null;
             }
+
+            return base.TitleForHeader(tableView, section);
+        }
+
+        public override nint RowsInSection(UITableView tableView, nint section)
+        {
+            switch (section)
+            {
+                case 1:
+                    return ViewModel.AllowExporting ? 1 : 0;
+            }
+
+            return base.RowsInSection(tableView, section);
         }
     }
 }
