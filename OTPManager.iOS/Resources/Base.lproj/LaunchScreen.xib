@@ -17,10 +17,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="qmh-vQ-CAk">
-                    <rect key="frame" x="200" y="200" width="80" height="80"/>
+                    <rect key="frame" x="211.5" y="213.5" width="57" height="53"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="80" id="Kkw-lb-pWG"/>
-                        <constraint firstAttribute="width" secondItem="qmh-vQ-CAk" secondAttribute="height" id="gp8-SU-oGr"/>
+                        <constraint firstAttribute="width" secondItem="qmh-vQ-CAk" secondAttribute="height" multiplier="57:53" id="TC1-dP-3WP"/>
                     </constraints>
                 </imageView>
             </subviews>
