@@ -168,6 +168,10 @@
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo.pdf">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ThemeColorPrimary.colorset\Contents.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\ThemeColorPrimary.colorset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
