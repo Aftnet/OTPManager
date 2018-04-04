@@ -128,8 +128,7 @@ namespace OTPManager.UWP
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {
             var rootFrame = RootFrame;
-
-            if (rootFrame.CanGoBack)
+            if (rootFrame.CurrentSourcePageType == typeof(ZXing.Mobile.ScanPage))
             {
                 e.Handled = true;
                 rootFrame.GoBack();
