@@ -10,7 +10,6 @@ using UIKit;
 namespace OTPManager.iOS
 {
     [MvxFromStoryboard("CodesDisplay")]
-    [MvxRootPresentation(WrapInNavigationController = true)]
     public partial class CodesDisplayView : MvxViewController<CodesDisplayViewModel>
     {
         public class TableViewSource : MvxTableViewSource
