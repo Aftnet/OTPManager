@@ -168,7 +168,9 @@
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo.pdf">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\ThemeColorPrimary.colorset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ThemeColorPrimary.colorset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets.xcassets\ThemeColorPrimary.colorset\" />
