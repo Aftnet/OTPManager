@@ -19,7 +19,7 @@ namespace OTPManager.Shared
             Mvx.RegisterSingleton(UserDialogs.Instance);
             Mvx.LazyConstructAndRegisterSingleton<IMvxNavigationService, MvxNavigationService>();
             Mvx.LazyConstructAndRegisterSingleton<IUriService, UriService>();
-            Mvx.RegisterSingleton<IMvxAppStart>(new MvxAppStart<CodesDisplayViewModel>());
+            Mvx.LazyConstructAndRegisterSingleton<IMvxAppStart, MvxNavigationServiceAppStart<CodesDisplayViewModel>>();
         }
     }
 }
