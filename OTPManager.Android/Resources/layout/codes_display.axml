@@ -36,13 +36,13 @@
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:text="@string/AddManually"
-            local:MvxBind="Click CreateEntryManual" />
+            android:text="@string/AddViaQR"
+            local:MvxBind="Click CreateEntryQR" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:text="@string/AddViaQR"
-            local:MvxBind="Click CreateEntryQR" />
+            android:text="@string/AddManually"
+            local:MvxBind="Click CreateEntryManual" />
     </LinearLayout>
 </LinearLayout>
