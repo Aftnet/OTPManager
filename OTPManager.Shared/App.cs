@@ -6,6 +6,7 @@ using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using Plugin.FileSystem;
 using Plugin.SecureStorage;
+using Plugin.Share;
 
 namespace OTPManager.Shared
 {
@@ -15,8 +16,9 @@ namespace OTPManager.Shared
         {
             Mvx.RegisterSingleton(CrossSecureStorage.Current);
             Mvx.RegisterSingleton(CrossFileSystem.Current);
-            Mvx.LazyConstructAndRegisterSingleton<IStorageService, StorageService>();
+            Mvx.RegisterSingleton(CrossShare.Current);
             Mvx.RegisterSingleton(UserDialogs.Instance);
+            Mvx.LazyConstructAndRegisterSingleton<IStorageService, StorageService>();
             Mvx.LazyConstructAndRegisterSingleton<IMvxNavigationService, MvxNavigationService>();
             Mvx.LazyConstructAndRegisterSingleton<IUriService, UriService>();
             Mvx.LazyConstructAndRegisterSingleton<IMvxAppStart, MvxNavigationServiceAppStart<CodesDisplayViewModel>>();

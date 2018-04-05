@@ -81,8 +81,7 @@ namespace OTPManager.Android.Activities
             {
                 var menuInfo = item.MenuInfo as AdapterContextMenuInfo;
                 var target = ViewModel.Items[menuInfo.Position];
-                var platformService = Mvx.Resolve<IPlatformService>();
-                platformService.SetClipboardContent(target.OTP);
+                target.CopyToClipboard.Execute(null);
                 return true;
             }
 

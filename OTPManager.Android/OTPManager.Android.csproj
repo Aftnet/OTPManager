@@ -62,7 +62,6 @@
     <Compile Include="Activities\DisplayGeneratorView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\PlatformService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\BitMatrixToQRConverter.cs" />

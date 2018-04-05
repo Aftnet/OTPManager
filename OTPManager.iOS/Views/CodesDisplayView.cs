@@ -42,8 +42,7 @@ namespace OTPManager.iOS
             public override void PerformAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender)
             {
                 var target = ViewModel.Items[indexPath.Row];
-                var platformService = Mvx.Resolve<IPlatformService>();
-                platformService.SetClipboardContent(target.OTP);
+                target.CopyToClipboard.Execute(null);
             }
         }
 

@@ -3,9 +3,6 @@ using MvvmCross.iOS.Platform;
 using MvvmCross.iOS.Views.Presenters;
 using MvvmCross.Platform;
 using MvvmCross.Platform.Logging;
-using OTPManager.iOS.Services;
-using OTPManager.Shared.Services;
-using UIKit;
 using ZXing.Mobile;
 
 namespace OTPManager.iOS
@@ -23,7 +20,6 @@ namespace OTPManager.iOS
 
         protected override void InitializeFirstChance()
         {
-            Mvx.LazyConstructAndRegisterSingleton<IPlatformService, PlatformService>();
             Mvx.RegisterSingleton<IMobileBarcodeScanner>(() => new MobileBarcodeScanner
             {
                 //CustomOverlay = new UIView(),

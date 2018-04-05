@@ -1,12 +1,13 @@
-﻿using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using OTPManager.Shared.Models;
-using OTPManager.Shared.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MvvmCross.Core.Navigation;
+using MvvmCross.Core.ViewModels;
+using OTPManager.Shared.Models;
+using OTPManager.Shared.Services;
+using Plugin.Share.Abstractions;
 using ZXing.Mobile;
 
 namespace OTPManager.Shared.ViewModels
@@ -16,7 +17,7 @@ namespace OTPManager.Shared.ViewModels
         internal static readonly TimeSpan BackgroudRefreshInterval = TimeSpan.FromMilliseconds(50);
 
         private readonly IMvxNavigationService Navigator;
-        private readonly IPlatformService PlatformService;
+        private readonly IShare ShareService;
         private readonly IStorageService DataStore;
         private readonly IMobileBarcodeScanner Scanner;
         private readonly IUriService UriService;
@@ -56,10 +57,10 @@ namespace OTPManager.Shared.ViewModels
 
         private Timer BackgroundRefreshTimer;
 
-        public CodesDisplayViewModel(IMvxNavigationService navigator, IPlatformService platformService, IStorageService dataStore, IMobileBarcodeScanner scanner, IUriService uriService)
+        public CodesDisplayViewModel(IMvxNavigationService navigator, IShare shareService, IStorageService dataStore, IMobileBarcodeScanner scanner, IUriService uriService)
         {
             Navigator = navigator;
-            PlatformService = platformService;
+            ShareService = shareService;
             DataStore = dataStore;
             Scanner = scanner;
             UriService = uriService;
@@ -85,7 +86,7 @@ namespace OTPManager.Shared.ViewModels
         internal async Task ViewAppearingAsync()
         {
             var generators = await DataStore.GetAllAsync();
-            Items = generators.Select(d => new OTPDisplayViewModel(Navigator, PlatformService, d)).ToList();
+            Items = generators.Select(d => new OTPDisplayViewModel(Navigator, ShareService, d)).ToList();
 
             UIRefresh();
             if (BackgroundRefreshTimer == null)
