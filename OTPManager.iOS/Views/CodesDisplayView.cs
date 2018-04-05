@@ -3,7 +3,6 @@ using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
 using OTPManager.Shared.ViewModels;
 using UIKit;
 
@@ -46,8 +45,11 @@ namespace OTPManager.iOS
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
                .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale);
+            set.Bind(ProgressBar).For("Visible").To(m => m.GeneratorsAvailable);
+            set.Bind(TableView).For("Visible").To(m => m.GeneratorsAvailable);
             set.Bind(source).To(m => m.Items);
             set.Bind(source).For(m => m.SelectionChangedCommand).To(m => m.ItemClicked);
+            set.Bind(NoGeneratorsStackView).For("Visible").To(m => m.GeneratorsAvailable).WithConversion("BoolInversion");
             set.Bind(NoGeneratorsAddManually).To(m => m.CreateEntryManual);
             set.Bind(addManualButton).To(m => m.CreateEntryManual);
             set.Bind(NoGeneratorsAddQR).To(m => m.CreateEntryQR);

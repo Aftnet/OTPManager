@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="ValueConverters\SecretHiddenConverter.cs" />
     <Compile Include="ValueConverters\BitMatrixToQRConverter.cs" />
+    <Compile Include="ValueConverters\BoolInversionConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
