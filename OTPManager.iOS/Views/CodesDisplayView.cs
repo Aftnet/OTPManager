@@ -3,6 +3,9 @@ using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using MvvmCross.iOS.Views;
+using MvvmCross.Platform;
+using ObjCRuntime;
+using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using UIKit;
 
@@ -13,15 +16,34 @@ namespace OTPManager.iOS
     {
         public class TableViewSource : MvxTableViewSource
         {
-            private NSString _cellIdentifier = new NSString(nameof(CodesDisplayItemView));
+            private readonly NSString CellIdentifier = new NSString(nameof(CodesDisplayItemView));
+            private readonly CodesDisplayViewModel ViewModel;
 
-            public TableViewSource(UITableView tableView) : base(tableView)
+            public TableViewSource(UITableView tableView, CodesDisplayViewModel viewModel) : base(tableView)
             {
+                ViewModel = viewModel;
             }
 
             protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
             {
-                return (CodesDisplayItemView)tableView.DequeueReusableCell(_cellIdentifier);
+                return (CodesDisplayItemView)tableView.DequeueReusableCell(CellIdentifier);
+            }
+
+            public override bool ShouldShowMenu(UITableView tableView, NSIndexPath rowAtindexPath)
+            {
+                return true;
+            }
+
+            public override bool CanPerformAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender)
+            {
+                return action.Name == "copy:";
+            }
+
+            public override void PerformAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender)
+            {
+                var target = ViewModel.Items[indexPath.Row];
+                var platformService = Mvx.Resolve<IPlatformService>();
+                platformService.SetClipboardContent(target.OTP);
             }
         }
 
@@ -40,7 +62,7 @@ namespace OTPManager.iOS
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            var source = new TableViewSource(TableView);
+            var source = new TableViewSource(TableView, ViewModel);
 
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
