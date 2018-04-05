@@ -5,7 +5,7 @@ using ZXing.Common;
 using ZXing.Mobile;
 using UIKit;
 
-namespace OTPManager.Android.ValueConverters
+namespace OTPManager.iOS.ValueConverters
 {
     public class BitMatrixToQRConverter : MvxValueConverter<BitMatrix, UIImage>
     {

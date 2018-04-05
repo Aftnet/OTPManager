@@ -68,6 +68,7 @@
     <Compile Include="ValueConverters\BitMatrixToQRConverter.cs" />
     <Compile Include="ValueConverters\ReverseBoolToVisibilityConverter.cs" />
     <Compile Include="Properties\LinkerIncludes.cs" />
+    <Compile Include="ValueConverters\BoolInversionConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

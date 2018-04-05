@@ -2,7 +2,7 @@
 using System.Globalization;
 using MvvmCross.Platform.Converters;
 
-namespace OTPManager.iOS.ValueConverters
+namespace OTPManager.Android.ValueConverters
 {
     public class BoolInversionConverter : MvxValueConverter<bool, bool>
     {
