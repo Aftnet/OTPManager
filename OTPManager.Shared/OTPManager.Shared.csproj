@@ -10,7 +10,7 @@
     <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageReference Include="Xam.Plugin.SecureStorage" Version="1.0.11" />
-    <PackageReference Include="ZXing.Net.Mobile" Version="2.3.2" />
+    <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="Xam.Plugin.FileSystem" Version="1.0.8" />
     <PackageReference Include="Plugin.Share" Version="7.1.1" />
   </ItemGroup>
