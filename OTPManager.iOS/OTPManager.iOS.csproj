@@ -116,6 +116,7 @@
     <BundleResource Include="Resources\en.lproj\AddGenerator.strings" />
     <BundleResource Include="Resources\en.lproj\Localizable.strings" />
     <BundleResource Include="Resources\en.lproj\DisplayGenerator.strings" />
+    <BundleResource Include="Resources\en.lproj\CodesDisplay.strings" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json">
