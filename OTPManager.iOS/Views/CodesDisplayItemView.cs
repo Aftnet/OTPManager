@@ -8,8 +8,6 @@ namespace OTPManager.iOS
 {
     public partial class CodesDisplayItemView : MvxTableViewCell
     {
-        public static readonly NSString Key = new NSString(nameof(CodesDisplayItemView));
-
         protected CodesDisplayItemView(IntPtr handle) : base(handle)
         {
             // Note: this .ctor should not contain any initialization logic.

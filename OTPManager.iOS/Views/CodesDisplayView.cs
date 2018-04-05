@@ -31,7 +31,7 @@ namespace OTPManager.iOS
 
         public override void ViewDidLoad()
         {
-            NavigationController.NavigationBar.TintColor = UIColor.FromName("ThemeColorPrimary");
+            NavigationController.NavigationBar.TintColor = View.TintColor;
 
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
