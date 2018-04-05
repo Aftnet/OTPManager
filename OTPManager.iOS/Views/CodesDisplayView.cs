@@ -3,9 +3,7 @@ using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using MvvmCross.iOS.Views;
-using MvvmCross.Platform;
 using ObjCRuntime;
-using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using UIKit;
 
