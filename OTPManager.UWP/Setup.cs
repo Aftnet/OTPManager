@@ -2,8 +2,6 @@
 using MvvmCross.Platform;
 using MvvmCross.Platform.Logging;
 using MvvmCross.Uwp.Platform;
-using OTPManager.Shared.Services;
-using OTPManager.UWP.Services;
 using Windows.UI.Xaml.Controls;
 using ZXing.Mobile;
 
@@ -22,7 +20,6 @@ namespace OTPManager.UWP
 
         protected override void InitializeFirstChance()
         {
-            Mvx.LazyConstructAndRegisterSingleton<IPlatformService, PlatformService>();
             Mvx.RegisterSingleton<IMobileBarcodeScanner>(() => new MobileBarcodeScanner
             {
                 CustomOverlay = new Grid(),
