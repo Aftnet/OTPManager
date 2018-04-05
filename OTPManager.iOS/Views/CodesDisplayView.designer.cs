@@ -16,6 +16,18 @@ namespace OTPManager.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton NoGeneratorsAddManually { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton NoGeneratorsAddQR { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView NoGeneratorsStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIProgressView ProgressBar { get; set; }
 
         [Outlet]
@@ -24,6 +36,21 @@ namespace OTPManager.iOS
 
         void ReleaseDesignerOutlets ()
         {
+            if (NoGeneratorsAddManually != null) {
+                NoGeneratorsAddManually.Dispose ();
+                NoGeneratorsAddManually = null;
+            }
+
+            if (NoGeneratorsAddQR != null) {
+                NoGeneratorsAddQR.Dispose ();
+                NoGeneratorsAddQR = null;
+            }
+
+            if (NoGeneratorsStackView != null) {
+                NoGeneratorsStackView.Dispose ();
+                NoGeneratorsStackView = null;
+            }
+
             if (ProgressBar != null) {
                 ProgressBar.Dispose ();
                 ProgressBar = null;

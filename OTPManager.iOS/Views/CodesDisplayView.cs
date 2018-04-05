@@ -48,7 +48,9 @@ namespace OTPManager.iOS
                .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale);
             set.Bind(source).To(m => m.Items);
             set.Bind(source).For(m => m.SelectionChangedCommand).To(m => m.ItemClicked);
+            set.Bind(NoGeneratorsAddManually).To(m => m.CreateEntryManual);
             set.Bind(addManualButton).To(m => m.CreateEntryManual);
+            set.Bind(NoGeneratorsAddQR).To(m => m.CreateEntryQR);
             set.Bind(addQRImage).To(m => m.CreateEntryQR);
             set.Apply();
 
