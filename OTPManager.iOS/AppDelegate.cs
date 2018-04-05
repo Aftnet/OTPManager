@@ -1,8 +1,10 @@
-﻿using Foundation;
+﻿using System;
+using Foundation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.iOS.Platform;
 using MvvmCross.iOS.Views.Presenters;
 using MvvmCross.Platform;
+using OTPManager.Shared.Services;
 using UIKit;
 
 namespace OTPManager.iOS
@@ -37,6 +39,18 @@ namespace OTPManager.iOS
             return true;
         }
 
+        [Export("application:openURL:options:")]
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            if (Uri.TryCreate(url, url.ToString(), out var otpUri))
+            {
+                var uriService = Mvx.Resolve<IUriService>();
+                uriService.CreateGeneratorFromUri(otpUri);
+                return true;
+            }
+
+            return base.OpenUrl(app, url, options);
+        }
 
         public override void OnResignActivation(UIApplication application)
         {

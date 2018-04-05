@@ -1,21 +1,57 @@
-﻿using MvvmCross.Binding.BindingContext;
+using System;
+using Foundation;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Binding.iOS.Views;
 using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
+using ObjCRuntime;
 using OTPManager.Shared.ViewModels;
 using UIKit;
 
-namespace OTPManager.iOS.Views
+namespace OTPManager.iOS
 {
-    [MvxRootPresentation(WrapInNavigationController = true)]
+    [MvxFromStoryboard("CodesDisplay")]
     public partial class CodesDisplayView : MvxViewController<CodesDisplayViewModel>
     {
-        public CodesDisplayView() : base("CodesDisplayView", null)
+        public class TableViewSource : MvxTableViewSource
         {
-            
+            private readonly NSString CellIdentifier = new NSString(nameof(CodesDisplayItemView));
+            private readonly CodesDisplayViewModel ViewModel;
+
+            public TableViewSource(UITableView tableView, CodesDisplayViewModel viewModel) : base(tableView)
+            {
+                ViewModel = viewModel;
+            }
+
+            protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
+            {
+                return (CodesDisplayItemView)tableView.DequeueReusableCell(CellIdentifier);
+            }
+
+            public override bool ShouldShowMenu(UITableView tableView, NSIndexPath rowAtindexPath)
+            {
+                return true;
+            }
+
+            public override bool CanPerformAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender)
+            {
+                return action.Name == "copy:";
+            }
+
+            public override void PerformAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender)
+            {
+                var target = ViewModel.Items[indexPath.Row];
+                target.CopyToClipboard.Execute(null);
+            }
+        }
+
+        public CodesDisplayView(IntPtr handle) : base(handle)
+        {
         }
 
         public override void ViewDidLoad()
         {
+            NavigationController.NavigationBar.TintColor = View.TintColor;
+
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
 
@@ -23,16 +59,24 @@ namespace OTPManager.iOS.Views
             var addQRImage = new UIBarButtonItem(UIBarButtonSystemItem.Camera);
             NavigationItem.RightBarButtonItems = new[] { addManualButton, addQRImage };
 
-            this.CreateBinding(ProgressBar).To<CodesDisplayViewModel>(d => d).WithConversion("CodesDisplayProgress").Apply();
-            this.CreateBinding(addManualButton).To<CodesDisplayViewModel>(d => d.CreateEntryManual).Apply();
-            this.CreateBinding(addQRImage).To<CodesDisplayViewModel>(d => d.CreateEntryQR).Apply();
-        }
+            var source = new TableViewSource(TableView, ViewModel);
 
-        public override void DidReceiveMemoryWarning()
-        {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
+            set.Bind(ProgressBar).To(m => m.Progress)
+               .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale);
+            set.Bind(ProgressBar).For("Visible").To(m => m.GeneratorsAvailable);
+            set.Bind(TableView).For("Visible").To(m => m.GeneratorsAvailable);
+            set.Bind(source).To(m => m.Items);
+            set.Bind(source).For(m => m.SelectionChangedCommand).To(m => m.ItemClicked);
+            set.Bind(NoGeneratorsStackView).For("Visible").To(m => m.GeneratorsAvailable).WithConversion("BoolInversion");
+            set.Bind(NoGeneratorsAddManually).To(m => m.CreateEntryManual);
+            set.Bind(addManualButton).To(m => m.CreateEntryManual);
+            set.Bind(NoGeneratorsAddQR).To(m => m.CreateEntryQR);
+            set.Bind(addQRImage).To(m => m.CreateEntryQR);
+            set.Apply();
+
+            TableView.Source = source;
+            TableView.ReloadData();
         }
     }
 }
-

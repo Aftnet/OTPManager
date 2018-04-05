@@ -13,7 +13,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>10.3</string>
+	<string>11.2</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
@@ -41,7 +41,24 @@
 	</array>
 	<key>CFBundleName</key>
 	<string>OTPManager.iOS</string>
-	<key>NSCameraUsageDescription</key>
-	<string>To scan QR codes camer access is needed</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+	</array>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcons.appiconset</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>otpauth</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>net.aftnet.otpmanager.totp</string>
+		</dict>
+	</array>
 </dict>
 </plist>

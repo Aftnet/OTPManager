@@ -61,23 +61,34 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="Services\PlatformService.cs" />
     <Compile Include="Setup.cs" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <Content Include="Entitlements.plist" />
-    <InterfaceDefinition Include="Views\CodesDisplayView.xib" />
-    <Compile Include="Views\CodesDisplayView.cs" />
-    <Compile Include="Views\CodesDisplayView.designer.cs">
-      <DependentUpon>CodesDisplayView.cs</DependentUpon>
-    </Compile>
     <Compile Include="ValueConverters\CodesDisplayProgressConverter.cs" />
-    <InterfaceDefinition Include="Views\AddGeneratorView.xib" />
+    <InterfaceDefinition Include="Resources\Base.lproj\LaunchScreen.xib" />
+    <InterfaceDefinition Include="Resources\Base.lproj\CodesDisplay.storyboard" />
+    <InterfaceDefinition Include="Resources\Base.lproj\AddGenerator.storyboard" />
     <Compile Include="Views\AddGeneratorView.cs" />
     <Compile Include="Views\AddGeneratorView.designer.cs">
       <DependentUpon>AddGeneratorView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\CodesDisplayView.cs" />
+    <Compile Include="Views\CodesDisplayView.designer.cs">
+      <DependentUpon>CodesDisplayView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CodesDisplayItemView.cs" />
+    <Compile Include="Views\CodesDisplayItemView.designer.cs">
+      <DependentUpon>CodesDisplayItemView.cs</DependentUpon>
+    </Compile>
+    <InterfaceDefinition Include="Resources\Base.lproj\DisplayGenerator.storyboard" />
+    <Compile Include="Views\DisplayGeneratorView.cs" />
+    <Compile Include="Views\DisplayGeneratorView.designer.cs">
+      <DependentUpon>DisplayGeneratorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ValueConverters\SecretHiddenConverter.cs" />
+    <Compile Include="ValueConverters\BitMatrixToQRConverter.cs" />
+    <Compile Include="ValueConverters\BoolInversionConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -99,9 +110,72 @@
       <Name>OTPManager.Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Views\" />
-    <Folder Include="ValueConverters\" />
+    <BundleResource Include="Resources\en.lproj\AddGenerator.strings" />
+    <BundleResource Include="Resources\en.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\en.lproj\DisplayGenerator.strings" />
+    <BundleResource Include="Resources\en.lproj\CodesDisplay.strings" />
+    <BundleResource Include="Resources\en.lproj\InfoPlist.strings" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_120.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_152.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_167.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_180.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_29.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_58.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_76.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_80.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Icon_87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImages.launchimage\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ThemeColorPrimary.colorset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\ThemeColorPrimary.colorset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

@@ -12,6 +12,10 @@
     <PackageReference Include="Xam.Plugin.SecureStorage" Version="1.0.11" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.3.2" />
     <PackageReference Include="Xam.Plugin.FileSystem" Version="1.0.8" />
+    <PackageReference Include="Plugin.Share" Version="7.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Services\IPlatformService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\Strings.Designer.cs">

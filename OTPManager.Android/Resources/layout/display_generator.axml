@@ -27,7 +27,7 @@
             android:enabled="false"
             android:hint="@string/Secret"
             android:inputType="textNoSuggestions"
-            local:MvxBind="Text SecretBase32;Visibility BoolToVisibility(AllowExporting)" />
+            local:MvxBind="Text SecretBase32;Visible AllowExporting" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -45,5 +45,5 @@
         android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/spacing_huge"
-        local:MvxBind="Bitmap BitMatrixToQR(QRData);Visibility BoolToVisibility(AllowExporting)" />
+        local:MvxBind="Bitmap BitMatrixToQR(QRData);Visible AllowExporting" />
 </LinearLayout>

@@ -17,7 +17,7 @@ namespace OTPManager.Shared.Test.ViewModels
         public void CopyWorks()
         {
             Target.CopyToClipboard.Execute();
-            PlatformServiceMock.Verify(d => d.SetClipboardContent(Target.OTP));
+            PlatformServiceMock.Verify(d => d.SetClipboardText(Target.OTP, null));
         }
     }
 }

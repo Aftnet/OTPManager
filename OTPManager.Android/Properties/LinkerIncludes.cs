@@ -12,7 +12,6 @@ namespace OTPManager.Android.Properties
         public void Include(ProgressBar target)
         {
             target.Max = target.Progress;
-            target.Visibility += 1;
         }
 
         public void Include(Button target)

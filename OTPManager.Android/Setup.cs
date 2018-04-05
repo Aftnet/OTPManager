@@ -1,12 +1,9 @@
 ﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Droid.Platform;
 using MvvmCross.Platform;
 using MvvmCross.Platform.Logging;
-using OTPManager.Android.Services;
-using OTPManager.Shared.Services;
 using ZXing.Mobile;
 
 namespace OTPManager.Android
@@ -24,7 +21,6 @@ namespace OTPManager.Android
 
         protected override void InitializeFirstChance()
         {
-            Mvx.LazyConstructAndRegisterSingleton<IPlatformService, PlatformService>();
             Mvx.RegisterSingleton<IMobileBarcodeScanner>(() => new MobileBarcodeScanner
             {
                 CustomOverlay = new View(ApplicationContext),

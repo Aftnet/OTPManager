@@ -1,11 +1,17 @@
-﻿using MvvmCross.iOS.Views;
+using System;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.iOS.Views;
+using MvvmCross.iOS.Views.Presenters.Attributes;
 using OTPManager.Shared.ViewModels;
+using UIKit;
+using Foundation;
 
-namespace OTPManager.iOS.Views
+namespace OTPManager.iOS
 {
-    public partial class AddGeneratorView : MvxViewController<AddGeneratorViewModel>
+    [MvxFromStoryboard("AddGenerator")]
+    public partial class AddGeneratorView : MvxTableViewController<AddGeneratorViewModel>
     {
-        public AddGeneratorView() : base("AddGeneratorView", null)
+        public AddGeneratorView (IntPtr handle) : base (handle)
         {
         }
 
@@ -13,13 +19,31 @@ namespace OTPManager.iOS.Views
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
+
+            var saveButton = new UIBarButtonItem(UIBarButtonSystemItem.Save);
+            var cancelButton = new UIBarButtonItem(UIBarButtonSystemItem.Cancel);
+            NavigationItem.RightBarButtonItem = saveButton;
+            NavigationItem.BackBarButtonItem = cancelButton;
+
+            var set = this.CreateBindingSet<AddGeneratorView, AddGeneratorViewModel>();
+            set.Bind(LabelTextField).To(m => m.Label);
+            set.Bind(SecretTextField).To(m => m.SecretBase32);
+            set.Bind(IssuerTextField).To(m => m.Issuer);
+            set.Bind(AllowExportingToggle).To(m => m.AllowExporting);
+            set.Bind(saveButton).To(m => m.AddGenerator);
+            set.Bind(cancelButton).To(m => m.Cancel);
+            set.Apply();
         }
 
-        public override void DidReceiveMemoryWarning()
+        public override string TitleForHeader(UITableView tableView, nint section)
         {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            switch (section)
+            {
+                case 0:
+                    return NSBundle.MainBundle.LocalizedString("AddAccount", string.Empty);
+                default:
+                    return string.Empty;
+            }
         }
     }
 }
-

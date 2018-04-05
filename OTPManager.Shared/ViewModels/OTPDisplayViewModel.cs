@@ -1,15 +1,15 @@
-﻿using MvvmCross.Core.Navigation;
+﻿using System;
+using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using OTPManager.Shared.Models;
-using OTPManager.Shared.Services;
-using System;
+using Plugin.Share.Abstractions;
 
 namespace OTPManager.Shared.ViewModels
 {
     public class OTPDisplayViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService Navigator;
-        private readonly IPlatformService PlatformService;
+        private readonly IShare ShareService;
 
         private readonly OTPGenerator generator;
         public OTPGenerator Generator => generator;
@@ -26,17 +26,17 @@ namespace OTPManager.Shared.ViewModels
 
         public MvxCommand CopyToClipboard { get; private set; }
 
-        public OTPDisplayViewModel(IMvxNavigationService navigator, IPlatformService platformService, OTPGenerator gen)
+        public OTPDisplayViewModel(IMvxNavigationService navigator, IShare shareService, OTPGenerator gen)
         {
             Navigator = navigator;
-            PlatformService = platformService;
+            ShareService = shareService;
 
             generator = gen;
             UpdateOTP(DateTimeOffset.UtcNow);
 
             CopyToClipboard = new MvxCommand(() =>
             {
-                PlatformService.SetClipboardContent(OTP);
+                ShareService.SetClipboardText(OTP);
             });
         }
 
