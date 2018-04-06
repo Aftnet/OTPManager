@@ -1,13 +1,24 @@
 ﻿<mvx:MvxWindowsPage
-    x:Class="OTPManager.UWP.Pages.AddGeneratorPage"
+    x:Class="OTPManager.UWP.Views.DisplayGeneratorPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mvx="using:MvvmCross.Uwp.Views"
+    xmlns:local="using:OTPManager.UWP.Views"
     xmlns:vt="using:WindowsStateTriggers"
     mc:Ignorable="d">
 
+    <mvx:MvxWindowsPage.Resources>
+        <Style x:Key="QRImageStyle" TargetType="Image">
+            <Setter Property="Margin" Value="0,36,0,12"/>
+            <Setter Property="Height" Value="400"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+    </mvx:MvxWindowsPage.Resources>
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,14 +26,14 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <CommandBar x:Name="Commands" Grid.Row="0">
-            <AppBarButton x:Uid="Save" Icon="Save" Command="{x:Bind VM.AddGenerator}"/>
+            <AppBarButton x:Uid="Delete" Icon="Delete" Command="{x:Bind VM.DeleteGenerator}"/>
         </CommandBar>
         <ScrollViewer Grid.Row="1" Style="{StaticResource DefaultScrollViewerStyle}">
             <StackPanel Orientation="Vertical" Margin="{StaticResource ContentMargin}">
-                <TextBox x:Uid="LabelTB" Text="{x:Bind VM.Label, Mode=TwoWay}" Style="{StaticResource TBStyle}"/>
-                <TextBox x:Uid="SecretTB" Text="{x:Bind VM.SecretBase32, Mode=TwoWay}" Style="{StaticResource SecretTBStyle}"/>
-                <TextBox x:Uid="IssuerTB" Text="{x:Bind VM.Issuer, Mode=TwoWay}" Style="{StaticResource TBStyle}"/>
-                <ToggleSwitch x:Uid="ExportingAllowedSwitch" IsOn="{x:Bind VM.AllowExporting, Mode=TwoWay}" Header="Allow exporting design"/>
+                <TextBox x:Uid="LabelTB" Text="{x:Bind VM.Label, Mode=OneWay}" Style="{StaticResource TBStyle}" IsReadOnly="True"/>
+                <TextBox x:Uid="SecretTB" Text="{x:Bind VM.SecretBase32, Mode=OneWay}" Style="{StaticResource SecretTBStyle}" Visibility="{x:Bind VM.AllowExporting, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" IsReadOnly="True"/>
+                <TextBox x:Uid="IssuerTB" Text="{x:Bind VM.Issuer, Mode=OneWay}" Style="{StaticResource TBStyle}" IsReadOnly="True"/>
+                <Image Source="{x:Bind VM.QRData, Mode=OneWay, Converter={StaticResource QRConverter}}" Visibility="{x:Bind VM.AllowExporting, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" Style="{StaticResource QRImageStyle}"/>
             </StackPanel>
         </ScrollViewer>
 
