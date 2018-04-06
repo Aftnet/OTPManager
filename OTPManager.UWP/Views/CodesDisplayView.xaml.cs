@@ -3,13 +3,13 @@ using OTPManager.Shared.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace OTPManager.UWP.Pages
+namespace OTPManager.UWP.Views
 {
-    public sealed partial class CodesDisplayPage : MvxWindowsPage
+    public sealed partial class CodesDisplayView : MvxWindowsPage
     {
         public CodesDisplayViewModel VM => ViewModel as CodesDisplayViewModel;
 
-        public CodesDisplayPage()
+        public CodesDisplayView()
         {
             this.InitializeComponent();
         }
