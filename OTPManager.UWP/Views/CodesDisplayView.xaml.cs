@@ -5,11 +5,11 @@ using OTPManager.Shared.ViewModels;
 
 namespace OTPManager.UWP.Views
 {
-    public sealed partial class CodesDisplayPage : MvxWindowsPage
+    public sealed partial class CodesDisplayView : MvxWindowsPage
     {
         public CodesDisplayViewModel VM => ViewModel as CodesDisplayViewModel;
 
-        public CodesDisplayPage()
+        public CodesDisplayView()
         {
             this.InitializeComponent();
         }

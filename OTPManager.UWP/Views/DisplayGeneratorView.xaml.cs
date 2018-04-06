@@ -5,11 +5,11 @@ using OTPManager.Shared.ViewModels;
 
 namespace OTPManager.UWP.Views
 {
-    public sealed partial class DisplayGeneratorPage : MvxWindowsPage
+    public sealed partial class DisplayGeneratorView : MvxWindowsPage
     {
         public DisplayGeneratorViewModel VM => ViewModel as DisplayGeneratorViewModel;
 
-        public DisplayGeneratorPage()
+        public DisplayGeneratorView()
         {
             this.InitializeComponent();
         }
