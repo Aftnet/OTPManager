@@ -13,7 +13,7 @@ using System;
 using ZXing.Mobile;
 using static Android.Widget.AdapterView;
 
-namespace OTPManager.Android.Activities
+namespace OTPManager.Android.Views
 {
     [Activity(Label = "@string/AppName", MainLauncher = true, LaunchMode = global::Android.Content.PM.LaunchMode.SingleTop)]
     [IntentFilter(new[] { global::Android.Content.Intent.ActionView }, DataScheme = "otpauth", Categories = new[] { global::Android.Content.Intent.CategoryDefault, global::Android.Content.Intent.CategoryBrowsable})]

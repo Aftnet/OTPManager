@@ -1,10 +1,9 @@
 ﻿using Android.App;
 using Android.OS;
-using Android.Views;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using OTPManager.Shared.ViewModels;
 
-namespace OTPManager.Android.Activities
+namespace OTPManager.Android.Views
 {
     [Activity(Label = "@string/Add")]
     public class AddGeneratorView : MvxAppCompatActivity<AddGeneratorViewModel>
