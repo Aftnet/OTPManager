@@ -1,13 +1,14 @@
-﻿using System;
+﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
+using OTPManager.Shared.Models;
+using OTPManager.Shared.Services;
+using Plugin.Share.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using OTPManager.Shared.Models;
-using OTPManager.Shared.Services;
-using Plugin.Share.Abstractions;
 using ZXing.Mobile;
 
 namespace OTPManager.Shared.ViewModels
@@ -25,8 +26,7 @@ namespace OTPManager.Shared.ViewModels
         internal const ulong DefaultUpdateTimeCode = 0;
         internal ulong LastUpdateTimeCode = DefaultUpdateTimeCode;
 
-        private const int progressScale = 10000;
-        public int ProgressScale { get { return progressScale; } }
+        public static int ProgressScale { get; } = 10000;
 
         private int progress = 0;
         public int Progress
@@ -51,9 +51,9 @@ namespace OTPManager.Shared.ViewModels
 
         public bool GeneratorsAvailable { get { return Items.Any(); } }
 
-        public MvxCommand<OTPDisplayViewModel> ItemClicked { get; private set; }
-        public MvxCommand CreateEntryManual { get; private set; }
-        public MvxCommand CreateEntryQR { get; private set; }
+        public IMvxCommand<OTPDisplayViewModel> ItemClicked { get; }
+        public IMvxCommand CreateEntryManual { get; }
+        public IMvxCommand CreateEntryQR { get; }
 
         private Timer BackgroundRefreshTimer;
 
@@ -131,7 +131,7 @@ namespace OTPManager.Shared.ViewModels
         {
             var timeStepSeonds = OTPGenerator.TimeStep.Seconds;
             var nowModulo = input.Second % timeStepSeonds;
-            var progress = progressScale * (nowModulo * 1000 + input.Millisecond);
+            var progress = ProgressScale * (nowModulo * 1000 + input.Millisecond);
             progress = progress / (timeStepSeonds * 1000);
             return progress;
         }

@@ -1,5 +1,6 @@
-﻿using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
+﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
@@ -14,8 +15,8 @@ namespace OTPManager.Shared.ViewModels
         private readonly IMvxNavigationService Navigator;
         private readonly IStorageService DataStore;
 
-        public MvxCommand AddGenerator { get; private set; }
-        public MvxCommand Cancel { get; private set; }
+        public IMvxCommand AddGenerator { get; set; }
+        public IMvxCommand Cancel { get; set; }
 
         private bool dataIsValid;
         public bool DataIsValid

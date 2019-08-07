@@ -1,5 +1,6 @@
-﻿using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
+﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
 using System.Threading.Tasks;
@@ -71,7 +72,7 @@ namespace OTPManager.Shared.ViewModels
             private set { SetProperty(ref qrData, value); }
         }
 
-        public MvxCommand DeleteGenerator { get; private set; }
+        public IMvxCommand DeleteGenerator { get; }
 
         public override void Prepare(OTPGenerator parameter)
         {

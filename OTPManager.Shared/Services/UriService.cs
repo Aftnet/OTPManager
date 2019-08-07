@@ -1,5 +1,5 @@
 ﻿using Acr.UserDialogs;
-using MvvmCross.Core.Navigation;
+using MvvmCross.Navigation;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.ViewModels;
 using System;

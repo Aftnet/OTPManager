@@ -1,8 +1,9 @@
-﻿using System;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
+﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
 using Plugin.Share.Abstractions;
+using System;
 
 namespace OTPManager.Shared.ViewModels
 {
@@ -24,7 +25,7 @@ namespace OTPManager.Shared.ViewModels
             private set { SetProperty(ref otp, value); }
         }
 
-        public MvxCommand CopyToClipboard { get; private set; }
+        public IMvxCommand CopyToClipboard { get; }
 
         public OTPDisplayViewModel(IMvxNavigationService navigator, IShare shareService, OTPGenerator gen)
         {
