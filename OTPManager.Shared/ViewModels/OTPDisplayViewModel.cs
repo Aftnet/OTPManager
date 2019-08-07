@@ -9,11 +9,8 @@ namespace OTPManager.Shared.ViewModels
 {
     public class OTPDisplayViewModel : MvxViewModel
     {
-        private readonly IMvxNavigationService Navigator;
-        private readonly IShare ShareService;
-
-        private readonly OTPGenerator generator;
-        public OTPGenerator Generator => generator;
+        private IShare ShareService { get; }
+        public OTPGenerator Generator { get; }
 
         public string Issuer => Generator.Issuer;
         public string Label => Generator.Label;
@@ -22,18 +19,17 @@ namespace OTPManager.Shared.ViewModels
         public string OTP
         {
             get => otp;
-            private set { SetProperty(ref otp, value); }
+            private set => SetProperty(ref otp, value);
         }
 
         public IMvxCommand CopyToClipboard { get; }
 
-        public OTPDisplayViewModel(IMvxNavigationService navigator, IShare shareService, OTPGenerator gen)
+        public OTPDisplayViewModel(IShare shareService, OTPGenerator gen)
         {
-            Navigator = navigator;
             ShareService = shareService;
 
-            generator = gen;
-            UpdateOTP(DateTimeOffset.UtcNow);
+            Generator = gen;
+            UpdateOTP(DateTime.Now);
 
             CopyToClipboard = new MvxCommand(() =>
             {
@@ -41,10 +37,9 @@ namespace OTPManager.Shared.ViewModels
             });
         }
 
-        public void UpdateOTP(DateTimeOffset time)
+        public void UpdateOTP(DateTime time)
         {
-            var formatString = $"D{Generator.NumDigits}";
-            OTP = Generator.GenerateOTP(time).ToString(formatString);
+            OTP = Generator.GenerateOTP(time);
         }
     }
 }

@@ -27,7 +27,6 @@ namespace OTPManager.Shared.Test.ViewModels
         public async Task LoadingWorks()
         {
             await Target.ViewAppearingAsync();
-            Assert.True(Target.LastUpdateTimeCode > CodesDisplayViewModel.DefaultUpdateTimeCode);
             Assert.True(Target.GeneratorsAvailable);
 
             Assert.Equal(TestGenerators.Count, Target.Items.Count);

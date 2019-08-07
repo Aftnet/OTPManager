@@ -10,7 +10,7 @@ namespace OTPManager.Shared.Test.ViewModels
 
         protected override OTPDisplayViewModel GetTarget()
         {
-            return new OTPDisplayViewModel(NavigatorMock.Object, PlatformServiceMock.Object, Generator);
+            return new OTPDisplayViewModel(PlatformServiceMock.Object, Generator);
         }
 
         [Fact]

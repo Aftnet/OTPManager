@@ -23,10 +23,9 @@ namespace OTPManager.Shared.ViewModels
         private readonly IMobileBarcodeScanner Scanner;
         private readonly IUriService UriService;
 
-        internal const ulong DefaultUpdateTimeCode = 0;
-        internal ulong LastUpdateTimeCode = DefaultUpdateTimeCode;
+        private DateTime NextUpdateTime { get; set; } = DateTime.Now;
 
-        public static int ProgressScale { get; } = 10000;
+        public static int ProgressScale { get; } = OTPGenerator.TimeStepSeconds * 1000;
 
         private int progress = 0;
         public int Progress
@@ -44,7 +43,7 @@ namespace OTPManager.Shared.ViewModels
                 if (SetProperty(ref items, value))
                 {
                     RaisePropertyChanged(nameof(GeneratorsAvailable));
-                    LastUpdateTimeCode = DefaultUpdateTimeCode;
+                    NextUpdateTime = DateTime.Now;
                 }
             }
         }
@@ -86,9 +85,8 @@ namespace OTPManager.Shared.ViewModels
         internal async Task ViewAppearingAsync()
         {
             var generators = await DataStore.GetAllAsync();
-            Items = generators.Select(d => new OTPDisplayViewModel(Navigator, ShareService, d)).ToList();
+            Items = generators.Select(d => new OTPDisplayViewModel(ShareService, d)).ToList();
 
-            UIRefresh();
             if (BackgroundRefreshTimer == null)
             {
                 BackgroundRefreshTimer = new Timer(d => InvokeOnMainThread(UIRefresh), this, BackgroudRefreshInterval, BackgroudRefreshInterval);
@@ -112,28 +110,18 @@ namespace OTPManager.Shared.ViewModels
 
         private void UIRefresh()
         {
-            var currentTime = DateTimeOffset.UtcNow;
-            var timeCode = OTPGenerator.GenerateTimeCode(currentTime);
+            var currentTime = DateTime.Now;
+            Progress = (1000 * (currentTime.Second % OTPGenerator.TimeStepSeconds)) + currentTime.Millisecond;
 
-            Progress = ComputeProgress(currentTime);
-            if (timeCode != LastUpdateTimeCode)
+            if (currentTime.CompareTo(NextUpdateTime) >= 0)
             {
                 foreach (var i in Items)
                 {
                     i.UpdateOTP(currentTime);
                 }
 
-                LastUpdateTimeCode = timeCode;
+                NextUpdateTime = new DateTime(currentTime.AddSeconds(OTPGenerator.TimeStepSeconds).Ticks % (TimeSpan.TicksPerSecond * OTPGenerator.TimeStepSeconds));
             }
-        }
-
-        private static int ComputeProgress(DateTimeOffset input)
-        {
-            var timeStepSeonds = OTPGenerator.TimeStep.Seconds;
-            var nowModulo = input.Second % timeStepSeonds;
-            var progress = ProgressScale * (nowModulo * 1000 + input.Millisecond);
-            progress = progress / (timeStepSeonds * 1000);
-            return progress;
         }
     }
 }
