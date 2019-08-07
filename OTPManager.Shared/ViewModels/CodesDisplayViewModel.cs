@@ -25,7 +25,7 @@ namespace OTPManager.Shared.ViewModels
 
         private DateTime NextUpdateTime { get; set; } = DateTime.Now;
 
-        public static int ProgressScale { get; } = OTPGenerator.TimeStepSeconds * 1000;
+        public int ProgressScale { get; } = OTPGenerator.TimeStepSeconds * 1000;
 
         private int progress = 0;
         public int Progress

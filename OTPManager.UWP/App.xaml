@@ -3,13 +3,12 @@
     x:Class="OTPManager.UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:tkvc="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:vc="using:OTPManager.UWP.ValueConverters">
 
     <local:OTPManagerApp.Resources>
         <x:Double x:Key="WideWindowMinWidth">600</x:Double>
         <Thickness x:Key="ContentMargin">16,0</Thickness>
-        <tkvc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <vc:VisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <vc:QRConverter x:Key="QRConverter"/>
 
         <Style x:Key="DefaultScrollViewerStyle" TargetType="ScrollViewer">
