@@ -75,7 +75,7 @@
             <AppBarButton x:Uid="AddManually" Icon="Edit" Command="{x:Bind VM.CreateEntryManual}"/>
         </CommandBar>
         <ProgressBar x:Name="Progress" Grid.Row="1" Maximum="{x:Bind VM.ProgressScale, Mode=OneWay}" Value="{x:Bind VM.Progress, Mode=OneWay}" Visibility="{x:Bind VM.GeneratorsAvailable, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"/>
-        <StackPanel x:Name="NoOTPBanner" Orientation="Vertical" VerticalAlignment="Center" Grid.Row="2" Visibility="Collapsed">
+        <StackPanel x:Name="NoOTPBanner" Orientation="Vertical" VerticalAlignment="Center" Grid.Row="2" Visibility="{x:Bind VM.GeneratorsAvailable, Mode=OneWay, Converter={StaticResource InverseVisibilityConverter}}">
             <TextBlock x:Uid="NoAccountsHeading" Text="No Accounts Design" Style="{StaticResource NoAccountsHeadingStyle}"/>
             <Button Command="{x:Bind VM.CreateEntryQR}" Style="{StaticResource LinkButtonStyle}">
                 <TextBlock>
@@ -91,7 +91,7 @@
             </Button>
         </StackPanel>
         <ContentPresenter x:Name="OTPViewer" Grid.Row="2" Content="{x:Bind VM}" ContentTemplate="{StaticResource OTPViewerNarrow}"
-        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{x:Bind VM.GeneratorsAvailable, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"/>
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
@@ -102,17 +102,6 @@
                     <VisualState.Setters>
                         <Setter Target="Progress.(Grid.Row)" Value="3"/>
                         <Setter Target="Commands.(Grid.Row)" Value="4"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <vt:IsFalseStateTrigger Value="{x:Bind VM.GeneratorsAvailable, Mode=OneWay}"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="OTPViewer.Visibility" Value="Collapsed"/>
-                        <Setter Target="NoOTPBanner.Visibility" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
