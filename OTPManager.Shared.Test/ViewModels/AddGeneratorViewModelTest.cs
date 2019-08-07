@@ -1,6 +1,7 @@
 ﻿using Moq;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.ViewModels;
+using System.Threading;
 using Xunit;
 
 namespace OTPManager.Shared.Test.ViewModels
@@ -26,7 +27,7 @@ namespace OTPManager.Shared.Test.ViewModels
             DataStoreMock.Verify(d => d.InsertOrReplaceAsync(It.Is<OTPGenerator>(
                 e => e.Label == generator.Label && e.Issuer == generator.Issuer
                 && e.SecretBase32 == generator.SecretBase32 && e.AllowExporting == !AddGeneratorViewModel.AllowExportingDefault)));
-            NavigatorMock.Verify(d => d.Close(Target));
+            NavigatorMock.Verify(d => d.Close(Target, It.IsAny<CancellationToken>()));
 
             Assert.Empty(Target.Label);
             Assert.Empty(Target.SecretBase32);
@@ -69,7 +70,7 @@ namespace OTPManager.Shared.Test.ViewModels
         {
             Target.Cancel.Execute(null);
             DataStoreMock.Verify(d => d.InsertOrReplaceAsync(It.IsAny<OTPGenerator>()), Times.Never());
-            NavigatorMock.Verify(d => d.Close(Target));
+            NavigatorMock.Verify(d => d.Close(Target, It.IsAny<CancellationToken>()));
         }
     }
 }

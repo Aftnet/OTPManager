@@ -1,5 +1,6 @@
 ﻿using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
+using OtpNet;
 using System;
 using Xunit;
 
@@ -10,7 +11,7 @@ namespace OTPManager.Shared.Test.Components
         protected static readonly OTPGenerator SampleGenerator = new OTPGenerator
         {
             Label = "Alice Loller@test.com",
-            Secret = OTPBase32Converter.FromBase32String("ABABABABABABABAB"),
+            Secret = Base32Encoding.ToBytes("ABABABABABABABAB"),
             AlgorithmName = OTPGenerator.HMacSha256Name,
             Issuer = "Test"
         };
@@ -68,6 +69,7 @@ namespace OTPManager.Shared.Test.Components
         [InlineData("otpauth://totp/SomeLabel?secret=&algorithm=SHA256&digits=6")] //No secret
         [InlineData("otpauth://totp/SomeLabel?algorithm=SHA256&digits=6")] //No secret
         [InlineData("otpauth://totp/SomeLabel?secret=ABABABAB@ABABABAB&algorithm=SHA256&digits=6")] //No base32 secret
+        [InlineData("otpauth://totp/SomeLabel?secret=ABABABABABABABAZSB&algorithm=SHA256&digits=d")] //Invalid base32 secret
         [InlineData("otpauth://totp/SomeLabel?secret=ABABABABABABABAB&algorithm=&digits=6")] //No algorithm
         [InlineData("otpauth://totp/SomeLabel?secret=ABABABABABABABAB&algorithm=SHA12&digits=6")] //Wrong algorithm
         [InlineData("otpauth://totp/SomeLabel?secret=ABABABABABABABAB&algorithm=SHA256&digits=")] //No digits

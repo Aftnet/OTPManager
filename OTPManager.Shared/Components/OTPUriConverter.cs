@@ -1,4 +1,5 @@
 ﻿using OTPManager.Shared.Models;
+using OtpNet;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -65,12 +66,19 @@ namespace OTPManager.Shared.Components
             }
 
             value = queryValues[UriQuerySecret];
-            if (string.IsNullOrEmpty(value) || !OTPBase32Converter.IsValidBase32String(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            output.Secret = OTPBase32Converter.FromBase32String(value);
+            try
+            {
+                Base32Encoding.ToBytes(value);
+            }
+            catch
+            {
+                return null;
+            }
 
             //Num digits optional parameter
             if (queryValues.ContainsKey(UriQueryDigits))

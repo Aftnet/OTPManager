@@ -1,4 +1,6 @@
-﻿using OTPManager.Shared.ViewModels;
+﻿using Moq;
+using OTPManager.Shared.ViewModels;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -58,7 +60,7 @@ namespace OTPManager.Shared.Test.ViewModels
             Target.DeleteGenerator.Execute(null);
 
             DataStoreMock.Verify(d => d.DeleteAsync(generator));
-            NavigatorMock.Verify(d => d.Close(Target));
+            NavigatorMock.Verify(d => d.Close(Target, It.IsAny<CancellationToken>()));
         }
     }
 }

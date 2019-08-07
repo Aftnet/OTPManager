@@ -1,13 +1,13 @@
 ﻿using Acr.UserDialogs;
 using Moq;
-using MvvmCross.Core.Navigation;
+using MvvmCross.Navigation;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
 using Plugin.FileSystem.Abstractions;
 using Plugin.SecureStorage.Abstractions;
+using Plugin.Share.Abstractions;
 using System;
 using ZXing.Mobile;
-using Plugin.Share.Abstractions;
 
 namespace OTPManager.Shared.Test
 {

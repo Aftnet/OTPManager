@@ -3,6 +3,7 @@ using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -32,12 +33,12 @@ namespace OTPManager.Shared.Test.Services
 
             if (shouldWork)
             {
-                NavigatorMock.Verify(d => d.Navigate<AddGeneratorViewModel, OTPGenerator>(It.IsAny<OTPGenerator>(), null));
+                NavigatorMock.Verify(d => d.Navigate<AddGeneratorViewModel, OTPGenerator>(It.IsAny<OTPGenerator>(), null, It.IsAny<CancellationToken>()));
                 DialogServiceMock.Verify(d => d.AlertAsync(Resources.Strings.InvalidUriMessage, Resources.Strings.InvalidUriTitle, null, null), Times.Never);
             }
             else
             {
-                NavigatorMock.Verify(d => d.Navigate<AddGeneratorViewModel, OTPGenerator>(It.IsAny<OTPGenerator>(), null), Times.Never);
+                NavigatorMock.Verify(d => d.Navigate<AddGeneratorViewModel, OTPGenerator>(It.IsAny<OTPGenerator>(), null, It.IsAny<CancellationToken>()), Times.Never);
                 DialogServiceMock.Verify(d => d.AlertAsync(Resources.Strings.InvalidUriMessage, Resources.Strings.InvalidUriTitle, null, null));
             }
         }

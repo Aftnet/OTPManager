@@ -1,5 +1,5 @@
-﻿using OTPManager.Shared.Components;
-using OTPManager.Shared.Models;
+﻿using OTPManager.Shared.Models;
+using OtpNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,7 +41,7 @@ namespace OTPManager.Shared.Test.Models
         [MemberData(nameof(TimeBasedTokenizationWorksData))]
         public void TimeBasedTokenizationWorks(DateTimeOffset time, int expectedOTP)
         {
-            Target.Secret = OTPBase32Converter.FromBase32String("AAAAAAAAAAAA");
+            Target.Secret = Base32Encoding.ToBytes("AAAAAAAAAAAA");
             var otp = Target.GenerateOTP(time);
             Assert.Equal(expectedOTP, otp);
         }

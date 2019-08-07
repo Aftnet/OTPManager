@@ -1,4 +1,5 @@
 ﻿using OTPManager.Shared.Components;
+using OtpNet;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -50,14 +51,14 @@ namespace OTPManager.Shared.Models
         [Ignore]
         public string SecretBase32
         {
-            get { return Secret != null ? OTPBase32Converter.ToBase32String(Secret) : null; }
+            get { return Secret != null ? Base32Encoding.ToString(Secret) : null; }
         }
 
         private int numDigits = MinNumDigits;
         public int NumDigits
         {
-            get { return numDigits; }
-            set { numDigits = Math.Max(Math.Min(value, MaxNumDigits), MinNumDigits); }
+            get => numDigits;
+            set => numDigits = Math.Max(Math.Min(value, MaxNumDigits), MinNumDigits);
         }
 
         public static OTPGenerator FromUri(Uri input)

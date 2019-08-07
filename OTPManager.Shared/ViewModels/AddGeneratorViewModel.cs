@@ -4,6 +4,7 @@ using MvvmCross.ViewModels;
 using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
+using OtpNet;
 
 namespace OTPManager.Shared.ViewModels
 {
@@ -78,7 +79,7 @@ namespace OTPManager.Shared.ViewModels
             var otpGenerator = new OTPGenerator()
             {
                 Label = Label,
-                Secret = OTPBase32Converter.FromBase32String(SecretBase32),
+                Secret = Base32Encoding.ToBytes(SecretBase32),
                 Issuer = Issuer,
                 AllowExporting = AllowExporting
             };
@@ -114,7 +115,11 @@ namespace OTPManager.Shared.ViewModels
                 return;
             }
 
-            if (!OTPBase32Converter.IsValidBase32String(SecretBase32))
+            try
+            {
+                Base32Encoding.ToBytes(SecretBase32);
+            }
+            catch
             {
                 return;
             }
