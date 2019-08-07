@@ -41,14 +41,14 @@ namespace OTPManager.Shared.ViewModels
         public string Label
         {
             get => label;
-            private set { SetProperty(ref label, value); }
+            private set => SetProperty(ref label, value);
         }
 
         private string secretBase32;
         public string SecretBase32
         {
             get => secretBase32;
-            private set { SetProperty(ref secretBase32, value); }
+            private set => SetProperty(ref secretBase32, value);
         }
 
         private string issuer;
@@ -62,14 +62,14 @@ namespace OTPManager.Shared.ViewModels
         public bool AllowExporting
         {
             get => allowExporting;
-            private set { SetProperty(ref allowExporting, value); }
+            private set => SetProperty(ref allowExporting, value);
         }
 
         private BitMatrix qrData;
         public BitMatrix QRData
         {
-            get  => qrData;
-            private set { SetProperty(ref qrData, value); }
+            get => qrData;
+            private set => SetProperty(ref qrData, value);
         }
 
         public IMvxCommand DeleteGenerator { get; }

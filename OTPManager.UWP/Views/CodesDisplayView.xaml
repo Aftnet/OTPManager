@@ -42,7 +42,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="OTPViewerNarrow" x:DataType="vm:CodesDisplayViewModel">
-            <ListView ItemsSource="{x:Bind Items, Mode=OneWay}" ItemClick="ItemClicked" ItemTemplate="{StaticResource ListItemDT}" Style="{StaticResource NavigationListStyle}"/>
+            <ListView ItemsSource="{x:Bind Items, Mode=OneWay}" SelectionMode="None" ItemClick="ItemClicked" ItemTemplate="{StaticResource ListItemDT}" Style="{StaticResource NavigationListStyle}"/>
         </DataTemplate>
         
         <DataTemplate x:Key="GridItemDT" x:DataType="vm:OTPDisplayViewModel">
@@ -58,7 +58,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="OTPViewerWide" x:DataType="vm:CodesDisplayViewModel">
-            <GridView ItemsSource="{x:Bind Items, Mode=OneWay}" ItemClick="ItemClicked" ItemTemplate="{StaticResource GridItemDT}" Style="{StaticResource NavigationListStyle}"/>
+            <GridView ItemsSource="{x:Bind Items, Mode=OneWay}" SelectionMode="None" ItemClick="ItemClicked" ItemTemplate="{StaticResource GridItemDT}" Style="{StaticResource NavigationListStyle}"/>
         </DataTemplate>
     </mvx:MvxWindowsPage.Resources>
     

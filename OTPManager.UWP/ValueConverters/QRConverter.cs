@@ -20,7 +20,7 @@ namespace OTPManager.UWP.ValueConverters
 
         protected override BitmapSource Convert(BitMatrix value, Type targetType, object parameter, CultureInfo culture)
         {
-            var output = Renderer.Render(value, ZXing.BarcodeFormat.QR_CODE, string.Empty, RenderSettings);
+            var output = value != null ? Renderer.Render(value, ZXing.BarcodeFormat.QR_CODE, string.Empty, RenderSettings) : null;
             return output;
         }
     }
