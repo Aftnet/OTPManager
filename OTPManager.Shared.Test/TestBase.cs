@@ -14,7 +14,9 @@ namespace OTPManager.Shared.Test
     public abstract class TestBase<T>
     {
         protected abstract T GetTarget();
-        protected T Target { get; private set; }
+
+        private readonly Lazy<T> target;
+        protected T Target => target.Value;
 
         protected readonly Mock<IMvxNavigationService> NavigatorMock = new Mock<IMvxNavigationService>();
         protected readonly Mock<IShare> PlatformServiceMock = new Mock<IShare>();
@@ -29,7 +31,7 @@ namespace OTPManager.Shared.Test
 
         public TestBase()
         {
-            Target = GetTarget();
+            target = new Lazy<T>(GetTarget, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         protected static OTPGenerator CreateOTPGenerator(int seed)
