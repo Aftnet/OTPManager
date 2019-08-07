@@ -1,12 +1,14 @@
-﻿using System;
-using Windows.UI.Xaml.Data;
+﻿using MvvmCross.Converters;
+using MvvmCross.Platforms.Uap.Converters;
+using System;
+using System.Globalization;
 using Windows.UI.Xaml.Media.Imaging;
 using ZXing.Common;
 using ZXing.Mobile;
 
 namespace OTPManager.UWP.ValueConverters
 {
-    public class QRConverter : IValueConverter
+    public class QRConverterInternal : MvxValueConverter<BitMatrix, BitmapSource>
     {
         private const int QRSize = 800;
         private static readonly WriteableBitmapRenderer Renderer = new WriteableBitmapRenderer();
@@ -16,22 +18,14 @@ namespace OTPManager.UWP.ValueConverters
             Width = QRSize,
         };
 
-        public object Convert(object value, Type targetType, object parameter, string language)
+        protected override BitmapSource Convert(BitMatrix value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return null;
-
-            var matrix = value as BitMatrix;
-            if (matrix == null)
-                throw new ArgumentException();
-
-            var output = Renderer.Render(matrix, ZXing.BarcodeFormat.QR_CODE, string.Empty, RenderSettings);
+            var output = Renderer.Render(value, ZXing.BarcodeFormat.QR_CODE, string.Empty, RenderSettings);
             return output;
         }
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
+    public class QRConverter : MvxNativeValueConverter<QRConverterInternal>
+    {
     }
 }

@@ -8,7 +8,7 @@
     <local:OTPManagerApp.Resources>
         <x:Double x:Key="WideWindowMinWidth">600</x:Double>
         <Thickness x:Key="ContentMargin">16,0</Thickness>
-        <vc:VisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <vc:VisibilityConverter x:Key="VisibilityConverter"/>
         <vc:QRConverter x:Key="QRConverter"/>
 
         <Style x:Key="DefaultScrollViewerStyle" TargetType="ScrollViewer">
