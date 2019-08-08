@@ -39,7 +39,7 @@ namespace OTPManager.iOS
             switch (section)
             {
                 case 0:
-                    return NSBundle.MainBundle.LocalizedString("AddAccount", string.Empty);
+                    return NSBundle.MainBundle.GetLocalizedString("AddAccount", string.Empty);
                 default:
                     return string.Empty;
             }
