@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:indeterminate="false"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        local:MvxBind="Max ProgressScale;Progress Progress;Visible Visibility(GeneratorsAvailable)" />
-    <Mvx.MvxListView
+        local:MvxBind="Max ProgressScale;Progress Progress;Visible InvertedVisibility(GeneratorsAvailable)" />
+    <MvxListView
         android:id="@+id/codes_display_list"
         android:layout_below="@id/codes_display_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        local:MvxBind="ItemsSource Items;ItemClick ItemClicked;Visible Visibility(GeneratorsAvailable)"
+        local:MvxBind="ItemsSource Items;ItemClick ItemClicked;Visible InvertedVisibility(GeneratorsAvailable)"
         local:MvxItemTemplate="@layout/codes_display_list_item" />
     <LinearLayout
         android:orientation="vertical"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_huge"
         android:gravity="center_horizontal"
-        local:MvxBind="Visible InvertedVisibility(GeneratorsAvailable)">
+        local:MvxBind="Visible Visibility(GeneratorsAvailable)">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

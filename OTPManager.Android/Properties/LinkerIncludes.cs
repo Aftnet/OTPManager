@@ -5,12 +5,13 @@ using Android.Widget;
 
 namespace OTPManager.Android.Properties
 {
-    [Preserve(AllMembers =true)]
+    [Preserve(AllMembers = true)]
     public sealed class LinkerIncludes
     {
         public void Include(ProgressBar target)
         {
             target.Max = target.Progress;
+            target.Visibility = global::Android.Views.ViewStates.Visible;
         }
 
         public void Include(Button target)
@@ -28,6 +29,11 @@ namespace OTPManager.Android.Properties
         public void Include(SwitchCompat target)
         {
             target.CheckedChange += (d, e) => { target.Checked = !target.Checked; };
+        }
+
+        public void Include(LinearLayout target)
+        {
+            target.Visibility = global::Android.Views.ViewStates.Visible;
         }
     }
 }
