@@ -1,10 +1,9 @@
-using System;
-using MvvmCross.Binding.BindingContext;
-using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
-using OTPManager.Shared.ViewModels;
-using UIKit;
 using Foundation;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Platforms.Ios.Views;
+using OTPManager.Shared.ViewModels;
+using System;
+using UIKit;
 
 namespace OTPManager.iOS
 {

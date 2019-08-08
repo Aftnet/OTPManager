@@ -1,9 +1,9 @@
-﻿using MvvmCross.Platform.Converters;
+﻿using MvvmCross.Converters;
 using System;
 using System.Globalization;
+using UIKit;
 using ZXing.Common;
 using ZXing.Mobile;
-using UIKit;
 
 namespace OTPManager.iOS.ValueConverters
 {

@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_huge"
         android:gravity="center_horizontal"
-        local:MvxBind="Visible InverseVisibility(GeneratorsAvailable)">
+        local:MvxBind="Visible InvertedVisibility(GeneratorsAvailable)">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
