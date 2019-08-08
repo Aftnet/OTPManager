@@ -48,7 +48,7 @@ namespace OTPManager.Shared.ViewModels
             }
         }
 
-        public bool GeneratorsAvailable { get { return Items.Any(); } }
+        public bool GeneratorsAvailable => Items.Any();
 
         public IMvxCommand<OTPDisplayViewModel> ItemClicked { get; }
         public IMvxCommand CreateEntryManual { get; }

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:indeterminate="false"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        local:MvxBind="Max ProgressScale; Progress Progress;Visible Visibility(GeneratorsAvailable)" />
+        local:MvxBind="Max ProgressScale;Progress Progress;Visible Visibility(GeneratorsAvailable)" />
     <Mvx.MvxListView
         android:id="@+id/codes_display_list"
         android:layout_below="@id/codes_display_progress_bar"
