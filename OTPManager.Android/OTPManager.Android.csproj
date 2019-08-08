@@ -57,13 +57,13 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.cs" />
     <Compile Include="Views\AddGeneratorView.cs" />
     <Compile Include="Views\CodesDisplayView.cs" />
     <Compile Include="Views\DisplayGeneratorView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Platform\CustomSetup.cs" />
-    <Compile Include="ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\BitMatrixToQRConverter.cs" />
     <Compile Include="Properties\LinkerIncludes.cs" />
   </ItemGroup>
