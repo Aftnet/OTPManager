@@ -3,10 +3,10 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Views;
-using MvvmCross.Binding.Droid.Views;
+using MvvmCross;
 using MvvmCross.Droid.Support.V7.AppCompat;
-using MvvmCross.Platform;
-using MvvmCross.Platform.Droid.Platform;
+using MvvmCross.Platforms.Android;
+using MvvmCross.Platforms.Android.Binding.Views;
 using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using System;
@@ -25,7 +25,7 @@ namespace OTPManager.Android.Views
         {
             Initializer = new Lazy<object>(() =>
             {
-                UserDialogs.Init(() => Mvx.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
+                UserDialogs.Init(() => Mvx.IoCProvider.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
                 MobileBarcodeScanner.Initialize(Application);
                 return new object();
             }, System.Threading.LazyThreadSafetyMode.PublicationOnly);
@@ -53,7 +53,7 @@ namespace OTPManager.Android.Views
             {
                 if (Uri.TryCreate(data, UriKind.Absolute, out var qrUri))
                 {
-                    var uriService = Mvx.Resolve<IUriService>();
+                    var uriService = Mvx.IoCProvider.Resolve<IUriService>();
                     uriService.CreateGeneratorFromUri(qrUri);
                 }
             }

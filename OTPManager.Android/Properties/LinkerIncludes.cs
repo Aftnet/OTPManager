@@ -1,8 +1,7 @@
-﻿using Android.Support.Design.Widget;
+﻿using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Widget;
-using MvvmCross.Plugins.Json;
-using MvvmCross.Core.ViewModels;
 
 namespace OTPManager.Android.Properties
 {

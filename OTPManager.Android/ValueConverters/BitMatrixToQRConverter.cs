@@ -1,5 +1,5 @@
 ﻿using Android.Graphics;
-using MvvmCross.Platform.Converters;
+using MvvmCross.Converters;
 using System;
 using System.Globalization;
 using ZXing.Common;

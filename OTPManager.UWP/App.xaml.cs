@@ -13,5 +13,6 @@ namespace OTPManager.UWP
 
     public abstract class OTPManagerApp : MvxApplication<CustomSetup<Shared.App>, Shared.App>
     {
+        override Sta
     }
 }
