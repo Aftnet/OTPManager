@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 using MvvmCross.Platforms.Android.Views;
+using OTPManager.Android.Platform;
 using System;
 
 namespace OTPManager.Android

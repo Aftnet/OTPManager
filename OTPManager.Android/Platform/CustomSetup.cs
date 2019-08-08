@@ -4,7 +4,7 @@ using MvvmCross.Platforms.Android.Core;
 using MvvmCross.ViewModels;
 using ZXing.Mobile;
 
-namespace OTPManager.Android
+namespace OTPManager.Android.Platform
 {
     public class CustomSetup<TApplication> : MvxAndroidSetup<TApplication> where TApplication : class, IMvxApplication, new()
     {
