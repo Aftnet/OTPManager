@@ -9,6 +9,8 @@ namespace OTPManager.iOS.Platform
     {
         protected override void InitializeLastChance()
         {
+            base.InitializeLastChance();
+
             Mvx.IoCProvider.RegisterSingleton<IMobileBarcodeScanner>(() => new MobileBarcodeScanner
             {
                 //CustomOverlay = new UIView(),
