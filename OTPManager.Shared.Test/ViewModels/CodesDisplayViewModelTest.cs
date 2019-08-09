@@ -26,7 +26,7 @@ namespace OTPManager.Shared.Test.ViewModels
         [Fact]
         public async Task LoadingWorks()
         {
-            Target.Prepare();
+            Target.ViewAppearing();
             await Target.DataLoadedTCS.Task;
 
             Assert.True(Target.GeneratorsAvailable);

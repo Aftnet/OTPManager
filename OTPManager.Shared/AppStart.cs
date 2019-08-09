@@ -17,22 +17,23 @@ namespace OTPManager.Shared
             DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
-        protected override Task NavigateToFirstViewModel(object hint = null)
+        protected override async Task NavigateToFirstViewModel(object hint = null)
         {
+            var mainNavigationTask = NavigationService.Navigate<CodesDisplayViewModel>();
+
             if (hint is string hintString)
             {
                 var generator = OTPGenerator.FromString(hintString);
                 if (generator != null)
                 {
-                    return NavigationService.Navigate<AddGeneratorViewModel, AddGeneratorViewModel.Parameter>(new AddGeneratorViewModel.Parameter(generator, true));
+                    await mainNavigationTask;
+                    await NavigationService.Navigate<AddGeneratorViewModel, OTPGenerator>(generator);
                 }
                 else
                 {
-                    DialogService.AlertAsync(Resources.Strings.InvalidUriMessage, Resources.Strings.InvalidUriTitle);
+                    await DialogService.AlertAsync(Resources.Strings.InvalidUriMessage, Resources.Strings.InvalidUriTitle);
                 }
             }
-
-            return NavigationService.Navigate<CodesDisplayViewModel>();
         }
     }
 }
