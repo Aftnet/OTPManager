@@ -51,11 +51,7 @@ namespace OTPManager.Android.Views
             var data = Intent.DataString;
             if (data != null)
             {
-                if (Uri.TryCreate(data, UriKind.Absolute, out var qrUri))
-                {
-                    var uriService = Mvx.IoCProvider.Resolve<IUriService>();
-                    uriService.CreateGeneratorFromUri(qrUri);
-                }
+                
             }
         }
 
