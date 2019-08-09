@@ -5,8 +5,10 @@ using Android.OS;
 using Android.Views;
 using MvvmCross;
 using MvvmCross.Droid.Support.V7.AppCompat;
+using MvvmCross.Navigation;
 using MvvmCross.Platforms.Android;
 using MvvmCross.Platforms.Android.Binding.Views;
+using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using System;
@@ -48,10 +50,14 @@ namespace OTPManager.Android.Views
         {
             base.OnNewIntent(intent);
 
-            var data = Intent.DataString;
+            var data = intent.DataString;
             if (data != null)
             {
-                
+                var generator = Shared.Models.OTPGenerator.FromString(data);
+                if (generator != null)
+                {
+                    Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<AddGeneratorViewModel, OTPGenerator>(generator);
+                }
             }
         }
 
