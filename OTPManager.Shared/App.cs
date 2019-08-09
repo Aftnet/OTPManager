@@ -19,7 +19,7 @@ namespace OTPManager.Shared
             ioc.RegisterSingleton(CrossShare.Current);
             ioc.RegisterSingleton(UserDialogs.Instance);
             ioc.RegisterSingleton<IStorageService>(ioc.IoCConstruct<StorageService>());
-            RegisterAppStart<CodesDisplayViewModel>();
+            RegisterCustomAppStart<AppStart>();
         }
     }
 }
