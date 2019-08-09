@@ -1,4 +1,5 @@
-﻿using MvvmCross.Commands;
+﻿using Acr.UserDialogs;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
@@ -17,11 +18,11 @@ namespace OTPManager.Shared.ViewModels
     {
         internal static readonly TimeSpan BackgroudRefreshInterval = TimeSpan.FromMilliseconds(50);
 
-        private readonly IMvxNavigationService Navigator;
-        private readonly IShare ShareService;
-        private readonly IStorageService DataStore;
-        private readonly IMobileBarcodeScanner Scanner;
-        private readonly IUriService UriService;
+        private IMvxNavigationService Navigator { get; }
+        private IUserDialogs DialogService { get; }
+        private IShare ShareService { get; }
+        private IStorageService DataStore { get; }
+        private IMobileBarcodeScanner Scanner { get; }
 
         private DateTime NextUpdateTime { get; set; } = DateTime.Now;
 
@@ -56,13 +57,13 @@ namespace OTPManager.Shared.ViewModels
 
         private Timer BackgroundRefreshTimer;
 
-        public CodesDisplayViewModel(IMvxNavigationService navigator, IShare shareService, IStorageService dataStore, IMobileBarcodeScanner scanner, IUriService uriService)
+        public CodesDisplayViewModel(IMvxNavigationService navigator, IUserDialogs dialogService, IShare shareService, IStorageService dataStore, IMobileBarcodeScanner scanner)
         {
-            Navigator = navigator;
-            ShareService = shareService;
-            DataStore = dataStore;
-            Scanner = scanner;
-            UriService = uriService;
+            Navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
+            DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            ShareService = shareService ?? throw new ArgumentNullException(nameof(shareService));
+            DataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
+            Scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
 
             ItemClicked = new MvxCommand<OTPDisplayViewModel>(d =>
             {
@@ -74,7 +75,22 @@ namespace OTPManager.Shared.ViewModels
                 Navigator.Navigate<AddGeneratorViewModel>();
             });
 
-            CreateEntryQR = new MvxCommand(CreateEntryQRHandler);
+            CreateEntryQR = new MvxCommand(async () =>
+            {
+                var result = await Scanner.Scan();
+                if (result != null)
+                {
+                    var generator = OTPGenerator.FromString(result.Text);
+                    if (generator != null)
+                    {
+                        await Navigator.Navigate<AddGeneratorViewModel, OTPGenerator>(generator);
+                    }
+                    else
+                    {
+                        await DialogService.AlertAsync(Resources.Strings.InvalidUriMessage, Resources.Strings.InvalidUriTitle);
+                    }
+                }
+            });
         }
 
         public override void ViewAppearing()
@@ -97,15 +113,6 @@ namespace OTPManager.Shared.ViewModels
         {
             BackgroundRefreshTimer?.Dispose();
             BackgroundRefreshTimer = null;
-        }
-
-        private async void CreateEntryQRHandler()
-        {
-            var result = await Scanner.Scan();
-            if (result == null)
-                return;
-
-            await UriService.CreateGeneratorFromUri(result.Text);
         }
 
         private void UIRefresh()

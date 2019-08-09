@@ -19,7 +19,6 @@ namespace OTPManager.Shared
             ioc.RegisterSingleton(CrossShare.Current);
             ioc.RegisterSingleton(UserDialogs.Instance);
             ioc.RegisterSingleton<IStorageService>(ioc.IoCConstruct<StorageService>());
-            ioc.RegisterSingleton<IUriService>(ioc.IoCConstruct<UriService>());
             RegisterAppStart<CodesDisplayViewModel>();
         }
     }

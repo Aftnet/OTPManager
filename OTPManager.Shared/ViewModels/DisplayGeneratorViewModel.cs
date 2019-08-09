@@ -11,8 +11,8 @@ namespace OTPManager.Shared.ViewModels
 {
     public class DisplayGeneratorViewModel : MvxViewModel<OTPGenerator>
     {
-        private readonly IMvxNavigationService Navigator;
-        private readonly IStorageService DataStore;
+        private IMvxNavigationService Navigator { get; }
+        private IStorageService DataStore { get; }
 
         private static readonly BarcodeWriterGeneric QRWriter = new BarcodeWriterGeneric()
         {

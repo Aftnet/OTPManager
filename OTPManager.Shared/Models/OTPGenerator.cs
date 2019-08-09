@@ -59,6 +59,16 @@ namespace OTPManager.Shared.Models
             set => numDigits = Math.Max(Math.Min(value, MaxNumDigits), MinNumDigits);
         }
 
+        public static OTPGenerator FromString(string input)
+        {
+            if (Uri.TryCreate(input, UriKind.Absolute, out var uri))
+            {
+                return FromUri(uri);
+            }
+
+            return null;
+        }
+
         public static OTPGenerator FromUri(Uri input)
         {
             return OTPUriConverter.OTPGeneratorFromUri(input);

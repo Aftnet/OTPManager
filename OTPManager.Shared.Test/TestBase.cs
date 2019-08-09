@@ -25,9 +25,8 @@ namespace OTPManager.Shared.Test
         protected readonly Mock<ISecureStorage> SecureStorageMock = new Mock<ISecureStorage>();
         protected readonly Mock<IMobileBarcodeScanner> BarcodeScannerMock = new Mock<IMobileBarcodeScanner>();
         protected readonly Mock<IUserDialogs> DialogServiceMock = new Mock<IUserDialogs>();
-        protected readonly Mock<IUriService> UriServiceMock = new Mock<IUriService>();
 
-        private static Random RandomGenerator = new Random();
+        private static Random RandomGenerator { get; } = new Random();
 
         public TestBase()
         {
