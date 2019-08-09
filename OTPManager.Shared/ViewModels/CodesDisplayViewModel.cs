@@ -24,6 +24,8 @@ namespace OTPManager.Shared.ViewModels
         private IStorageService DataStore { get; }
         private IMobileBarcodeScanner Scanner { get; }
 
+        internal TaskCompletionSource<bool> DataLoadedTCS { get; } = new TaskCompletionSource<bool>();
+
         private DateTime NextUpdateTime { get; set; } = DateTime.Now;
 
         public int ProgressScale { get; } = OTPGenerator.TimeStepSeconds * 1000;
@@ -83,7 +85,7 @@ namespace OTPManager.Shared.ViewModels
                     var generator = OTPGenerator.FromString(result.Text);
                     if (generator != null)
                     {
-                        await Navigator.Navigate<AddGeneratorViewModel, OTPGenerator>(generator);
+                        await Navigator.Navigate<AddGeneratorViewModel, AddGeneratorViewModel.Parameter>(new AddGeneratorViewModel.Parameter(generator, false));
                     }
                     else
                     {
@@ -93,16 +95,16 @@ namespace OTPManager.Shared.ViewModels
             });
         }
 
-        public override void ViewAppearing()
-        {
-            var task = ViewAppearingAsync();
-        }
-
-        internal async Task ViewAppearingAsync()
+        public override async void Prepare()
         {
             var generators = await DataStore.GetAllAsync();
+            DataLoadedTCS.SetResult(true);
             Items = generators.Select(d => new OTPDisplayViewModel(ShareService, d)).ToList();
+        }
 
+        public override async void ViewAppearing()
+        {
+            await DataLoadedTCS.Task;
             if (BackgroundRefreshTimer == null)
             {
                 BackgroundRefreshTimer = new Timer(d => InvokeOnMainThread(UIRefresh), this, BackgroudRefreshInterval, BackgroudRefreshInterval);

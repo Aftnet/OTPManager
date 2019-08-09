@@ -57,7 +57,7 @@ namespace OTPManager.Shared.Test.ViewModels
         {
             Target.AllowExporting = !AddGeneratorViewModel.AllowExportingDefault;
             var generator = CreateOTPGenerator(1);
-            Target.Prepare(generator);
+            Target.Prepare(new AddGeneratorViewModel.Parameter(generator, false));
 
             Assert.Equal(generator.Label, Target.Label);
             Assert.Equal(generator.Issuer, Target.Issuer);

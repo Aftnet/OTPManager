@@ -1,23 +1,35 @@
-﻿using MvvmCross.Commands;
+﻿using System;
+using System.Threading.Tasks;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
 using OtpNet;
 
 namespace OTPManager.Shared.ViewModels
 {
-    public class AddGeneratorViewModel : MvxViewModel<OTPGenerator>
+    public class AddGeneratorViewModel : MvxViewModel<AddGeneratorViewModel.Parameter>
     {
+        public class Parameter
+        {
+            public OTPGenerator Generator { get; }
+            public bool IsInitialView { get; }
+
+            public Parameter(OTPGenerator generator, bool isInitialView)
+            {
+                Generator = generator ?? throw new ArgumentNullException(nameof(generator));
+                IsInitialView = isInitialView;
+            }
+        }
+
         public const int MinSecretLength = 12;
         internal const bool AllowExportingDefault = false;
 
-        private readonly IMvxNavigationService Navigator;
-        private readonly IStorageService DataStore;
+        private IMvxNavigationService Navigator { get; }
+        private IStorageService DataStore { get; }
 
-        public IMvxCommand AddGenerator { get; set; }
-        public IMvxCommand Cancel { get; set; }
+        private bool IsInitialView { get; set; } = false;
 
         private bool dataIsValid;
         public bool DataIsValid
@@ -54,13 +66,19 @@ namespace OTPManager.Shared.ViewModels
             set { SetProperty(ref allowExporting, value); }
         }
 
-        public override void Prepare(OTPGenerator parameter)
+        public IMvxCommand AddGenerator { get; }
+        public IMvxCommand Cancel { get; }
+
+        public override void Prepare(AddGeneratorViewModel.Parameter parameter)
         {
             ResetDefaults();
 
-            Label = parameter.Label;
-            SecretBase32 = parameter.SecretBase32;
-            Issuer = parameter.Issuer;
+            IsInitialView = parameter.IsInitialView;
+
+            var generator = parameter.Generator;
+            Label = generator.Label;
+            SecretBase32 = generator.SecretBase32;
+            Issuer = generator.Issuer;
         }
 
         public AddGeneratorViewModel(IMvxNavigationService navigator, IStorageService dataStore)
@@ -69,7 +87,7 @@ namespace OTPManager.Shared.ViewModels
             DataStore = dataStore;
 
             AddGenerator = new MvxCommand(CreateEntryHandler, () => DataIsValid);
-            Cancel = new MvxCommand(() => Navigator.Close(this));
+            Cancel = new MvxCommand(() => CloseAsync());
 
             ResetDefaults();
         }
@@ -87,7 +105,7 @@ namespace OTPManager.Shared.ViewModels
             await DataStore.InsertOrReplaceAsync(otpGenerator);
             ResetDefaults();
 
-            await Navigator.Close(this);
+            await CloseAsync();
         }
 
         private void ResetDefaults()
@@ -125,6 +143,18 @@ namespace OTPManager.Shared.ViewModels
             }
 
             DataIsValid = true;
+        }
+
+        private Task<bool> CloseAsync()
+        {
+            if (IsInitialView)
+            {
+                return Navigator.Navigate<CodesDisplayViewModel>();
+            }
+            else
+            {
+                return Navigator.Close(this);
+            }
         }
     }
 }

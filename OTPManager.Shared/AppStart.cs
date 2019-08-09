@@ -24,7 +24,7 @@ namespace OTPManager.Shared
                 var generator = OTPGenerator.FromString(hintString);
                 if (generator != null)
                 {
-                    return NavigationService.Navigate<AddGeneratorViewModel, OTPGenerator>(generator);
+                    return NavigationService.Navigate<AddGeneratorViewModel, AddGeneratorViewModel.Parameter>(new AddGeneratorViewModel.Parameter(generator, true));
                 }
                 else
                 {

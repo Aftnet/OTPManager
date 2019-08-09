@@ -26,7 +26,9 @@ namespace OTPManager.Shared.Test.ViewModels
         [Fact]
         public async Task LoadingWorks()
         {
-            await Target.ViewAppearingAsync();
+            Target.Prepare();
+            await Target.DataLoadedTCS.Task;
+
             Assert.True(Target.GeneratorsAvailable);
 
             Assert.Equal(TestGenerators.Count, Target.Items.Count);
@@ -44,7 +46,9 @@ namespace OTPManager.Shared.Test.ViewModels
         [Fact]
         public async Task SelectionWorks()
         {
-            await Target.ViewAppearingAsync();
+            Target.Prepare();
+            await Target.DataLoadedTCS.Task;
+
             var selectedItem = Target.Items.First();
 
             Target.ItemClicked.Execute(selectedItem);
