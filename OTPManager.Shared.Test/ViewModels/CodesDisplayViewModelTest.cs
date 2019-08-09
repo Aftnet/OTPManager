@@ -46,7 +46,7 @@ namespace OTPManager.Shared.Test.ViewModels
         [Fact]
         public async Task SelectionWorks()
         {
-            Target.Prepare();
+            Target.ViewAppearing();
             await Target.DataLoadedTCS.Task;
 
             var selectedItem = Target.Items.First();
