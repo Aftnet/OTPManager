@@ -1,8 +1,9 @@
-﻿using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using OTPManager.Shared.Components;
+﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
+using OtpNet;
 
 namespace OTPManager.Shared.ViewModels
 {
@@ -11,11 +12,8 @@ namespace OTPManager.Shared.ViewModels
         public const int MinSecretLength = 12;
         internal const bool AllowExportingDefault = false;
 
-        private readonly IMvxNavigationService Navigator;
-        private readonly IStorageService DataStore;
-
-        public MvxCommand AddGenerator { get; private set; }
-        public MvxCommand Cancel { get; private set; }
+        private IMvxNavigationService Navigator { get; }
+        private IStorageService DataStore { get; }
 
         private bool dataIsValid;
         public bool DataIsValid
@@ -52,6 +50,9 @@ namespace OTPManager.Shared.ViewModels
             set { SetProperty(ref allowExporting, value); }
         }
 
+        public IMvxCommand AddGenerator { get; }
+        public IMvxCommand Cancel { get; }
+
         public override void Prepare(OTPGenerator parameter)
         {
             ResetDefaults();
@@ -77,7 +78,7 @@ namespace OTPManager.Shared.ViewModels
             var otpGenerator = new OTPGenerator()
             {
                 Label = Label,
-                Secret = OTPBase32Converter.FromBase32String(SecretBase32),
+                Secret = Base32Encoding.ToBytes(SecretBase32),
                 Issuer = Issuer,
                 AllowExporting = AllowExporting
             };
@@ -113,7 +114,11 @@ namespace OTPManager.Shared.ViewModels
                 return;
             }
 
-            if (!OTPBase32Converter.IsValidBase32String(SecretBase32))
+            try
+            {
+                Base32Encoding.ToBytes(SecretBase32);
+            }
+            catch
             {
                 return;
             }

@@ -1,7 +1,6 @@
 ﻿using Acr.UserDialogs;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Platform;
+using MvvmCross;
+using MvvmCross.ViewModels;
 using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using Plugin.FileSystem;
@@ -12,16 +11,15 @@ namespace OTPManager.Shared
 {
     public class App : MvxApplication
     {
-        public App()
+        public override void Initialize()
         {
-            Mvx.RegisterSingleton(CrossSecureStorage.Current);
-            Mvx.RegisterSingleton(CrossFileSystem.Current);
-            Mvx.RegisterSingleton(CrossShare.Current);
-            Mvx.RegisterSingleton(UserDialogs.Instance);
-            Mvx.LazyConstructAndRegisterSingleton<IStorageService, StorageService>();
-            Mvx.LazyConstructAndRegisterSingleton<IMvxNavigationService, MvxNavigationService>();
-            Mvx.LazyConstructAndRegisterSingleton<IUriService, UriService>();
-            Mvx.LazyConstructAndRegisterSingleton<IMvxAppStart, MvxNavigationServiceAppStart<CodesDisplayViewModel>>();
+            var ioc = Mvx.IoCProvider;
+            ioc.RegisterSingleton(CrossSecureStorage.Current);
+            ioc.RegisterSingleton(CrossFileSystem.Current);
+            ioc.RegisterSingleton(CrossShare.Current);
+            ioc.RegisterSingleton(UserDialogs.Instance);
+            ioc.RegisterSingleton<IStorageService>(ioc.IoCConstruct<StorageService>());
+            RegisterCustomAppStart<AppStart>();
         }
     }
 }

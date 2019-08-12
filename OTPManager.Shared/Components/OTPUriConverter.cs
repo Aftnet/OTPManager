@@ -1,4 +1,5 @@
 ﻿using OTPManager.Shared.Models;
+using OtpNet;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -65,12 +66,19 @@ namespace OTPManager.Shared.Components
             }
 
             value = queryValues[UriQuerySecret];
-            if (string.IsNullOrEmpty(value) || !OTPBase32Converter.IsValidBase32String(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            output.Secret = OTPBase32Converter.FromBase32String(value);
+            try
+            {
+                output.Secret = Base32Encoding.ToBytes(value);
+            }
+            catch
+            {
+                return null;
+            }
 
             //Num digits optional parameter
             if (queryValues.ContainsKey(UriQueryDigits))
@@ -108,8 +116,8 @@ namespace OTPManager.Shared.Components
 
         public static Uri UriFromOTPGenerator(OTPGenerator input)
         {
-            var uriLabel = string.Format("{0}{1}{2}", input.Issuer, UriQueryLabelDelimiter, input.Label);
-            var output = string.Format(UriFormat, Uri.EscapeDataString(uriLabel), input.SecretBase32, input.AlgorithmName, input.NumDigits, Uri.EscapeDataString(input.Issuer));
+            var uriLabel = string.Format("{0}{1}{2}", Uri.EscapeDataString(input.Issuer), UriQueryLabelDelimiter, Uri.EscapeDataString(input.Label));
+            var output = string.Format(UriFormat, uriLabel, input.SecretBase32, input.AlgorithmName, input.NumDigits, Uri.EscapeDataString(input.Issuer));
             return new Uri(output);
         }
 

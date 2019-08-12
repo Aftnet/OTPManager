@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mvx="using:MvvmCross.Uwp.Views"
+    xmlns:mvx="using:MvvmCross.Platforms.Uap.Views"
     xmlns:local="using:OTPManager.UWP.Views"
     xmlns:vt="using:WindowsStateTriggers"
     mc:Ignorable="d">
@@ -31,9 +31,9 @@
         <ScrollViewer Grid.Row="1" Style="{StaticResource DefaultScrollViewerStyle}">
             <StackPanel Orientation="Vertical" Margin="{StaticResource ContentMargin}">
                 <TextBox x:Uid="LabelTB" Text="{x:Bind VM.Label, Mode=OneWay}" Style="{StaticResource TBStyle}" IsReadOnly="True"/>
-                <TextBox x:Uid="SecretTB" Text="{x:Bind VM.SecretBase32, Mode=OneWay}" Style="{StaticResource SecretTBStyle}" Visibility="{x:Bind VM.AllowExporting, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" IsReadOnly="True"/>
+                <TextBox x:Uid="SecretTB" Text="{x:Bind VM.SecretBase32, Mode=OneWay}" Style="{StaticResource SecretTBStyle}" Visibility="{x:Bind VM.AllowExporting, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" IsReadOnly="True"/>
                 <TextBox x:Uid="IssuerTB" Text="{x:Bind VM.Issuer, Mode=OneWay}" Style="{StaticResource TBStyle}" IsReadOnly="True"/>
-                <Image Source="{x:Bind VM.QRData, Mode=OneWay, Converter={StaticResource QRConverter}}" Visibility="{x:Bind VM.AllowExporting, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" Style="{StaticResource QRImageStyle}"/>
+                <Image Source="{x:Bind VM.QRData, Mode=OneWay, Converter={StaticResource QRConverter}}" Visibility="{x:Bind VM.AllowExporting, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" Style="{StaticResource QRImageStyle}"/>
             </StackPanel>
         </ScrollViewer>
 

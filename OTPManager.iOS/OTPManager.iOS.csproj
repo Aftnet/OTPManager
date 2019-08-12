@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="Setup.cs" />
+    <Compile Include="Platform\CustomSetup.cs" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Entitlements.plist" />
@@ -88,7 +88,6 @@
     </Compile>
     <Compile Include="ValueConverters\SecretHiddenConverter.cs" />
     <Compile Include="ValueConverters\BitMatrixToQRConverter.cs" />
-    <Compile Include="ValueConverters\BoolInversionConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -98,7 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross">
-      <Version>5.7.0</Version>
+      <Version>6.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmCross.Plugin.Visibility">
+      <Version>6.3.1</Version>
     </PackageReference>
     <PackageReference Include="ZXing.Net.Mobile">
       <Version>2.4.1</Version>

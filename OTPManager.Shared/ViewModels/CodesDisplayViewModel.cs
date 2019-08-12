@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Acr.UserDialogs;
+using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
+using OTPManager.Shared.Models;
+using OTPManager.Shared.Services;
+using Plugin.Share.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using OTPManager.Shared.Models;
-using OTPManager.Shared.Services;
-using Plugin.Share.Abstractions;
 using ZXing.Mobile;
 
 namespace OTPManager.Shared.ViewModels
@@ -16,17 +18,17 @@ namespace OTPManager.Shared.ViewModels
     {
         internal static readonly TimeSpan BackgroudRefreshInterval = TimeSpan.FromMilliseconds(50);
 
-        private readonly IMvxNavigationService Navigator;
-        private readonly IShare ShareService;
-        private readonly IStorageService DataStore;
-        private readonly IMobileBarcodeScanner Scanner;
-        private readonly IUriService UriService;
+        private IMvxNavigationService Navigator { get; }
+        private IUserDialogs DialogService { get; }
+        private IShare ShareService { get; }
+        private IStorageService DataStore { get; }
+        private IMobileBarcodeScanner Scanner { get; }
 
-        internal const ulong DefaultUpdateTimeCode = 0;
-        internal ulong LastUpdateTimeCode = DefaultUpdateTimeCode;
+        internal TaskCompletionSource<bool> DataLoadedTCS { get; set; }
 
-        private const int progressScale = 10000;
-        public int ProgressScale { get { return progressScale; } }
+        private DateTime NextUpdateTime { get; set; } = DateTime.Now;
+
+        public int ProgressScale { get; } = OTPGenerator.TimeStepSeconds * 1000;
 
         private int progress = 0;
         public int Progress
@@ -44,26 +46,26 @@ namespace OTPManager.Shared.ViewModels
                 if (SetProperty(ref items, value))
                 {
                     RaisePropertyChanged(nameof(GeneratorsAvailable));
-                    LastUpdateTimeCode = DefaultUpdateTimeCode;
+                    NextUpdateTime = DateTime.Now;
                 }
             }
         }
 
-        public bool GeneratorsAvailable { get { return Items.Any(); } }
+        public bool GeneratorsAvailable => Items.Any();
 
-        public MvxCommand<OTPDisplayViewModel> ItemClicked { get; private set; }
-        public MvxCommand CreateEntryManual { get; private set; }
-        public MvxCommand CreateEntryQR { get; private set; }
+        public IMvxCommand<OTPDisplayViewModel> ItemClicked { get; }
+        public IMvxCommand CreateEntryManual { get; }
+        public IMvxCommand CreateEntryQR { get; }
 
         private Timer BackgroundRefreshTimer;
 
-        public CodesDisplayViewModel(IMvxNavigationService navigator, IShare shareService, IStorageService dataStore, IMobileBarcodeScanner scanner, IUriService uriService)
+        public CodesDisplayViewModel(IMvxNavigationService navigator, IUserDialogs dialogService, IShare shareService, IStorageService dataStore, IMobileBarcodeScanner scanner)
         {
-            Navigator = navigator;
-            ShareService = shareService;
-            DataStore = dataStore;
-            Scanner = scanner;
-            UriService = uriService;
+            Navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
+            DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            ShareService = shareService ?? throw new ArgumentNullException(nameof(shareService));
+            DataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
+            Scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
 
             ItemClicked = new MvxCommand<OTPDisplayViewModel>(d =>
             {
@@ -75,20 +77,31 @@ namespace OTPManager.Shared.ViewModels
                 Navigator.Navigate<AddGeneratorViewModel>();
             });
 
-            CreateEntryQR = new MvxCommand(CreateEntryQRHandler);
+            CreateEntryQR = new MvxCommand(async () =>
+            {
+                var result = await Scanner.Scan();
+                if (result != null)
+                {
+                    var generator = OTPGenerator.FromString(result.Text);
+                    if (generator != null)
+                    {
+                        await Navigator.Navigate<AddGeneratorViewModel, OTPGenerator>(generator);
+                    }
+                    else
+                    {
+                        await DialogService.AlertAsync(Resources.Strings.InvalidUriMessage, Resources.Strings.InvalidUriTitle);
+                    }
+                }
+            });
         }
 
-        public override void ViewAppearing()
+        public override async void ViewAppearing()
         {
-            var task = ViewAppearingAsync();
-        }
-
-        internal async Task ViewAppearingAsync()
-        {
+            DataLoadedTCS = new TaskCompletionSource<bool>();
             var generators = await DataStore.GetAllAsync();
-            Items = generators.Select(d => new OTPDisplayViewModel(Navigator, ShareService, d)).ToList();
+            DataLoadedTCS.SetResult(true);
 
-            UIRefresh();
+            Items = generators.Select(d => new OTPDisplayViewModel(ShareService, d)).ToList();
             if (BackgroundRefreshTimer == null)
             {
                 BackgroundRefreshTimer = new Timer(d => InvokeOnMainThread(UIRefresh), this, BackgroudRefreshInterval, BackgroudRefreshInterval);
@@ -101,39 +114,20 @@ namespace OTPManager.Shared.ViewModels
             BackgroundRefreshTimer = null;
         }
 
-        private async void CreateEntryQRHandler()
-        {
-            var result = await Scanner.Scan();
-            if (result == null)
-                return;
-
-            await UriService.CreateGeneratorFromUri(result.Text);
-        }
-
         private void UIRefresh()
         {
-            var currentTime = DateTimeOffset.UtcNow;
-            var timeCode = OTPGenerator.GenerateTimeCode(currentTime);
+            var currentTime = DateTime.Now;
+            Progress = (1000 * (currentTime.Second % OTPGenerator.TimeStepSeconds)) + currentTime.Millisecond;
 
-            Progress = ComputeProgress(currentTime);
-            if (timeCode != LastUpdateTimeCode)
+            if (currentTime.CompareTo(NextUpdateTime) >= 0)
             {
                 foreach (var i in Items)
                 {
                     i.UpdateOTP(currentTime);
                 }
 
-                LastUpdateTimeCode = timeCode;
+                NextUpdateTime = new DateTime(currentTime.AddSeconds(OTPGenerator.TimeStepSeconds).Ticks % (TimeSpan.TicksPerSecond * OTPGenerator.TimeStepSeconds));
             }
-        }
-
-        private static int ComputeProgress(DateTimeOffset input)
-        {
-            var timeStepSeonds = OTPGenerator.TimeStep.Seconds;
-            var nowModulo = input.Second % timeStepSeonds;
-            var progress = progressScale * (nowModulo * 1000 + input.Millisecond);
-            progress = progress / (timeStepSeonds * 1000);
-            return progress;
         }
     }
 }

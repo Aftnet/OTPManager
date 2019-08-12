@@ -1,8 +1,8 @@
-using System;
 using Foundation;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.iOS.Views;
+using MvvmCross.Platforms.Ios.Views;
 using OTPManager.Shared.ViewModels;
+using System;
 using UIKit;
 
 namespace OTPManager.iOS
@@ -36,7 +36,7 @@ namespace OTPManager.iOS
             switch (section)
             {
                 case 0:
-                    return NSBundle.MainBundle.LocalizedString("AccountDetails", string.Empty);
+                    return NSBundle.MainBundle.GetLocalizedString("AccountDetails", string.Empty);
                 case 1:
                     return null;
             }

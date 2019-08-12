@@ -1,7 +1,6 @@
-﻿using System;
+﻿using MvvmCross.Converters;
+using System;
 using System.Globalization;
-using MvvmCross.Platform.Converters;
-using OTPManager.Shared.ViewModels;
 
 namespace OTPManager.iOS.ValueConverters
 {

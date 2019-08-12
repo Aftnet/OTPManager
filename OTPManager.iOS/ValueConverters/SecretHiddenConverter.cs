@@ -1,8 +1,8 @@
-﻿using System;
-using System.Globalization;
-using Foundation;
-using MvvmCross.Platform.Converters;
+﻿using Foundation;
+using MvvmCross.Converters;
 using OTPManager.Shared.ViewModels;
+using System;
+using System.Globalization;
 
 namespace OTPManager.iOS.ValueConverters
 {
@@ -10,7 +10,7 @@ namespace OTPManager.iOS.ValueConverters
     {
         protected override string Convert(DisplayGeneratorViewModel value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value.AllowExporting ? value.SecretBase32 : NSBundle.MainBundle.LocalizedString("NotExportable", string.Empty);
+            return value.AllowExporting ? value.SecretBase32 : NSBundle.MainBundle.GetLocalizedString("NotExportable", string.Empty);
         } 
     }
 }

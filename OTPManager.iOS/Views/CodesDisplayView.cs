@@ -1,10 +1,11 @@
-using System;
 using Foundation;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Binding.iOS.Views;
-using MvvmCross.iOS.Views;
+using MvvmCross.Platforms.Ios.Binding.Views;
+using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.Plugin.Visibility;
 using ObjCRuntime;
 using OTPManager.Shared.ViewModels;
+using System;
 using UIKit;
 
 namespace OTPManager.iOS
@@ -64,11 +65,11 @@ namespace OTPManager.iOS
             var set = this.CreateBindingSet<CodesDisplayView, CodesDisplayViewModel>();
             set.Bind(ProgressBar).To(m => m.Progress)
                .WithConversion("CodesDisplayProgress", ViewModel.ProgressScale);
-            set.Bind(ProgressBar).For("Visible").To(m => m.GeneratorsAvailable);
-            set.Bind(TableView).For("Visible").To(m => m.GeneratorsAvailable);
+            set.Bind(ProgressBar).For("Visible").To(m => m.GeneratorsAvailable).WithConversion<MvxInvertedVisibilityValueConverter>();
+            set.Bind(TableView).For("Visible").To(m => m.GeneratorsAvailable).WithConversion<MvxInvertedVisibilityValueConverter>();
             set.Bind(source).To(m => m.Items);
             set.Bind(source).For(m => m.SelectionChangedCommand).To(m => m.ItemClicked);
-            set.Bind(NoGeneratorsStackView).For("Visible").To(m => m.GeneratorsAvailable).WithConversion("BoolInversion");
+            set.Bind(NoGeneratorsStackView).For("Visible").To(m => m.GeneratorsAvailable).WithConversion<MvxVisibilityValueConverter>();
             set.Bind(NoGeneratorsAddManually).To(m => m.CreateEntryManual);
             set.Bind(addManualButton).To(m => m.CreateEntryManual);
             set.Bind(NoGeneratorsAddQR).To(m => m.CreateEntryQR);

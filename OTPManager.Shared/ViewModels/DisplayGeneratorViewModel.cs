@@ -1,5 +1,6 @@
-﻿using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
+﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
 using System.Threading.Tasks;
@@ -10,8 +11,8 @@ namespace OTPManager.Shared.ViewModels
 {
     public class DisplayGeneratorViewModel : MvxViewModel<OTPGenerator>
     {
-        private readonly IMvxNavigationService Navigator;
-        private readonly IStorageService DataStore;
+        private IMvxNavigationService Navigator { get; }
+        private IStorageService DataStore { get; }
 
         private static readonly BarcodeWriterGeneric QRWriter = new BarcodeWriterGeneric()
         {
@@ -40,14 +41,14 @@ namespace OTPManager.Shared.ViewModels
         public string Label
         {
             get => label;
-            private set { SetProperty(ref label, value); }
+            private set => SetProperty(ref label, value);
         }
 
         private string secretBase32;
         public string SecretBase32
         {
             get => secretBase32;
-            private set { SetProperty(ref secretBase32, value); }
+            private set => SetProperty(ref secretBase32, value);
         }
 
         private string issuer;
@@ -61,17 +62,17 @@ namespace OTPManager.Shared.ViewModels
         public bool AllowExporting
         {
             get => allowExporting;
-            private set { SetProperty(ref allowExporting, value); }
+            private set => SetProperty(ref allowExporting, value);
         }
 
         private BitMatrix qrData;
         public BitMatrix QRData
         {
-            get  => qrData;
-            private set { SetProperty(ref qrData, value); }
+            get => qrData;
+            private set => SetProperty(ref qrData, value);
         }
 
-        public MvxCommand DeleteGenerator { get; private set; }
+        public IMvxCommand DeleteGenerator { get; }
 
         public override void Prepare(OTPGenerator parameter)
         {
