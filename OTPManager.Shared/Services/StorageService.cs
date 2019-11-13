@@ -184,8 +184,21 @@ namespace OTPManager.Shared.Services
                 return false;
             }
 
-            var json = Encoding.UTF8.GetString(jsonBytes);
-            var items = Newtonsoft.Json.JsonConvert.DeserializeObject<OTPGenerator[]>(json);
+            OTPGenerator[] items;
+            try
+            {
+                var json = Encoding.UTF8.GetString(jsonBytes);
+                items = Newtonsoft.Json.JsonConvert.DeserializeObject<OTPGenerator[]>(json);
+            }
+            catch
+            {
+                return false;
+            }
+
+            if (!items.Any())
+            {
+                return false;
+            }
 
             await ClearAsync();
             foreach (var i in items)
