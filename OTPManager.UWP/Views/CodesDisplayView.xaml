@@ -73,6 +73,9 @@
         <CommandBar x:Name="Commands" Grid.Row="0">
             <AppBarButton x:Uid="AddByQrCode" Icon="Camera" Command="{x:Bind VM.CreateEntryQR}"/>
             <AppBarButton x:Uid="AddManually" Icon="Edit" Command="{x:Bind VM.CreateEntryManual}"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="export" Command="{x:Bind VM.Export}"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
         <ProgressBar x:Name="Progress" Grid.Row="1" Maximum="{x:Bind VM.ProgressScale, Mode=OneWay}" Value="{x:Bind VM.Progress, Mode=OneWay}" Visibility="{x:Bind VM.GeneratorsAvailable, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"/>
         <StackPanel x:Name="NoOTPBanner" Orientation="Vertical" VerticalAlignment="Center" Grid.Row="2" Visibility="{x:Bind VM.GeneratorsAvailable, Mode=OneWay, Converter={StaticResource InverseVisibilityConverter}}">

@@ -56,6 +56,7 @@ namespace OTPManager.Shared.ViewModels
         public IMvxCommand<OTPDisplayViewModel> ItemClicked { get; }
         public IMvxCommand CreateEntryManual { get; }
         public IMvxCommand CreateEntryQR { get; }
+        public IMvxCommand Export { get; }
 
         private Timer BackgroundRefreshTimer;
 
@@ -91,6 +92,15 @@ namespace OTPManager.Shared.ViewModels
                     {
                         await DialogService.AlertAsync(Resources.Strings.InvalidUriMessage, Resources.Strings.InvalidUriTitle);
                     }
+                }
+            });
+
+            Export = new MvxCommand(async () =>
+            {
+                var result = await DialogService.PromptAsync(new PromptConfig { InputType = InputType.Password });
+                if (result.Ok)
+                {
+                    var lol = result.Value;
                 }
             });
         }
