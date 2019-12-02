@@ -73,7 +73,7 @@ namespace OTPManager.Shared.Components
 
             try
             {
-                output.Secret = Base32Encoding.ToBytes(value);
+                output.SecretBase32 = value;
             }
             catch
             {

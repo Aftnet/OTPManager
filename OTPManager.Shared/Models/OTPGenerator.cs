@@ -26,8 +26,6 @@ namespace OTPManager.Shared.Models
         public const int MinNumDigits = 6;
         public const int MaxNumDigits = 8;
 
-        public static readonly int[] DigitsPowers = Enumerable.Range(0, MaxNumDigits + 1).Select(d => (int)Math.Pow(10, d)).ToArray();
-
         [PrimaryKey]
         public string Uid { get; set; }
 
@@ -41,16 +39,17 @@ namespace OTPManager.Shared.Models
 
         [Ignore]
         public byte[] Secret { get; set; }
+        
+        [Ignore]
+        public string SecretBase32
+        {
+            get => Secret != null ? Base32Encoding.ToString(Secret) : null;
+            set => Secret = Base32Encoding.ToBytes(value);
+        }
 
         public string DbEncryptedSecret { get; set; }
 
         public string DbEncryptedSecretIV { get; set; }
-
-        [Ignore]
-        public string SecretBase32
-        {
-            get { return Secret != null ? Base32Encoding.ToString(Secret) : null; }
-        }
 
         private int numDigits = MinNumDigits;
         public int NumDigits
