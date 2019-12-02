@@ -26,7 +26,7 @@ namespace OTPManager.Shared.Test.Services
             TestData = Enumerable.Range(1, 4).Select(d => CreateOTPGenerator(d)).ToArray();
 
             var random = new Random();
-            foreach(var i in TestData)
+            foreach (var i in TestData)
             {
                 random.NextBytes(i.Secret);
             }
@@ -81,6 +81,24 @@ namespace OTPManager.Shared.Test.Services
 
             contents = await Target.GetAllAsync();
             Assert.Empty(contents);
+        }
+
+        [Theory]
+        [InlineData(new object[] { true })]
+        [InlineData(new object[] { false })]
+        public async Task DumpRestoreWorks(bool shouldSucceed)
+        {
+            await Target.ClearAsync();
+            foreach (var i in TestData)
+            {
+                await Target.InsertOrReplaceAsync(i);
+            }
+
+            var password = "encryptionPassword";
+            var dumpData = await Target.DumpAsync(password);
+
+            var result = await Target.RestoreAsync(dumpData, shouldSucceed ? password : "wrongPassword");
+            Assert.Equal(result, shouldSucceed);
         }
     }
 }

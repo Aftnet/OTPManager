@@ -17,15 +17,13 @@ namespace OTPManager.Shared.Services
     {
         internal const string AppKeychainId = "Token";
         internal const string DbFileName = "Data.db3";
+        internal const string PasswordSalt = "bz77KNXdP,Bc4Acg";
 
         private readonly ISecureStorage SecureStorage;
         private readonly IFileSystem FileSystem;
 
         private readonly Lazy<byte[]> EncryptionKey;
         private readonly Lazy<SQLiteAsyncConnection> DBConnection;
-
-        internal readonly byte[] DumpAuthKey = new byte[] { 0x12, 0x4d, 0x43, 0xc0, 0x32, 0x5d, 0xc9, 0x8d, 0xe6, 0xdd, 0x0b, 0x2d, 0xdd, 0x07, 0x8b, 0x84, 0x8f,
-        0x38, 0x95, 0x0b, 0x48, 0x88, 0x70, 0xa8, 0xeb, 0xa4, 0x56, 0x06, 0xe3, 0x4a, 0x0e, 0xc0 };
 
         public StorageService(ISecureStorage secureStorage, IFileSystem fileSystem)
         {
@@ -147,14 +145,19 @@ namespace OTPManager.Shared.Services
 
         public async Task<MemoryStream> DumpAsync(string password)
         {
+            password = password ?? string.Empty;
+
             var data = await GetAllAsync();
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-            var payload = Encryptor.SimpleEncrypt(Encoding.UTF8.GetBytes(json), Encoding.UTF8.GetBytes(password), DumpAuthKey);
+            var jsonBytes = Encoding.UTF8.GetBytes(json);
+            var payload = Encryptor.SimpleEncryptWithPassword(jsonBytes, password + PasswordSalt);
             return new MemoryStream(payload);
         }
 
         public async Task<bool> RestoreAsync(Stream data, string password)
         {
+            password = password ?? string.Empty;
+
             if (data.Position != 0)
             {
                 if (data.CanSeek)
@@ -172,7 +175,7 @@ namespace OTPManager.Shared.Services
             byte[] jsonBytes;
             try
             {
-                jsonBytes = Encryptor.SimpleDecrypt(payload, Encoding.UTF8.GetBytes(password), DumpAuthKey);
+                jsonBytes = Encryptor.SimpleDecryptWithPassword(payload, password + PasswordSalt);
             }
             catch
             {
