@@ -177,4 +177,10 @@
   <data name="CopyMenuItem.Text" xml:space="preserve">
     <value>Copy</value>
   </data>
+  <data name="Export.Label" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Import.Label" xml:space="preserve">
+    <value>Import</value>
+  </data>
 </root>
