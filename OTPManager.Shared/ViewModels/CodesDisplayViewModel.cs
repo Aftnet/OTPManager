@@ -3,6 +3,7 @@ using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
+using OTPManager.Shared.Resources;
 using OTPManager.Shared.Services;
 using Plugin.FileSystem.Abstractions;
 using Plugin.Share.Abstractions;
@@ -110,7 +111,7 @@ namespace OTPManager.Shared.ViewModels
                     return;
                 }
 
-                var pwDialogResult = await DialogService.PromptAsync(new PromptConfig { InputType = InputType.Password });
+                var pwDialogResult = await DialogService.PromptAsync(new PromptConfig { InputType = InputType.Password, Message = Strings.EnterPasswordMessage });
                 if (!pwDialogResult.Ok)
                 {
                     return;
@@ -129,7 +130,7 @@ namespace OTPManager.Shared.ViewModels
 
             Export = new MvxCommand(async () =>
             {
-                var pwDialogResult = await DialogService.PromptAsync(new PromptConfig { InputType = InputType.Password });
+                var pwDialogResult = await DialogService.PromptAsync(new PromptConfig { InputType = InputType.Password, Message = Strings.EnterPasswordMessage });
                 if (!pwDialogResult.Ok)
                 {
                     return;
