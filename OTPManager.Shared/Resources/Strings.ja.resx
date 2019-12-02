@@ -120,6 +120,12 @@
   <data name="EnterPasswordMessage" xml:space="preserve">
     <value>パスワードを入力してください</value>
   </data>
+  <data name="ImportFailedMessage" xml:space="preserve">
+    <value>間違ったパスワードまたは無効なファイル</value>
+  </data>
+  <data name="ImportFailedTitle" xml:space="preserve">
+    <value>インポートに失敗しました</value>
+  </data>
   <data name="InvalidUriMessage" xml:space="preserve">
     <value>このURIは有効なOTP URIではありません</value>
   </data>

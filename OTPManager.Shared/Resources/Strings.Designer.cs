@@ -70,7 +70,7 @@ namespace OTPManager.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wrong password or invalid file selected.
+        ///   Looks up a localized string similar to Wrong password or invalid file.
         /// </summary>
         internal static string ImportFailedMessage {
             get {

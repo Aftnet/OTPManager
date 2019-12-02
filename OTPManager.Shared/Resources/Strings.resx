@@ -121,7 +121,7 @@
     <value>Enter password</value>
   </data>
   <data name="ImportFailedMessage" xml:space="preserve">
-    <value>Wrong password or invalid file selected</value>
+    <value>Wrong password or invalid file</value>
   </data>
   <data name="ImportFailedTitle" xml:space="preserve">
     <value>Import failed</value>
