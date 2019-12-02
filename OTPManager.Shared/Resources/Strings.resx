@@ -120,6 +120,12 @@
   <data name="EnterPasswordMessage" xml:space="preserve">
     <value>Enter password</value>
   </data>
+  <data name="ImportFailedMessage" xml:space="preserve">
+    <value>Wrong password or invalid file selected</value>
+  </data>
+  <data name="ImportFailedTitle" xml:space="preserve">
+    <value>Import failed</value>
+  </data>
   <data name="InvalidUriMessage" xml:space="preserve">
     <value>The provided uri is not a valid TOTP one</value>
   </data>

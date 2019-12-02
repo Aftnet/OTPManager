@@ -27,7 +27,7 @@ namespace OTPManager.Shared.ViewModels
         private IShare ShareService { get; }
         private IStorageService DataStore { get; }
         private IFileSystem FileSystem { get; }
-
+        
         private IMobileBarcodeScanner Scanner { get; }
 
         internal TaskCompletionSource<bool> DataLoadedTCS { get; set; }
@@ -124,6 +124,10 @@ namespace OTPManager.Shared.ViewModels
                     {
                         var generators = await DataStore.GetAllAsync();
                         Items = generators.Select(d => new OTPDisplayViewModel(ShareService, d)).ToList();
+                    }
+                    else
+                    {
+                        await DialogService.AlertAsync(Strings.ImportFailedMessage, Strings.ImportFailedTitle);
                     }
                 }
             });

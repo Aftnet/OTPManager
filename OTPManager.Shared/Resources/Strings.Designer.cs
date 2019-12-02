@@ -70,6 +70,24 @@ namespace OTPManager.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wrong password or invalid file selected.
+        /// </summary>
+        internal static string ImportFailedMessage {
+            get {
+                return ResourceManager.GetString("ImportFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import failed.
+        /// </summary>
+        internal static string ImportFailedTitle {
+            get {
+                return ResourceManager.GetString("ImportFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided uri is not a valid TOTP one.
         /// </summary>
         internal static string InvalidUriMessage {
