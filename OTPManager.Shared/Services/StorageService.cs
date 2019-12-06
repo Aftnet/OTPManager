@@ -1,4 +1,5 @@
-﻿using OTPManager.Shared.Components;
+﻿using Newtonsoft.Json;
+using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
 using Plugin.FileSystem.Abstractions;
 using Plugin.SecureStorage.Abstractions;
@@ -15,6 +16,34 @@ namespace OTPManager.Shared.Services
 {
     public class StorageService : IStorageService
     {
+        private class OTPGeneratorInner : OTPGenerator
+        {
+            public OTPGeneratorInner()
+            {
+
+            }
+
+            public OTPGeneratorInner(OTPGenerator input)
+            {
+                Uid = input.Uid;
+                Label = input.Label;
+                Issuer = input.Issuer;
+                AllowExporting = input.AllowExporting;
+                AlgorithmName = input.AlgorithmName;
+                Secret = input.Secret;
+                NumDigits = input.NumDigits;
+            }
+
+            [Ignore]
+            public override byte[] Secret { get; set; }
+
+            [JsonIgnore]
+            public string DbEncryptedSecret { get; set; }
+
+            [JsonIgnore]
+            public string DbEncryptedSecretIV { get; set; }
+        }
+
         internal const string AppKeychainId = "Token";
         internal const string DbFileName = "Data.db3";
         internal const string PasswordSalt = "bz77KNXdP,Bc4Acg";
@@ -35,7 +64,7 @@ namespace OTPManager.Shared.Services
             {
                 var dbPath = Path.Combine(FileSystem.LocalStorage.FullName, DbFileName);
                 var connection = new SQLiteAsyncConnection(dbPath);
-                connection.CreateTableAsync<OTPGenerator>().Wait();
+                connection.CreateTableAsync<OTPGeneratorInner>().Wait();
                 return connection;
             });
         }
@@ -43,7 +72,7 @@ namespace OTPManager.Shared.Services
         public async Task<List<OTPGenerator>> GetAllAsync()
         {
             var connection = DBConnection.Value;
-            var output = await connection.Table<OTPGenerator>().ToListAsync();
+            var output = await connection.Table<OTPGeneratorInner>().ToListAsync();
             foreach (var i in output)
             {
                 var secret = Convert.FromBase64String(i.DbEncryptedSecret);
@@ -51,30 +80,31 @@ namespace OTPManager.Shared.Services
                 i.Secret = Decrypt(secret, iv);
             }
 
-            return output.OrderBy(d => d.Label).ThenBy(d => d.Issuer).ToList();
+            return output.OrderBy(d => d.Label).ThenBy(d => d.Issuer).Cast<OTPGenerator>().ToList();
         }
 
         public Task<int> InsertOrReplaceAsync(OTPGenerator input)
         {
-            var secret = Encrypt(input.Secret, out var iv);
-            input.DbEncryptedSecret = Convert.ToBase64String(secret);
-            input.DbEncryptedSecretIV = Convert.ToBase64String(iv);
+            var data = new OTPGeneratorInner(input);
+            var secret = Encrypt(data.Secret, out var iv);
+            data.DbEncryptedSecret = Convert.ToBase64String(secret);
+            data.DbEncryptedSecretIV = Convert.ToBase64String(iv);
 
             var connection = DBConnection.Value;
-            return connection.InsertOrReplaceAsync(input);
+            return connection.InsertOrReplaceAsync(data);
         }
 
         public Task<int> DeleteAsync(OTPGenerator input)
         {
             var connection = DBConnection.Value;
-            return connection.DeleteAsync(input);
+            return connection.DeleteAsync(new OTPGeneratorInner(input));
         }
 
         public async Task ClearAsync()
         {
             var connection = DBConnection.Value;
-            await connection.DropTableAsync<OTPGenerator>();
-            await connection.CreateTableAsync<OTPGenerator>();
+            await connection.DropTableAsync<OTPGeneratorInner>();
+            await connection.CreateTableAsync<OTPGeneratorInner>();
         }
 
         private byte[] Encrypt(byte[] clearText, out byte[] IV)

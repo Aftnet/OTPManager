@@ -4,7 +4,6 @@ using OtpNet;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OTPManager.Shared.Models
 {
@@ -38,8 +37,7 @@ namespace OTPManager.Shared.Models
 
         public string AlgorithmName { get; set; }
 
-        [Ignore]
-        public byte[] Secret { get; set; }
+        public virtual byte[] Secret { get; set; }
         
         [Ignore]
         [JsonIgnore]
@@ -48,12 +46,6 @@ namespace OTPManager.Shared.Models
             get => Secret != null ? Base32Encoding.ToString(Secret) : null;
             set => Secret = Base32Encoding.ToBytes(value);
         }
-
-        [JsonIgnore]
-        public string DbEncryptedSecret { get; set; }
-
-        [JsonIgnore]
-        public string DbEncryptedSecretIV { get; set; }
 
         private int numDigits = MinNumDigits;
         public int NumDigits
