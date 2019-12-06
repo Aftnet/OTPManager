@@ -1,6 +1,5 @@
 ﻿using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
-using OtpNet;
 using System;
 using Xunit;
 
@@ -11,7 +10,7 @@ namespace OTPManager.Shared.Test.Components
         protected static readonly OTPGenerator SampleGenerator = new OTPGenerator
         {
             Label = "Alice Loller@test.com",
-            Secret = Base32Encoding.ToBytes("ABABABABABABABAB"),
+            SecretBase32 = "ABABABABABABABAB",
             AlgorithmName = OTPGenerator.HMacSha256Name,
             Issuer = "Test"
         };
