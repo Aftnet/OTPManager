@@ -1,4 +1,5 @@
-﻿using OTPManager.Shared.Components;
+﻿using Newtonsoft.Json;
+using OTPManager.Shared.Components;
 using OtpNet;
 using SQLite;
 using System;
@@ -41,14 +42,17 @@ namespace OTPManager.Shared.Models
         public byte[] Secret { get; set; }
         
         [Ignore]
+        [JsonIgnore]
         public string SecretBase32
         {
             get => Secret != null ? Base32Encoding.ToString(Secret) : null;
             set => Secret = Base32Encoding.ToBytes(value);
         }
 
+        [JsonIgnore]
         public string DbEncryptedSecret { get; set; }
 
+        [JsonIgnore]
         public string DbEncryptedSecretIV { get; set; }
 
         private int numDigits = MinNumDigits;
