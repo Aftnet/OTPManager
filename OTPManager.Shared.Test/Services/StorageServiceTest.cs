@@ -69,8 +69,6 @@ namespace OTPManager.Shared.Test.Services
                 var match = TestData.First(d => d.Uid == i.Uid);
                 Assert.Equal(match.AlgorithmName, i.AlgorithmName);
                 Assert.Equal(match.AllowExporting, i.AllowExporting);
-                Assert.Equal(match.DbEncryptedSecret, i.DbEncryptedSecret);
-                Assert.Equal(match.DbEncryptedSecretIV, i.DbEncryptedSecretIV);
                 Assert.Equal(match.Issuer, i.Issuer);
                 Assert.Equal(match.NumDigits, i.NumDigits);
                 Assert.Equal(match.Secret, i.Secret);
