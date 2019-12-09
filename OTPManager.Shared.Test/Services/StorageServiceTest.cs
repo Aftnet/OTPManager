@@ -9,14 +9,14 @@ using Xunit;
 
 namespace OTPManager.Shared.Test.Services
 {
-    public class StorageServiceTest : TestBase<StorageService>, IDisposable
+    public class StorageServiceTest : TestBase<LegacyStorageService>, IDisposable
     {
         private static readonly DirectoryInfo LocalFolder = new DirectoryInfo(new System.IO.DirectoryInfo("."));
 
-        protected override StorageService GetTarget()
+        protected override LegacyStorageService GetTarget()
         {
             FileSystemMock.Setup(d => d.LocalStorage).Returns(LocalFolder);
-            return new StorageService(SecureStorageMock.Object, FileSystemMock.Object);
+            return new LegacyStorageService(SecureStorageMock.Object, FileSystemMock.Object);
         }
 
         private static readonly OTPGenerator[] TestData;
@@ -40,18 +40,18 @@ namespace OTPManager.Shared.Test.Services
         [Fact]
         public async Task EncryptionPasswordIsGeneratedIfNoneIsFound()
         {
-            SecureStorageMock.Setup(d => d.GetValue(StorageService.AppKeychainId, null)).Returns(null as string);
+            SecureStorageMock.Setup(d => d.GetValue(LegacyStorageService.AppKeychainId, null)).Returns(null as string);
             var contents = await Target.InsertOrReplaceAsync(CreateOTPGenerator(1));
-            SecureStorageMock.Verify(d => d.GetValue(StorageService.AppKeychainId, null));
-            SecureStorageMock.Verify(d => d.SetValue(StorageService.AppKeychainId, It.Is<string>(e => !string.IsNullOrEmpty(e))));
+            SecureStorageMock.Verify(d => d.GetValue(LegacyStorageService.AppKeychainId, null));
+            SecureStorageMock.Verify(d => d.SetValue(LegacyStorageService.AppKeychainId, It.Is<string>(e => !string.IsNullOrEmpty(e))));
         }
 
         [Fact]
         public async Task DataOperationWork()
         {
             string keychainKey = null;
-            SecureStorageMock.Setup(d => d.SetValue(StorageService.AppKeychainId, It.IsAny<string>())).Callback((string d, string e) => keychainKey = e);
-            SecureStorageMock.Setup(d => d.GetValue(StorageService.AppKeychainId, null)).Returns(keychainKey);
+            SecureStorageMock.Setup(d => d.SetValue(LegacyStorageService.AppKeychainId, It.IsAny<string>())).Callback((string d, string e) => keychainKey = e);
+            SecureStorageMock.Setup(d => d.GetValue(LegacyStorageService.AppKeychainId, null)).Returns(keychainKey);
 
             await Target.ClearAsync();
             var contents = await Target.GetAllAsync();
