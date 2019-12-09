@@ -1,6 +1,7 @@
 ﻿using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
 using Plugin.FileSystem.Abstractions;
+using Plugin.SecureStorage.Abstractions;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,18 @@ namespace OTPManager.Shared.Services
         private const string DbFileName = "Data_v2.db3";
         private const string PasswordSalt = "bz77KNXdP,Bc4Acg";
 
+        private readonly ISecureStorage SecureStorage;
+        private readonly IFileSystem FileSystem;
+
         private FileInfo DbFile { get; }
         private SemaphoreSlim ConnectionMutex { get; } = new SemaphoreSlim(1, 1);
         private SQLiteAsyncConnection Connection { get; set; }
 
-        public StorageService(IFileSystem fileSystem)
+        public StorageService(ISecureStorage secureStorage, IFileSystem fileSystem)
         {
+            SecureStorage = secureStorage ?? throw new ArgumentException(nameof(SecureStorage));
+            FileSystem = fileSystem ?? throw new ArgumentException(nameof(fileSystem));
+
             DbFile = new FileInfo(Path.Combine(fileSystem.LocalStorage.FullName, DbFileName));
         }
 
@@ -139,6 +146,7 @@ namespace OTPManager.Shared.Services
                 var connString = new SQLiteConnectionString(DbFile.FullName, true, key: "password");
                 Connection = new SQLiteAsyncConnection(connString);
                 await Connection.CreateTableAsync<OTPGenerator>();
+                await MigrateOldDb(Connection);
             }
 
             return Connection;
@@ -148,6 +156,22 @@ namespace OTPManager.Shared.Services
         {
             await Connection.CloseAsync();
             Connection = null;
+        }
+
+        private async Task MigrateOldDb(SQLiteAsyncConnection connection)
+        {
+            var oldStore = new LegacyStorageService(SecureStorage, FileSystem);
+            if (oldStore.DbFile.Exists)
+            {
+                var items = await oldStore.GetAllAsync();
+                foreach (var i in items)
+                {
+                    await connection.InsertOrReplaceAsync(i);
+                }
+
+                await oldStore.CloseConnectionAsync();
+                oldStore.DbFile.Delete();
+            }
         }
     }
 }

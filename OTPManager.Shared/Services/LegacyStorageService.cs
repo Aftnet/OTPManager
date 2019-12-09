@@ -48,17 +48,16 @@ namespace OTPManager.Shared.Services
         internal const string PasswordSalt = "bz77KNXdP,Bc4Acg";
 
         private readonly ISecureStorage SecureStorage;
-        private readonly IFileSystem FileSystem;
 
         private readonly Lazy<byte[]> EncryptionKey;
 
-        private FileInfo DbFile { get; }
+        internal FileInfo DbFile { get; }
         private SemaphoreSlim ConnectionMutex { get; } = new SemaphoreSlim(1, 1);
         private SQLiteAsyncConnection Connection { get; set; }
 
         public LegacyStorageService(ISecureStorage secureStorage, IFileSystem fileSystem)
         {
-            SecureStorage = secureStorage;
+            SecureStorage = secureStorage ?? throw new ArgumentException(nameof(SecureStorage));
 
             DbFile = new FileInfo(Path.Combine(fileSystem.LocalStorage.FullName, DbFileName));
             EncryptionKey = new Lazy<byte[]>(GetEncryptionKey);
@@ -200,7 +199,7 @@ namespace OTPManager.Shared.Services
             return Connection;
         }
 
-        private async Task CloseConnectionAsync()
+        internal async Task CloseConnectionAsync()
         {
             await Connection.CloseAsync();
             Connection = null;
