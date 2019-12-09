@@ -9,11 +9,11 @@ using Xunit;
 
 namespace OTPManager.Shared.Test.Services
 {
-    public class StorageServiceTest : TestBase<LegacyStorageService>, IDisposable
+    public class StorageServiceTest : TestBase<IStorageService>, IDisposable
     {
         private static readonly DirectoryInfo LocalFolder = new DirectoryInfo(new System.IO.DirectoryInfo("."));
 
-        protected override LegacyStorageService GetTarget()
+        protected override IStorageService GetTarget()
         {
             FileSystemMock.Setup(d => d.LocalStorage).Returns(LocalFolder);
             return new LegacyStorageService(SecureStorageMock.Object, FileSystemMock.Object);
