@@ -166,7 +166,7 @@ namespace OTPManager.Shared.Services
                 var items = await oldStore.GetAllAsync();
                 foreach (var i in items)
                 {
-                    await connection.InsertOrReplaceAsync(i);
+                    await connection.InsertOrReplaceAsync(i, typeof(OTPGenerator));
                 }
 
                 await oldStore.CloseConnectionAsync();

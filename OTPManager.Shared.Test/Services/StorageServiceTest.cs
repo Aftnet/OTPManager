@@ -16,7 +16,7 @@ namespace OTPManager.Shared.Test.Services
         protected override IStorageService GetTarget()
         {
             FileSystemMock.Setup(d => d.LocalStorage).Returns(LocalFolder);
-            return new LegacyStorageService(SecureStorageMock.Object, FileSystemMock.Object);
+            return new StorageService(SecureStorageMock.Object, FileSystemMock.Object);
         }
 
         private static readonly OTPGenerator[] TestData;
