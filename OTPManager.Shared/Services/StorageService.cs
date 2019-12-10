@@ -1,5 +1,6 @@
 ﻿using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
+using Plugin.DeviceInfo.Abstractions;
 using Plugin.FileSystem.Abstractions;
 using Plugin.SecureStorage.Abstractions;
 using SQLite;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,11 +17,12 @@ namespace OTPManager.Shared.Services
 {
     public class StorageService : IStorageService
     {
+        private const string AppKeychainId = "Token";
         private const string DbFileName = "Data_v2.db3";
         private const string PasswordSalt = "bz77KNXdP,Bc4Acg";
 
-        private readonly ISecureStorage SecureStorage;
-        private readonly IFileSystem FileSystem;
+        private ISecureStorage SecureStorage { get; }
+        private IFileSystem FileSystem { get; }
 
         private FileInfo DbFile { get; }
         private SemaphoreSlim ConnectionMutex { get; } = new SemaphoreSlim(1, 1);
@@ -143,7 +146,8 @@ namespace OTPManager.Shared.Services
         {
             if (Connection == null)
             {
-                var connString = new SQLiteConnectionString(DbFile.FullName, true, key: "password");
+                var dbPassword = GetDBPassword();
+                var connString = new SQLiteConnectionString(DbFile.FullName, true, key: dbPassword);
                 Connection = new SQLiteAsyncConnection(connString);
                 await Connection.CreateTableAsync<OTPGenerator>();
                 await MigrateOldDb(Connection);
@@ -156,6 +160,26 @@ namespace OTPManager.Shared.Services
         {
             await Connection.CloseAsync();
             Connection = null;
+        }
+
+        private byte[] GetDBPassword()
+        {
+            var base64 = SecureStorage.GetValue(AppKeychainId);
+            byte[] output;
+            if (base64 != null)
+            {
+                output = Convert.FromBase64String(base64);
+            }
+            else
+            {
+                var rand = new Random();
+                output = new byte[32];
+                rand.NextBytes(output);
+                base64 = Convert.ToBase64String(output);
+                SecureStorage.SetValue(AppKeychainId, base64);
+            }
+
+            return output;
         }
 
         private async Task MigrateOldDb(SQLiteAsyncConnection connection)
