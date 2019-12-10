@@ -2,8 +2,6 @@
 using MvvmCross;
 using MvvmCross.ViewModels;
 using OTPManager.Shared.Services;
-using OTPManager.Shared.ViewModels;
-using Plugin.DeviceInfo;
 using Plugin.FileSystem;
 using Plugin.SecureStorage;
 using Plugin.Share;
@@ -15,7 +13,6 @@ namespace OTPManager.Shared
         public override void Initialize()
         {
             var ioc = Mvx.IoCProvider;
-            ioc.RegisterSingleton(CrossDeviceInfo.Current);
             ioc.RegisterSingleton(CrossSecureStorage.Current);
             ioc.RegisterSingleton(CrossFileSystem.Current);
             ioc.RegisterSingleton(CrossShare.Current);
