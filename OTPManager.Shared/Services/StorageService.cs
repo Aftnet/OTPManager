@@ -1,6 +1,5 @@
 ﻿using OTPManager.Shared.Components;
 using OTPManager.Shared.Models;
-using Plugin.DeviceInfo.Abstractions;
 using Plugin.FileSystem.Abstractions;
 using Plugin.SecureStorage.Abstractions;
 using SQLite;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +26,8 @@ namespace OTPManager.Shared.Services
         private SemaphoreSlim ConnectionMutex { get; } = new SemaphoreSlim(1, 1);
         private SQLiteAsyncConnection Connection { get; set; }
 
+        public event ErrorEventHandler ErrorOccurred;
+
         public StorageService(ISecureStorage secureStorage, IFileSystem fileSystem)
         {
             SecureStorage = secureStorage ?? throw new ArgumentException(nameof(SecureStorage));
@@ -40,7 +40,7 @@ namespace OTPManager.Shared.Services
         {
             await ConnectionMutex.WaitAsync();
             var connection = await GetConnectionAsync();
-            var output = await connection.Table<OTPGenerator>().ToListAsync();
+            var output = connection != null ? await connection.Table<OTPGenerator>().ToListAsync() : new List<OTPGenerator>();
             output = output.OrderBy(d => d.Label).ThenBy(d => d.Issuer).ToList();
             ConnectionMutex.Release();
             return output;
@@ -50,7 +50,7 @@ namespace OTPManager.Shared.Services
         {
             await ConnectionMutex.WaitAsync();
             var connection = await GetConnectionAsync();
-            var result = await connection.InsertOrReplaceAsync(input);
+            var result = connection != null ? await connection.InsertOrReplaceAsync(input) : -1;
             ConnectionMutex.Release();
             return result;
         }
@@ -59,7 +59,7 @@ namespace OTPManager.Shared.Services
         {
             await ConnectionMutex.WaitAsync();
             var connection = await GetConnectionAsync();
-            var result = await connection.DeleteAsync(input);
+            var result = connection != null ? await connection.DeleteAsync(input) : -1;
             ConnectionMutex.Release();
             return result;
         }
@@ -68,8 +68,12 @@ namespace OTPManager.Shared.Services
         {
             await ConnectionMutex.WaitAsync();
             var connection = await GetConnectionAsync();
-            await connection.DropTableAsync<OTPGenerator>();
-            await connection.CreateTableAsync<OTPGenerator>();
+            if (connection != null)
+            {
+                await connection.DropTableAsync<OTPGenerator>();
+                await connection.CreateTableAsync<OTPGenerator>();
+            }
+
             ConnectionMutex.Release();
         }
 
@@ -147,9 +151,23 @@ namespace OTPManager.Shared.Services
             if (Connection == null)
             {
                 var dbPassword = GetDBPassword();
-                var connString = new SQLiteConnectionString(DbFile.FullName, true, key: dbPassword);
+                var connString = new SQLiteConnectionString(DbFile.FullName, true, key: GetDBPassword());
                 Connection = new SQLiteAsyncConnection(connString);
-                await Connection.CreateTableAsync<OTPGenerator>();
+                try
+                {
+                    await Connection.CreateTableAsync<OTPGenerator>();
+                }
+                catch (SQLiteException e) when (e.Result == SQLite3.Result.NonDBFile)
+                {
+                    //Encryption password does not match anymore. Most likely due to roaming.
+                    //Notify user and delete database file. Hope they had backup.
+                    await Connection.CloseAsync();
+                    Connection = null;
+                    DbFile.Delete();
+                    ErrorOccurred?.Invoke(this, new ErrorEventArgs(e));
+                    return null;
+                }
+
                 await MigrateOldDb(Connection);
             }
 

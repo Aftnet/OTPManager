@@ -159,6 +159,7 @@ namespace OTPManager.Shared.ViewModels
         public override async void ViewAppearing()
         {
             DataLoadedTCS = new TaskCompletionSource<bool>();
+            DataStore.ErrorOccurred += DataStore_ErrorOccurred;
             var generators = await DataStore.GetAllAsync();
             DataLoadedTCS.SetResult(true);
 
@@ -168,9 +169,9 @@ namespace OTPManager.Shared.ViewModels
                 BackgroundRefreshTimer = new Timer(d => InvokeOnMainThread(UIRefresh), this, BackgroudRefreshInterval, BackgroudRefreshInterval);
             }
         }
-
         public override void ViewDisappearing()
         {
+            DataStore.ErrorOccurred -= DataStore_ErrorOccurred;
             BackgroundRefreshTimer?.Dispose();
             BackgroundRefreshTimer = null;
         }
@@ -189,6 +190,11 @@ namespace OTPManager.Shared.ViewModels
 
                 NextUpdateTime = new DateTime(currentTime.AddSeconds(OTPGenerator.TimeStepSeconds).Ticks % (TimeSpan.TicksPerSecond * OTPGenerator.TimeStepSeconds));
             }
+        }
+
+        private void DataStore_ErrorOccurred(object sender, System.IO.ErrorEventArgs e)
+        {
+            DialogService.AlertAsync(Strings.DatabaseCorruptMessage, Strings.DatabaseCorruptTitle);
         }
     }
 }

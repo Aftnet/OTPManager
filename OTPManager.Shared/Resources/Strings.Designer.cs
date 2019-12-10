@@ -61,6 +61,26 @@ namespace OTPManager.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The database has become corrupt or credentials roaming has caused a conflict.
+        ///A new empty database will be generated.
+        ///You can restore your data from a previous backup..
+        /// </summary>
+        internal static string DatabaseCorruptMessage {
+            get {
+                return ResourceManager.GetString("DatabaseCorruptMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database corrupt.
+        /// </summary>
+        internal static string DatabaseCorruptTitle {
+            get {
+                return ResourceManager.GetString("DatabaseCorruptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter password.
         /// </summary>
         internal static string EnterPasswordMessage {
