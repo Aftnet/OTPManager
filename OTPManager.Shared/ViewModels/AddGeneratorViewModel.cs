@@ -78,7 +78,7 @@ namespace OTPManager.Shared.ViewModels
             var otpGenerator = new OTPGenerator()
             {
                 Label = Label,
-                Secret = Base32Encoding.ToBytes(SecretBase32),
+                SecretBase32 = SecretBase32,
                 Issuer = Issuer,
                 AllowExporting = AllowExporting
             };

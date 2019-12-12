@@ -117,6 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DatabaseCorruptMessage" xml:space="preserve">
+    <value>Il database si é corrotto o il roaming delle credenziali ha causato un conflitto
+Un nuovo database verrá creato
+Usare un backup per recuperare i dati precedenti</value>
+  </data>
+  <data name="DatabaseCorruptTitle" xml:space="preserve">
+    <value>Database corrotto</value>
+  </data>
+  <data name="EnterPasswordMessage" xml:space="preserve">
+    <value>Inserire password</value>
+  </data>
+  <data name="ImportFailedMessage" xml:space="preserve">
+    <value>Password sbagliata o file non valido</value>
+  </data>
+  <data name="ImportFailedTitle" xml:space="preserve">
+    <value>Impossibile importare</value>
+  </data>
   <data name="InvalidUriMessage" xml:space="preserve">
     <value>L'URI non e' OTP</value>
   </data>

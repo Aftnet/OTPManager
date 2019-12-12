@@ -1,4 +1,5 @@
-﻿using OTPManager.Shared.Models;
+﻿using OTPManager.Shared.Components;
+using OTPManager.Shared.Models;
 using Plugin.FileSystem.Abstractions;
 using Plugin.SecureStorage.Abstractions;
 using SQLite;
@@ -6,138 +7,213 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OTPManager.Shared.Services
 {
     public class StorageService : IStorageService
     {
-        internal const string AppKeychainId = "Token";
-        internal const string DbFileName = "Data.db3";
+        private const string AppKeychainId = "Token";
+        private const string DbFileName = "Data_v2.db3";
+        private const string PasswordSalt = "bz77KNXdP,Bc4Acg";
 
-        private readonly ISecureStorage SecureStorage;
-        private readonly IFileSystem FileSystem;
+        private ISecureStorage SecureStorage { get; }
+        private IFileSystem FileSystem { get; }
 
-        private readonly Lazy<byte[]> EncryptionKey;
-        private readonly Lazy<SQLiteAsyncConnection> DBConnection;
+        private FileInfo DbFile { get; }
+        private SemaphoreSlim ConnectionMutex { get; } = new SemaphoreSlim(1, 1);
+        private SQLiteAsyncConnection Connection { get; set; }
+
+        public event ErrorEventHandler ErrorOccurred;
 
         public StorageService(ISecureStorage secureStorage, IFileSystem fileSystem)
         {
-            SecureStorage = secureStorage;
-            FileSystem = fileSystem;
+            SecureStorage = secureStorage ?? throw new ArgumentException(nameof(SecureStorage));
+            FileSystem = fileSystem ?? throw new ArgumentException(nameof(fileSystem));
 
-            EncryptionKey = new Lazy<byte[]>(GetEncryptionKey);
-            DBConnection = new Lazy<SQLiteAsyncConnection>(() =>
-            {
-                var dbPath = Path.Combine(FileSystem.LocalStorage.FullName, DbFileName);
-                var connection = new SQLiteAsyncConnection(dbPath);
-                connection.CreateTableAsync<OTPGenerator>().Wait();
-                return connection;
-            });
+            DbFile = new FileInfo(Path.Combine(fileSystem.LocalStorage.FullName, DbFileName));
         }
 
         public async Task<List<OTPGenerator>> GetAllAsync()
         {
-            var connection = DBConnection.Value;
-            var output = await connection.Table<OTPGenerator>().ToListAsync();
-            foreach (var i in output)
-            {
-                var secret = Convert.FromBase64String(i.DbEncryptedSecret);
-                var iv = Convert.FromBase64String(i.DbEncryptedSecretIV);
-                i.Secret = Decrypt(secret, iv);
-            }
-
-            return output.OrderBy(d => d.Label).ThenBy(d => d.Issuer).ToList();
+            await ConnectionMutex.WaitAsync();
+            var connection = await GetConnectionAsync();
+            var output = connection != null ? await connection.Table<OTPGenerator>().ToListAsync() : new List<OTPGenerator>();
+            output = output.OrderBy(d => d.Label).ThenBy(d => d.Issuer).ToList();
+            ConnectionMutex.Release();
+            return output;
         }
 
-        public Task<int> InsertOrReplaceAsync(OTPGenerator input)
+        public async Task<int> InsertOrReplaceAsync(OTPGenerator input)
         {
-            var secret = Encrypt(input.Secret, out var iv);
-            input.DbEncryptedSecret = Convert.ToBase64String(secret);
-            input.DbEncryptedSecretIV = Convert.ToBase64String(iv);
-
-            var connection = DBConnection.Value;
-            return connection.InsertOrReplaceAsync(input);
+            await ConnectionMutex.WaitAsync();
+            var connection = await GetConnectionAsync();
+            var result = connection != null ? await connection.InsertOrReplaceAsync(input) : -1;
+            ConnectionMutex.Release();
+            return result;
         }
 
-        public Task<int> DeleteAsync(OTPGenerator input)
+        public async Task<int> DeleteAsync(OTPGenerator input)
         {
-            var connection = DBConnection.Value;
-            return connection.DeleteAsync(input);
+            await ConnectionMutex.WaitAsync();
+            var connection = await GetConnectionAsync();
+            var result = connection != null ? await connection.DeleteAsync(input) : -1;
+            ConnectionMutex.Release();
+            return result;
         }
 
         public async Task ClearAsync()
         {
-            var connection = DBConnection.Value;
-            await connection.DropTableAsync<OTPGenerator>();
-            await connection.CreateTableAsync<OTPGenerator>();
+            await ConnectionMutex.WaitAsync();
+            var connection = await GetConnectionAsync();
+            if (connection != null)
+            {
+                await connection.DropTableAsync<OTPGenerator>();
+                await connection.CreateTableAsync<OTPGenerator>();
+            }
+
+            ConnectionMutex.Release();
         }
 
-        private byte[] Encrypt(byte[] clearText, out byte[] IV)
+        public async Task<MemoryStream> DumpAsync(string password)
         {
-            using (var algorithm = Aes.Create())
+            password = password ?? string.Empty;
+
+            var data = await GetAllAsync();
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+            var jsonBytes = Encoding.UTF8.GetBytes(json);
+            var payload = Encryptor.SimpleEncryptWithPassword(jsonBytes, password + PasswordSalt);
+            return new MemoryStream(payload);
+        }
+
+        public async Task<bool> RestoreAsync(Stream data, string password)
+        {
+            password = password ?? string.Empty;
+
+            if (data.Position != 0)
             {
-                algorithm.Padding = PaddingMode.Zeros;
-                algorithm.Key = EncryptionKey.Value;
-                algorithm.GenerateIV();
-
-                using (var encryptor = algorithm.CreateEncryptor())
-                using (var memStream = new MemoryStream())
-                using (var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write))
+                if (data.CanSeek)
                 {
-                    cryptoStream.Write(clearText, 0, clearText.Length);
-                    cryptoStream.FlushFinalBlock();
-
-                    var output = memStream.ToArray();
-                    IV = algorithm.IV;
-                    return output;
+                    data.Position = 0;
+                }
+                else
+                {
+                    return false;
                 }
             }
-        }
 
-        private byte[] Decrypt(byte[] cypherText, byte[] IV)
-        {
-            using (var algorithm = Aes.Create())
+            var payload = new byte[data.Length];
+            data.Read(payload, 0, payload.Length);
+            byte[] jsonBytes;
+            try
             {
-                algorithm.Padding = PaddingMode.Zeros;
-                algorithm.Key = EncryptionKey.Value;
-                algorithm.IV = IV;
-
-                using (var decryptor = algorithm.CreateDecryptor())
-                using (var memStream = new MemoryStream(cypherText))
-                using (var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
-                using (var outStream = new MemoryStream())
-                {
-                    cryptoStream.CopyTo(outStream);
-                    var output = outStream.ToArray();
-                    return output;
-                }
+                jsonBytes = Encryptor.SimpleDecryptWithPassword(payload, password + PasswordSalt);
             }
+            catch
+            {
+                return false;
+            }
+
+            if (jsonBytes == null)
+            {
+                return false;
+            }
+
+            OTPGenerator[] items;
+            try
+            {
+                var json = Encoding.UTF8.GetString(jsonBytes);
+                items = Newtonsoft.Json.JsonConvert.DeserializeObject<OTPGenerator[]>(json);
+            }
+            catch
+            {
+                return false;
+            }
+
+            if (!items.Any())
+            {
+                return false;
+            }
+
+            await ClearAsync();
+            foreach (var i in items)
+            {
+                await InsertOrReplaceAsync(i);
+            }
+
+            return true;
         }
 
-        private byte[] GetEncryptionKey()
+        private async Task<SQLiteAsyncConnection> GetConnectionAsync()
         {
-            var output = default(byte[]);
-            var keyString = SecureStorage.GetValue(AppKeychainId);
-
-            if (keyString == null)
+            if (Connection == null)
             {
-                using (var algorithm = Aes.Create())
+                var dbPassword = GetDBPassword();
+                var connString = new SQLiteConnectionString(DbFile.FullName, true, key: GetDBPassword());
+                Connection = new SQLiteAsyncConnection(connString);
+                try
                 {
-                    algorithm.GenerateKey();
-                    output = algorithm.Key;
+                    await Connection.CreateTableAsync<OTPGenerator>();
+                }
+                catch (SQLiteException e) when (e.Result == SQLite3.Result.NonDBFile)
+                {
+                    //Encryption password does not match anymore. Most likely due to roaming.
+                    //Notify user and delete database file. Hope they had backup.
+                    await Connection.CloseAsync();
+                    Connection = null;
+                    DbFile.Delete();
+                    ErrorOccurred?.Invoke(this, new ErrorEventArgs(e));
+                    return null;
                 }
 
-                keyString = Convert.ToBase64String(output);
-                SecureStorage.SetValue(AppKeychainId, keyString);
+                await MigrateOldDb(Connection);
+            }
+
+            return Connection;
+        }
+
+        private async Task CloseConnectionAsync()
+        {
+            await Connection.CloseAsync();
+            Connection = null;
+        }
+
+        private byte[] GetDBPassword()
+        {
+            var base64 = SecureStorage.GetValue(AppKeychainId);
+            byte[] output;
+            if (base64 != null)
+            {
+                output = Convert.FromBase64String(base64);
             }
             else
             {
-                output = Convert.FromBase64String(keyString);
+                var rand = new Random();
+                output = new byte[32];
+                rand.NextBytes(output);
+                base64 = Convert.ToBase64String(output);
+                SecureStorage.SetValue(AppKeychainId, base64);
             }
 
             return output;
+        }
+
+        private async Task MigrateOldDb(SQLiteAsyncConnection connection)
+        {
+            var oldStore = new LegacyStorageService(SecureStorage, FileSystem);
+            if (oldStore.DbFile.Exists)
+            {
+                var items = await oldStore.GetAllAsync();
+                foreach (var i in items)
+                {
+                    await connection.InsertOrReplaceAsync(i, typeof(OTPGenerator));
+                }
+
+                await oldStore.CloseConnectionAsync();
+                oldStore.DbFile.Delete();
+            }
         }
     }
 }

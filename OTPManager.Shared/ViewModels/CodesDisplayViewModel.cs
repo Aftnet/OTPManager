@@ -3,7 +3,9 @@ using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
+using OTPManager.Shared.Resources;
 using OTPManager.Shared.Services;
+using Plugin.FileSystem.Abstractions;
 using Plugin.Share.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -16,12 +18,16 @@ namespace OTPManager.Shared.ViewModels
 {
     public class CodesDisplayViewModel : MvxViewModel
     {
+        private const string DumpFileExtension = ".otpm";
+
         internal static readonly TimeSpan BackgroudRefreshInterval = TimeSpan.FromMilliseconds(50);
 
         private IMvxNavigationService Navigator { get; }
         private IUserDialogs DialogService { get; }
         private IShare ShareService { get; }
         private IStorageService DataStore { get; }
+        private IFileSystem FileSystem { get; }
+        
         private IMobileBarcodeScanner Scanner { get; }
 
         internal TaskCompletionSource<bool> DataLoadedTCS { get; set; }
@@ -56,15 +62,18 @@ namespace OTPManager.Shared.ViewModels
         public IMvxCommand<OTPDisplayViewModel> ItemClicked { get; }
         public IMvxCommand CreateEntryManual { get; }
         public IMvxCommand CreateEntryQR { get; }
+        public IMvxCommand Import { get; }
+        public IMvxCommand Export { get; }
 
         private Timer BackgroundRefreshTimer;
 
-        public CodesDisplayViewModel(IMvxNavigationService navigator, IUserDialogs dialogService, IShare shareService, IStorageService dataStore, IMobileBarcodeScanner scanner)
+        public CodesDisplayViewModel(IMvxNavigationService navigator, IUserDialogs dialogService, IShare shareService, IStorageService dataStore, IFileSystem fileSystem, IMobileBarcodeScanner scanner)
         {
             Navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
             DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             ShareService = shareService ?? throw new ArgumentNullException(nameof(shareService));
             DataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
+            FileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             Scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
 
             ItemClicked = new MvxCommand<OTPDisplayViewModel>(d =>
@@ -93,11 +102,64 @@ namespace OTPManager.Shared.ViewModels
                     }
                 }
             });
+
+            Import = new MvxCommand(async () =>
+            {
+                var inFile = await FileSystem.PickFileAsync(new string[] { DumpFileExtension });
+                if (inFile == null)
+                {
+                    return;
+                }
+
+                var pwDialogResult = await DialogService.PromptAsync(new PromptConfig { InputType = InputType.Password, Message = Strings.EnterPasswordMessage });
+                if (!pwDialogResult.Ok)
+                {
+                    return;
+                }
+
+                using (var inStream = await inFile.OpenAsync(System.IO.FileAccess.Read))
+                {
+                    var restoreSuccess = await DataStore.RestoreAsync(inStream, pwDialogResult.Value);
+                    if (restoreSuccess)
+                    {
+                        var generators = await DataStore.GetAllAsync();
+                        Items = generators.Select(d => new OTPDisplayViewModel(ShareService, d)).ToList();
+                    }
+                    else
+                    {
+                        await DialogService.AlertAsync(Strings.ImportFailedMessage, Strings.ImportFailedTitle);
+                    }
+                }
+            });
+
+            Export = new MvxCommand(async () =>
+            {
+                var pwDialogResult = await DialogService.PromptAsync(new PromptConfig { InputType = InputType.Password, Message = Strings.EnterPasswordMessage });
+                if (!pwDialogResult.Ok)
+                {
+                    return;
+                }
+
+                var outFile = await FileSystem.PickSaveFileAsync(DumpFileExtension);
+                if (outFile == null)
+                {
+                    return;
+                }
+
+                var payload = await DataStore.DumpAsync(pwDialogResult.Value);
+                using (var outStream = await outFile.OpenAsync(System.IO.FileAccess.ReadWrite))
+                {
+                    outStream.Position = 0;
+                    await payload.CopyToAsync(outStream);
+                    outStream.SetLength(payload.Length);
+                }
+            });
         }
 
         public override async void ViewAppearing()
         {
             DataLoadedTCS = new TaskCompletionSource<bool>();
+            DataStore.ErrorOccurred += DataStore_ErrorOccurred;
             var generators = await DataStore.GetAllAsync();
             DataLoadedTCS.SetResult(true);
 
@@ -107,9 +169,9 @@ namespace OTPManager.Shared.ViewModels
                 BackgroundRefreshTimer = new Timer(d => InvokeOnMainThread(UIRefresh), this, BackgroudRefreshInterval, BackgroudRefreshInterval);
             }
         }
-
         public override void ViewDisappearing()
         {
+            DataStore.ErrorOccurred -= DataStore_ErrorOccurred;
             BackgroundRefreshTimer?.Dispose();
             BackgroundRefreshTimer = null;
         }
@@ -128,6 +190,11 @@ namespace OTPManager.Shared.ViewModels
 
                 NextUpdateTime = new DateTime(currentTime.AddSeconds(OTPGenerator.TimeStepSeconds).Ticks % (TimeSpan.TicksPerSecond * OTPGenerator.TimeStepSeconds));
             }
+        }
+
+        private void DataStore_ErrorOccurred(object sender, System.IO.ErrorEventArgs e)
+        {
+            DialogService.AlertAsync(Strings.DatabaseCorruptMessage, Strings.DatabaseCorruptTitle);
         }
     }
 }

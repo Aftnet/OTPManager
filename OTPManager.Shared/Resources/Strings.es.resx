@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EnterPasswordMessage" xml:space="preserve">
+    <value>Introducir la contraseña</value>
+  </data>
+  <data name="ImportFailedMessage" xml:space="preserve">
+    <value>Contraseña incorrecta o archivo no válido</value>
+  </data>
+  <data name="ImportFailedTitle" xml:space="preserve">
+    <value>Importación fallida</value>
+  </data>
   <data name="InvalidUriMessage" xml:space="preserve">
     <value>El URI proporcionado no es válido uno TOTP</value>
   </data>

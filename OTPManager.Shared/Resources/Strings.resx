@@ -117,6 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DatabaseCorruptMessage" xml:space="preserve">
+    <value>The database has become corrupt or credentials roaming has caused a conflict.
+A new empty database will be generated.
+You can restore your data from a previous backup.</value>
+  </data>
+  <data name="DatabaseCorruptTitle" xml:space="preserve">
+    <value>Database corrupt</value>
+  </data>
+  <data name="EnterPasswordMessage" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="ImportFailedMessage" xml:space="preserve">
+    <value>Wrong password or invalid file</value>
+  </data>
+  <data name="ImportFailedTitle" xml:space="preserve">
+    <value>Import failed</value>
+  </data>
   <data name="InvalidUriMessage" xml:space="preserve">
     <value>The provided uri is not a valid TOTP one</value>
   </data>

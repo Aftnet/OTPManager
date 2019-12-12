@@ -10,7 +10,6 @@
 
 namespace OTPManager.Shared.Resources {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -20,7 +19,7 @@ namespace OTPManager.Shared.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -40,7 +39,7 @@ namespace OTPManager.Shared.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OTPManager.Shared.Resources.Strings", typeof(Strings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OTPManager.Shared.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,6 +57,53 @@ namespace OTPManager.Shared.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The database has become corrupt or credentials roaming has caused a conflict.
+        ///A new empty database will be generated.
+        ///You can restore your data from a previous backup..
+        /// </summary>
+        internal static string DatabaseCorruptMessage {
+            get {
+                return ResourceManager.GetString("DatabaseCorruptMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database corrupt.
+        /// </summary>
+        internal static string DatabaseCorruptTitle {
+            get {
+                return ResourceManager.GetString("DatabaseCorruptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter password.
+        /// </summary>
+        internal static string EnterPasswordMessage {
+            get {
+                return ResourceManager.GetString("EnterPasswordMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong password or invalid file.
+        /// </summary>
+        internal static string ImportFailedMessage {
+            get {
+                return ResourceManager.GetString("ImportFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import failed.
+        /// </summary>
+        internal static string ImportFailedTitle {
+            get {
+                return ResourceManager.GetString("ImportFailedTitle", resourceCulture);
             }
         }
         

@@ -2,7 +2,6 @@
 using MvvmCross;
 using MvvmCross.ViewModels;
 using OTPManager.Shared.Services;
-using OTPManager.Shared.ViewModels;
 using Plugin.FileSystem;
 using Plugin.SecureStorage;
 using Plugin.Share;
