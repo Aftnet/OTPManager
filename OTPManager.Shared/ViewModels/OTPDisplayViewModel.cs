@@ -1,5 +1,4 @@
 ﻿using MvvmCross.Commands;
-using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
 using Plugin.Share.Abstractions;
@@ -29,7 +28,7 @@ namespace OTPManager.Shared.ViewModels
             ShareService = shareService;
 
             Generator = gen;
-            UpdateOTP(DateTime.Now);
+            UpdateOTP(DateTime.UtcNow);
 
             CopyToClipboard = new MvxCommand(() =>
             {

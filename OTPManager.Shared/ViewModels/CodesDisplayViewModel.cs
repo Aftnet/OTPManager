@@ -32,7 +32,7 @@ namespace OTPManager.Shared.ViewModels
 
         internal TaskCompletionSource<bool> DataLoadedTCS { get; set; }
 
-        private DateTime NextUpdateTime { get; set; } = DateTime.Now;
+        private DateTime NextUpdateTime { get; set; } = DateTime.UtcNow;
 
         public int ProgressScale { get; } = OTPGenerator.TimeStepSeconds * 1000;
 
@@ -52,7 +52,7 @@ namespace OTPManager.Shared.ViewModels
                 if (SetProperty(ref items, value))
                 {
                     RaisePropertyChanged(nameof(GeneratorsAvailable));
-                    NextUpdateTime = DateTime.Now;
+                    NextUpdateTime = DateTime.UtcNow;
                 }
             }
         }
@@ -175,10 +175,10 @@ namespace OTPManager.Shared.ViewModels
             BackgroundRefreshTimer?.Dispose();
             BackgroundRefreshTimer = null;
         }
-
+        
         private void UIRefresh()
         {
-            var currentTime = DateTime.Now;
+            var currentTime = DateTime.UtcNow;
             Progress = (1000 * (currentTime.Second % OTPGenerator.TimeStepSeconds)) + currentTime.Millisecond;
 
             if (currentTime.CompareTo(NextUpdateTime) >= 0)
