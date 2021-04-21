@@ -117,7 +117,7 @@ namespace OTPManager.Shared.Components
         public static Uri UriFromOTPGenerator(OTPGenerator input)
         {
             var uriLabel = string.Format("{0}{1}{2}", Uri.EscapeDataString(input.Issuer), UriQueryLabelDelimiter, Uri.EscapeDataString(input.Label));
-            var output = string.Format(UriFormat, uriLabel, input.SecretBase32, input.AlgorithmName, input.NumDigits, Uri.EscapeDataString(input.Issuer));
+            var output = string.Format(UriFormat, uriLabel, input.SecretBase32.Replace("=", string.Empty), input.AlgorithmName, input.NumDigits, Uri.EscapeDataString(input.Issuer));
             return new Uri(output);
         }
 
