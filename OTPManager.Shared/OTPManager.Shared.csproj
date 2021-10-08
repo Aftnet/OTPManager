@@ -4,12 +4,12 @@
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.483" />
-    <PackageReference Include="MvvmCross" Version="7.1.2" />
-    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="7.1.2" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.514" />
+    <PackageReference Include="MvvmCross" Version="8.0.2" />
+    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="8.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Otp.NET" Version="1.2.2" />
-    <PackageReference Include="sqlite-net-sqlcipher" Version="1.7.335" />
+    <PackageReference Include="sqlite-net-sqlcipher" Version="1.8.116" />
     <PackageReference Include="Xam.Plugin.SecureStorage" Version="1.0.13" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="Xam.Plugin.FileSystem" Version="1.0.13" />

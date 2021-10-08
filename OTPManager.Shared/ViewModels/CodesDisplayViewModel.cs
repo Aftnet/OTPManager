@@ -140,7 +140,7 @@ namespace OTPManager.Shared.ViewModels
                     return;
                 }
 
-                var outFile = await FileSystem.PickSaveFileAsync(DumpFileExtension);
+                var outFile = await FileSystem.PickSaveFileAsync(DumpFileExtension, "OTPManager Backup");
                 if (outFile == null)
                 {
                     return;
