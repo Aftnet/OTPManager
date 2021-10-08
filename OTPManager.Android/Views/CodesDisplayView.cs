@@ -4,12 +4,11 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using MvvmCross;
-using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Navigation;
 using MvvmCross.Platforms.Android;
 using MvvmCross.Platforms.Android.Binding.Views;
+using MvvmCross.Platforms.Android.Views;
 using OTPManager.Shared.Models;
-using OTPManager.Shared.Services;
 using OTPManager.Shared.ViewModels;
 using System;
 using ZXing.Mobile;
@@ -19,7 +18,7 @@ namespace OTPManager.Android.Views
 {
     [Activity(Label = "@string/AppName", MainLauncher = true, LaunchMode = global::Android.Content.PM.LaunchMode.SingleTop)]
     [IntentFilter(new[] { global::Android.Content.Intent.ActionView }, DataScheme = "otpauth", Categories = new[] { global::Android.Content.Intent.CategoryDefault, global::Android.Content.Intent.CategoryBrowsable})]
-    public class CodesDisplayView : MvxAppCompatActivity<CodesDisplayViewModel>
+    public class CodesDisplayView : MvxActivity<CodesDisplayViewModel>
     {
         private static Lazy<object> Initializer;
 

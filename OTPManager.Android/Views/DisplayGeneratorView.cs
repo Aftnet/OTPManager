@@ -1,13 +1,13 @@
 ﻿using Android.App;
 using Android.OS;
 using Android.Views;
-using MvvmCross.Droid.Support.V7.AppCompat;
+using MvvmCross.Platforms.Android.Views;
 using OTPManager.Shared.ViewModels;
 
 namespace OTPManager.Android.Views
 {
     [Activity(Label = "@string/Details")]
-    public class DisplayGeneratorView : MvxAppCompatActivity<DisplayGeneratorViewModel>
+    public class DisplayGeneratorView : MvxActivity<DisplayGeneratorViewModel>
     {
         protected override void OnCreate(Bundle bundle)
         {

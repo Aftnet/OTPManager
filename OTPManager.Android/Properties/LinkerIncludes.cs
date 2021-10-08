@@ -1,7 +1,7 @@
 ﻿using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
 using Android.Widget;
+using AndroidX.AppCompat.Widget;
+using Google.Android.Material.TextField;
 
 namespace OTPManager.Android.Properties
 {
