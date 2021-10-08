@@ -112,6 +112,8 @@
     <PackageReference Include="ZXing.Net.Mobile">
       <Version>2.4.1</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.Browser" Version="1.3.0.2-alpha01" />
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4" Version="1.0.0.4" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\codes_display.xml" />

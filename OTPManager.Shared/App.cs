@@ -4,7 +4,6 @@ using MvvmCross.ViewModels;
 using OTPManager.Shared.Services;
 using Plugin.FileSystem;
 using Plugin.SecureStorage;
-using Plugin.Share;
 
 namespace OTPManager.Shared
 {
@@ -15,7 +14,6 @@ namespace OTPManager.Shared
             var ioc = Mvx.IoCProvider;
             ioc.RegisterSingleton(CrossSecureStorage.Current);
             ioc.RegisterSingleton(CrossFileSystem.Current);
-            ioc.RegisterSingleton(CrossShare.Current);
             ioc.RegisterSingleton(UserDialogs.Instance);
             ioc.RegisterSingleton<IStorageService>(ioc.IoCConstruct<StorageService>());
             RegisterCustomAppStart<AppStart>();

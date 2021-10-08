@@ -6,7 +6,6 @@ using OTPManager.Shared.Models;
 using OTPManager.Shared.Resources;
 using OTPManager.Shared.Services;
 using Plugin.FileSystem.Abstractions;
-using Plugin.Share.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +23,6 @@ namespace OTPManager.Shared.ViewModels
 
         private IMvxNavigationService Navigator { get; }
         private IUserDialogs DialogService { get; }
-        private IShare ShareService { get; }
         private IStorageService DataStore { get; }
         private IFileSystem FileSystem { get; }
         
@@ -67,11 +65,10 @@ namespace OTPManager.Shared.ViewModels
 
         private Timer BackgroundRefreshTimer;
 
-        public CodesDisplayViewModel(IMvxNavigationService navigator, IUserDialogs dialogService, IShare shareService, IStorageService dataStore, IFileSystem fileSystem, IMobileBarcodeScanner scanner)
+        public CodesDisplayViewModel(IMvxNavigationService navigator, IUserDialogs dialogService, IStorageService dataStore, IFileSystem fileSystem, IMobileBarcodeScanner scanner)
         {
             Navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
             DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            ShareService = shareService ?? throw new ArgumentNullException(nameof(shareService));
             DataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
             FileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             Scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
@@ -123,7 +120,7 @@ namespace OTPManager.Shared.ViewModels
                     if (restoreSuccess)
                     {
                         var generators = await DataStore.GetAllAsync();
-                        Items = generators.Select(d => new OTPDisplayViewModel(ShareService, d)).ToList();
+                        Items = generators.Select(d => new OTPDisplayViewModel(d)).ToList();
                     }
                     else
                     {
@@ -163,7 +160,7 @@ namespace OTPManager.Shared.ViewModels
             var generators = await DataStore.GetAllAsync();
             DataLoadedTCS.SetResult(true);
 
-            Items = generators.Select(d => new OTPDisplayViewModel(ShareService, d)).ToList();
+            Items = generators.Select(d => new OTPDisplayViewModel(d)).ToList();
             if (BackgroundRefreshTimer == null)
             {
                 BackgroundRefreshTimer = new Timer(d => InvokeOnMainThread(UIRefresh), this, BackgroudRefreshInterval, BackgroudRefreshInterval);

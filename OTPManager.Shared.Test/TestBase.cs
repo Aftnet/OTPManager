@@ -5,7 +5,6 @@ using OTPManager.Shared.Models;
 using OTPManager.Shared.Services;
 using Plugin.FileSystem.Abstractions;
 using Plugin.SecureStorage.Abstractions;
-using Plugin.Share.Abstractions;
 using System;
 using ZXing.Mobile;
 
@@ -19,7 +18,6 @@ namespace OTPManager.Shared.Test
         protected T Target => target.Value;
 
         protected readonly Mock<IMvxNavigationService> NavigatorMock = new Mock<IMvxNavigationService>();
-        protected readonly Mock<IShare> PlatformServiceMock = new Mock<IShare>();
         protected readonly Mock<IStorageService> DataStoreMock = new Mock<IStorageService>();
         protected readonly Mock<IFileSystem> FileSystemMock = new Mock<IFileSystem>();
         protected readonly Mock<ISecureStorage> SecureStorageMock = new Mock<ISecureStorage>();

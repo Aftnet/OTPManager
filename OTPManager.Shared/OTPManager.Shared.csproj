@@ -11,9 +11,9 @@
     <PackageReference Include="Otp.NET" Version="1.2.2" />
     <PackageReference Include="sqlite-net-sqlcipher" Version="1.8.116" />
     <PackageReference Include="Xam.Plugin.SecureStorage" Version="1.0.13" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="Xam.Plugin.FileSystem" Version="1.0.13" />
-    <PackageReference Include="Plugin.Share" Version="7.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\Strings.Designer.cs">
