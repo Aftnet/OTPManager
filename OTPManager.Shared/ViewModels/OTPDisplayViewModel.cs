@@ -1,14 +1,12 @@
 ﻿using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using OTPManager.Shared.Models;
-using Plugin.Share.Abstractions;
 using System;
 
 namespace OTPManager.Shared.ViewModels
 {
     public class OTPDisplayViewModel : MvxViewModel
     {
-        private IShare ShareService { get; }
         public OTPGenerator Generator { get; }
 
         public string Issuer => Generator.Issuer;
@@ -23,16 +21,14 @@ namespace OTPManager.Shared.ViewModels
 
         public IMvxCommand CopyToClipboard { get; }
 
-        public OTPDisplayViewModel(IShare shareService, OTPGenerator gen)
+        public OTPDisplayViewModel(OTPGenerator gen)
         {
-            ShareService = shareService;
-
             Generator = gen;
             UpdateOTP(DateTime.UtcNow);
 
             CopyToClipboard = new MvxCommand(() =>
             {
-                ShareService.SetClipboardText(OTP);
+                Xamarin.Essentials.Clipboard.SetTextAsync(OTP);
             });
         }
 

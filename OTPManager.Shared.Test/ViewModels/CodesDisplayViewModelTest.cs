@@ -15,7 +15,7 @@ namespace OTPManager.Shared.Test.ViewModels
 
         protected override CodesDisplayViewModel GetTarget()
         {
-            return new CodesDisplayViewModel(NavigatorMock.Object, DialogServiceMock.Object, PlatformServiceMock.Object, DataStoreMock.Object, FileSystemMock.Object, BarcodeScannerMock.Object);
+            return new CodesDisplayViewModel(NavigatorMock.Object, DialogServiceMock.Object, DataStoreMock.Object, FileSystemMock.Object, BarcodeScannerMock.Object);
         }
 
         public CodesDisplayViewModelTest() : base()
