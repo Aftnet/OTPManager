@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MvvmCross.IoC;
 using MvvmCross.Platforms.Uap.Core;
+using MvvmCross.UI;
 using MvvmCross.ViewModels;
 using Windows.UI.Xaml.Controls;
 using ZXing.Mobile;
@@ -23,6 +24,7 @@ namespace OTPManager.UWP.Platform
         {
             base.InitializeLastChance(iocProvider);
 
+            iocProvider.RegisterType<IMvxNativeVisibility, MvvmCross.Plugin.Visibility.Platforms.Uap.MvxWinRTVisibility>();
             iocProvider.RegisterSingleton<IMobileBarcodeScanner>(() => new MobileBarcodeScanner
             {
                 CustomOverlay = new Grid(),
