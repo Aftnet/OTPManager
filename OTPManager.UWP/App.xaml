@@ -6,21 +6,28 @@
     xmlns:vc="using:OTPManager.UWP.ValueConverters">
 
     <local:OTPManagerApp.Resources>
-        <x:Double x:Key="WideWindowMinWidth">600</x:Double>
-        <Thickness x:Key="ContentMargin">16,0</Thickness>
-        <vc:VisibilityConverter x:Key="VisibilityConverter"/>
-        <vc:InverseVisibilityConverter x:Key="InverseVisibilityConverter"/>
-        <vc:QRConverter x:Key="QRConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary>
+                    <x:Double x:Key="WideWindowMinWidth">600</x:Double>
+                    <Thickness x:Key="ContentMargin">16,0</Thickness>
+                    <vc:VisibilityConverter x:Key="VisibilityConverter"/>
+                    <vc:InverseVisibilityConverter x:Key="InverseVisibilityConverter"/>
+                    <vc:QRConverter x:Key="QRConverter"/>
 
-        <Style x:Key="DefaultScrollViewerStyle" TargetType="ScrollViewer">
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-        </Style>
-        <Style x:Key="TBStyle" TargetType="TextBox">
-            <Setter Property="Header" Value="HeaderDesign"/>
-        </Style>
-        <Style x:Key="SecretTBStyle" TargetType="TextBox" BasedOn="{StaticResource TBStyle}">
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Height" Value="200"/>
-        </Style>
+                    <Style x:Key="DefaultScrollViewerStyle" TargetType="ScrollViewer">
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                    </Style>
+                    <Style x:Key="TBStyle" TargetType="TextBox">
+                        <Setter Property="Header" Value="HeaderDesign"/>
+                    </Style>
+                    <Style x:Key="SecretTBStyle" TargetType="TextBox" BasedOn="{StaticResource TBStyle}">
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="Height" Value="200"/>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </local:OTPManagerApp.Resources>
 </local:OTPManagerApp>
