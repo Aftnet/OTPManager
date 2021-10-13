@@ -156,7 +156,6 @@ namespace OTPManager.Shared.ViewModels
         public override async void ViewAppearing()
         {
             DataLoadedTCS = new TaskCompletionSource<bool>();
-            DataStore.ErrorOccurred += DataStore_ErrorOccurred;
             var generators = await DataStore.GetAllAsync();
             DataLoadedTCS.SetResult(true);
 
@@ -168,7 +167,6 @@ namespace OTPManager.Shared.ViewModels
         }
         public override void ViewDisappearing()
         {
-            DataStore.ErrorOccurred -= DataStore_ErrorOccurred;
             BackgroundRefreshTimer?.Dispose();
             BackgroundRefreshTimer = null;
         }

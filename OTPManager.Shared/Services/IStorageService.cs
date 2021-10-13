@@ -14,7 +14,5 @@ namespace OTPManager.Shared.Services
 
         Task<MemoryStream> DumpAsync(string password);
         Task<bool> RestoreAsync(Stream data, string password);
-
-        event ErrorEventHandler ErrorOccurred;
     }
 }
