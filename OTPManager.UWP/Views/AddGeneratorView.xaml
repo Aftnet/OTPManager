@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xamlc="using:Microsoft.UI.Xaml.Controls"
     xmlns:mvx="using:MvvmCross.Platforms.Uap.Views"
     xmlns:vt="using:WindowsStateTriggers"
     mc:Ignorable="d">
@@ -22,6 +23,7 @@
                 <TextBox x:Uid="LabelTB" Text="{x:Bind VM.Label, Mode=TwoWay}" Style="{StaticResource TBStyle}"/>
                 <TextBox x:Uid="SecretTB" Text="{x:Bind VM.SecretBase32, Mode=TwoWay}" Style="{StaticResource SecretTBStyle}"/>
                 <TextBox x:Uid="IssuerTB" Text="{x:Bind VM.Issuer, Mode=TwoWay}" Style="{StaticResource TBStyle}"/>
+                <xamlc:NumberBox x:Uid="NumDigitsNB" Value="{x:Bind VM.NumDigits, Mode=TwoWay}" />
                 <ToggleSwitch x:Uid="ExportingAllowedSwitch" IsOn="{x:Bind VM.AllowExporting, Mode=TwoWay}" Header="Allow exporting design"/>
             </StackPanel>
         </ScrollViewer>

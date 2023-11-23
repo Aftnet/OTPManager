@@ -30,6 +30,7 @@ namespace OTPManager.Shared.ViewModels
                     Label = generator.Label;
                     SecretBase32 = generator.SecretBase32;
                     Issuer = generator.Issuer;
+                    NumDigits = generator.NumDigits;
                     AllowExporting = generator.AllowExporting;
                     DeleteGenerator.RaiseCanExecuteChanged();
                     var task = GenerateQRAsync();
@@ -56,6 +57,13 @@ namespace OTPManager.Shared.ViewModels
         {
             get => issuer;
             private set { SetProperty(ref issuer, value); }
+        }
+
+        private int numDigits = OTPGenerator.MinNumDigits;
+        public int NumDigits
+        {
+            get => numDigits;
+            set => SetProperty(ref numDigits, value);
         }
 
         private bool allowExporting;
