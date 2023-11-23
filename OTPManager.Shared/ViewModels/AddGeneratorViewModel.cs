@@ -50,6 +50,13 @@ namespace OTPManager.Shared.ViewModels
             set { SetProperty(ref allowExporting, value); }
         }
 
+        private int numDigits = OTPGenerator.MinNumDigits;
+        public int NumDigits
+        {
+            get => numDigits;
+            set { if (SetProperty(ref numDigits, value)) { CheckCreationIsAllowed(); } }
+        }
+
         public IMvxCommand AddGenerator { get; }
         public IMvxCommand Cancel { get; }
 
@@ -60,6 +67,7 @@ namespace OTPManager.Shared.ViewModels
             Label = parameter.Label;
             SecretBase32 = parameter.SecretBase32;
             Issuer = parameter.Issuer;
+            NumDigits = parameter.NumDigits;
         }
 
         public AddGeneratorViewModel(IMvxNavigationService navigator, IStorageService dataStore)
@@ -80,6 +88,7 @@ namespace OTPManager.Shared.ViewModels
                 Label = Label,
                 SecretBase32 = SecretBase32,
                 Issuer = Issuer,
+                NumDigits = NumDigits,
                 AllowExporting = AllowExporting
             };
 
@@ -110,6 +119,11 @@ namespace OTPManager.Shared.ViewModels
             }
 
             if (SecretBase32.Length < MinSecretLength)
+            {
+                return;
+            }
+
+            if (NumDigits < OTPGenerator.MinNumDigits || NumDigits > OTPGenerator.MaxNumDigits)
             {
                 return;
             }

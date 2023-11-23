@@ -183,4 +183,7 @@
   <data name="Import.Label" xml:space="preserve">
     <value>Import</value>
   </data>
+  <data name="NumDigitsNB.Header" xml:space="preserve">
+    <value>Code digits length</value>
+  </data>
 </root>
