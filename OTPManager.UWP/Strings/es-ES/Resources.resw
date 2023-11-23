@@ -162,4 +162,7 @@
   <data name="CopyMenuItem.Text" xml:space="preserve">
     <value>Copiar</value>
   </data>
+  <data name="NumDigitsNB.Header" xml:space="preserve">
+    <value>Número de dígitos del código</value>
+  </data>
 </root>

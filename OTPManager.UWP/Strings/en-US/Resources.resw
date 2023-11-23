@@ -184,6 +184,6 @@
     <value>Import</value>
   </data>
   <data name="NumDigitsNB.Header" xml:space="preserve">
-    <value>Num Digits</value>
+    <value>Code digits length</value>
   </data>
 </root>
